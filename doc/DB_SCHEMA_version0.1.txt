@@ -1,0 +1,55 @@
+﻿CREATE TABLE USER_INFO( 
+  user_id varchar(64) NOT NULL,
+  password varchar(32) NOT NULL,
+  name varchar(32) NOT NULL,
+  subject varchar(256) NOT NULL,
+  contents varchar(5000) NOT NULL,
+  regist_date varchar(32),
+  modify_date varchar(32),
+  delete_date varchar(32),
+  profile_image varchar(5),
+  PRIMARY KEY (user_id)
+);
+
+CREATE TABLE RESTAURANT_INFO( 
+  restaurant_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  restaurant_name varchar(64) NOT NULL,
+  lat varchar(32) NOT NULL,
+  lon varchar(32) NOT NULL,
+  regist_date varchar(32),
+  modify_date varchar(32),
+  delete_date varchar(32),
+  PRIMARY KEY (restaurant_id)
+);
+
+CREATE TABLE FOOD_ACCOUNT_INFO( 
+  account_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  account_name varchar(64) NOT NULL,
+  regist_date varchar(32),
+  modify_date varchar(32),
+  delete_date varchar(32),
+  profile_image varchar(5),
+  PRIMARY KEY (account_id)
+);
+
+CREATE TABLE FOOD_ACCOUNT_MEMBER(
+  account_id bigint(20) unsigned NOT NULL,
+  user_id varchar(64) NOT NULL,
+  user_permission int(8) NOT NULL,
+  regist_date varchar(32),
+  modify_date varchar(32),
+  delete_date varchar(32)
+);
+
+CREATE TABLE REGISTERED_RESTAURANT_IN_ACCOUNT( 
+  regist_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  restaurant_id bigint(20) unsigned NOT NULL,
+  register_user_id varchar(64) NOT NULL,
+  recommend_rate int(8) NOT NULL,
+  memo varchar(256),
+  regist_date varchar(32),
+  modify_date varchar(32),
+  delete_date varchar(32),
+  PRIMARY KEY (regist_id)
+);
+
