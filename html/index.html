@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+  <meta name="author" content="GeeksLabs">
+  <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+  <link rel="shortcut icon" href="img/favicon.png">
+
+  <title>프로토타입</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- bootstrap theme -->
+  <link href="css/bootstrap-theme.css" rel="stylesheet">
+  <!--external css-->
+  <!-- font icon -->
+  <link href="css/elegant-icons-style.css" rel="stylesheet" />
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- full calendar css-->
+  <link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
+  <link href="assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
+  <!-- easy pie chart-->
+  <link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
+  <!-- owl carousel -->
+  <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
+  <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/fullcalendar.css">
+  <link href="css/widgets.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/style-responsive.css" rel="stylesheet" />
+  <link href="css/xcharts.min.css" rel=" stylesheet">
+  <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fbd0e271c8b3d1fa125c10e1262394e5"></script>
+      <style>
+.customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
+.customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+.customoverlay a {display:block;text-decoration:none;color:#000;text-align:left;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+.customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
+.customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+</style>
+</head>
+
+<body>
+  <!-- container section start -->
+  <section id="container" class="">
+
+
+    <header class="header dark-bg">
+      <!--div class="toggle-nav">
+        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+      </div-->
+
+      <!--logo start-->
+      <a href="index.html" class="logo">제목<span class="lite">모하지</span></a>
+      <!--logo end-->
+
+      <div class="nav search-row" id="top_menu">
+        <!--  search form start -->
+        <!--ul class="nav top-menu">
+          <li>
+            <form class="navbar-form">
+              <input class="form-control" placeholder="Search" type="text">
+            </form>
+          </li>
+        </ul-->
+        <!--  search form end -->
+      </div>
+
+      <div class="top-nav notification-row">
+        <!-- notificatoin dropdown start-->
+        <ul class="nav pull-right top-menu">
+
+
+          <!-- alert notification end-->
+          <!-- user login dropdown start-->
+          <li class="dropdown">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="profile-ava">
+                                <img alt="" src="img/avatar1_small.jpg">
+                            </span>
+                            <span class="username">이태호</span>
+                            <b class="caret"></b>
+                        </a>
+            <ul class="dropdown-menu extended logout">
+              <div class="log-arrow-up"></div>
+              <li class="eborder-top">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" onclick="fnMove('listFilter')" href="#"><i class="fa fa-sliders"></i> 장부필터</a>
+              </li>			  
+              <li>
+                <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> 맛집추가</a>
+              </li>
+              <li>
+                <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-edit"></i> 장부관리하기</a>
+              </li>				  
+              <li>
+                <a href="#" data-toggle="modal" data-target="#myModal"><i class="icon_profile"></i> 내 정보</a>
+              </li>
+              <li>
+                <a href="#" onclick="fnMove('friendsNews')"><i class="icon_profile"></i> 친구들 소식</a>
+              </li>			  
+              <li>
+                <a href="#" data-toggle="modal" data-target="#modalLogin"><i class="icon_key_alt"></i>로그인/회원가입/로그아웃</a>
+              </li>
+              <!--li>
+                <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+              </li>
+              <li>
+                <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+              </li-->
+            </ul>
+          </li>
+          <!-- user login dropdown end -->
+        </ul>
+        <!-- notificatoin dropdown end-->
+      </div>
+    </header>
+    <!--header end-->
+
+    <!--sidebar start-->
+    <!--aside-->
+	
+        <!-- sidebar menu start-->
+	  <!-- sidebar menu end-->
+    <!--/aside-->
+    <!--sidebar end-->
+
+    <!--main content start-->
+    <!--section id="main-content"-->
+	
+      <section class="wrapper">
+
+
+		  <!--a class="btn btn-info btn-sm dark-bg" href="status.html" title="Bootstrap 3 themes generator"><i class="fa fa-cubes"></i> 분류현황</a>
+		  <a class="btn btn-info btn-sm" href="line_status.html" title="Bootstrap 3 themes generator"><i class="fa fa-desktop"></i> 라인현황</a>
+		  <a class="btn btn-info btn-sm" href="line_info.html" title="Bootstrap 3 themes generator"><i class="fa fa-info"></i> 라인정보</a-->
+
+
+        <!--/.row-->
+
+		
+
+		<div id="map" style="width:100%;height:500px;"></div>
+		<br/>
+		<br/>
+		
+		<!-- Inline form-->
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <section class="panel" id="listFilter">
+              <header class="panel-heading" id="msg_time">
+                <i class="fa fa-sliders"></i> 장부필터
+              </header>
+              <div class="panel-body">
+				<h5><i class="fa fa-info"></i> 아래 나의 장부 리스트를 터치 하면 지도에 표시/숨김 할수있습니다.</h5>
+			    <ul class="list-group" style="margin:0">
+					<li class="list-group-item" style="background-color:#007aff; color:white">
+						<h3><i class="fa fa-lightbulb-o"></i> 안랩 맛집장부</h3>
+						<i class="fa fa-book"></i> 12개의 정보　<i class="fa fa-heart"></i> 3002명<br/>
+						<i class="fa fa-exclamation-circle"></i> 관리자 권한 보유<br/><br/>
+
+					<!--i class="fa fa-heart"></i>
+					<i class="fa fa-heart-o"></i-->
+					</li>
+					<li class="list-group-item" style="background-color:#007aff; color:white" onclick="alert('test')">
+						<h3><i class="fa fa-lightbulb-o"></i> Jenny의 맛집장부</h3>
+						<i class="fa fa-book"></i> 23개의 정보　<i class="fa fa-heart"></i> 2명<br/>
+						<i class="fa fa-exclamation-circle"></i> 맛집추가 권한 보유<br/><br/>
+					</li>
+					<li class="list-group-item">
+						<h3> 경태네</h3>
+						<i class="fa fa-book"></i> 23개의 정보　<i class="fa fa-heart"></i> 2명<br/>
+						<br/>
+					</li>
+					<li class="list-group-item">
+						<h3> 유스페이스 맛집정리</h3>
+						<i class="fa fa-book"></i> 32개의 맛집　<i class="fa fa-heart"></i> 25명<br/>
+					</li>
+					<li class="list-group-item" style="background-color:#007aff; color:white">
+						<h3><i class="fa fa-lightbulb-o"></i> 천안시 맛집</h3>
+						<i class="fa fa-book"></i> 23개의 정보　<i class="fa fa-heart"></i> 30명<br/>
+						<br/>
+					</li>
+					<li class="list-group-item">
+						<h3> 강서구</h3>
+						<i class="fa fa-book"></i> 23개의 정보　<i class="fa fa-heart"></i> 21명<br/>
+						<br/>
+					</li>					
+				</ul>
+			  </div>
+			</section>
+			</div>
+		</div>
+		
+		
+		
+		
+		<div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <section class="panel" id="friendsNews">
+              <header class="panel-heading" id="msg_time">
+                <i class="fa fa-sliders"></i> 친구들 소식
+              </header>
+              <div class="panel-body">
+				<h5><i class="fa fa-info"></i> 최근 친구들이 남긴 기록들을 확인 할 수 있습니다.</h5>
+				<div class="table-responsive">
+					<table class="table table-advance">
+					  <thead>
+						<tr>
+							<th>이름</th>
+							<th>장부</th>
+							<th>새로운 맛집</th>
+							<th>시간</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						  <tr>
+							<td>고경태</td>
+							<td>천안 맛집 모음</td>
+							<td>착한낙지</td>
+							<td>2019/08/03 16:40:30</td>
+						  </tr>
+						  
+						  <tr>
+							<td>문지연</td>
+							<td>유스페이스 장부</td>
+							<td>인계동 껍데기</td>
+							<td>2019/08/03 14:40:30</td>
+						  </tr>
+
+						  
+					  </tbody>
+					</table>
+				</div>				
+			  </div>
+			</section>
+			</div>
+		</div>
+
+		
+
+
+        <!-- statics end -->
+
+
+
+
+        
+        <!-- project team & activity end -->
+
+      </section>
+    <!--section>
+      <div class="text-right">
+        <div class="credits">
+          <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+          -->
+          <!--FOR TEAM
+        </div>
+      </div>
+    </section-->
+    <!--main content end-->
+  </section>
+  <!-- container section start -->
+
+  <!-- javascripts -->
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery-ui-1.10.4.min.js"></script>
+  <script src="js/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+  <!-- bootstrap -->
+  <script src="js/bootstrap.min.js"></script>
+  <!-- nice scroll -->
+  <!--script src="js/jquery.scrollTo.min.js"></script>
+  <script src="js/jquery.nicescroll.js" type="text/javascript"></script-->
+  <!-- charts scripts -->
+  <script src="assets/jquery-knob/js/jquery.knob.js"></script>
+  <script src="js/jquery.sparkline.js" type="text/javascript"></script>
+  <script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
+  <script src="js/owl.carousel.js"></script>
+  <!-- jQuery full calendar -->
+  <script src="js/fullcalendar.min.js"></script>
+    <!-- Full Google Calendar - Calendar -->
+    <script src="assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+    <!--script for this page only-->
+    <script src="js/calendar-custom.js"></script>
+    <script src="js/jquery.rateit.min.js"></script>
+    <!-- custom select -->
+    <script src="js/jquery.customSelect.min.js"></script>
+    <script src="assets/chart-master/Chart.js"></script>
+
+    <!--custome script for all page-->
+    <script src="js/scripts.js"></script>
+    <!-- custom script for this page-->
+    <script src="js/sparkline-chart.js"></script>
+    <script src="js/easy-pie-chart.js"></script>
+    <script src="js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="js/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="js/xcharts.min.js"></script>
+    <script src="js/jquery.autosize.min.js"></script>
+    <script src="js/jquery.placeholder.min.js"></script>
+    <script src="js/gdp-data.js"></script>
+    <script src="js/morris.min.js"></script>
+    <script src="js/sparklines.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/jquery.slimscroll.min.js"></script>
+    <script>
+
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+  mapOption = { 
+        center: new kakao.maps.LatLng(37.4011778,127.1112022), // 지도의 중심좌표
+        level: 4 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+    markerPosition = new kakao.maps.LatLng(37.4011778,127.1112022); // 마커가 표시될 위치입니다
+
+// 마커를 생성합니다
+var marker = new kakao.maps.Marker({
+  position: markerPosition,
+  image: markerImage // 마커이미지 설정 
+});
+
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);  
+
+// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+var content = '<div class="customoverlay">' +
+
+							
+    '  <a href="#" target="_blank">' +
+	
+	'<span class="title" style="text-align:left;">' +
+    '<span class="profile-ava" style="color:gray;font-weight:normal;text-align:left"><img alt="" src="img/avatar1_small.jpg"> 이태호　 ' + 
+    '</span><br>' +
+	
+    '    안랩 구내식당 <span style="color:orange;">★★★★</span></span>' +
+    '  </a>' +
+    '</div>';
+
+// 커스텀 오버레이가 표시될 위치입니다 
+var position = new kakao.maps.LatLng(37.4011778,127.1112022);  
+
+// 커스텀 오버레이를 생성합니다
+var customOverlay = new kakao.maps.CustomOverlay({
+    map: map,
+    position: position,
+    content: content,
+    yAnchor: 1 
+});
+/*	
+	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var options = { //지도를 생성할 때 필요한 기본 옵션
+		center: new kakao.maps.LatLng(37.4011778,127.1112022), //지도의 중심좌표.
+		level: 3 //지도의 레벨(확대, 축소 정도)
+	};
+
+	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+	
+
+      //knob
+      $(function() {
+        $(".knob").knob({
+          'draw': function() {
+            $(this.i).val(this.cv + '%')
+          }
+        })
+      });
+
+      //carousel
+      $(document).ready(function() {
+        $("#owl-slider").owlCarousel({
+          navigation: true,
+          slideSpeed: 300,
+          paginationSpeed: 400,
+          singleItem: true
+
+        });
+      });
+
+      //custom select box
+
+      $(function() {
+        $('select.styled').customSelect();
+      });
+*/
+      /* ---------- Map ---------- */
+      $(function() {
+        $('#map').vectorMap({
+          map: 'world_mill_en',
+          series: {
+            regions: [{
+              values: gdpData,
+              scale: ['#000', '#000'],
+              normalizeFunction: 'polynomial'
+            }]
+          },
+          backgroundColor: '#eef3f7',
+          onLabelShow: function(e, el, code) {
+            el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+          }
+        });
+      });
+	  
+	  /*
+	  $(".scroll .nav .nav-link").click(function(event) {
+        event.preventDefault();
+        $('html,body').stop().animate({
+            scrollTo : $(this.hash).offset().top
+        }, 1000);
+        $('.navbar-default .nav .nav-link').hide();
+
+		});
+	  */
+	  
+	  
+
+	function fnMove(seq){
+        var offset = $("#" + seq).offset();
+        $('html, body').animate({scrollTop : offset.top}, 400);
+    }
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+    </script>
+	
+	
+	
+	
+
+	<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">로그인/회원가입</h4>
+				</div>
+				<div class="modal-body">
+					<h2>로그인</h2>
+					<div class="form-group">
+						<label for="exampleInputEmail1">아이디</label>
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="아이디를 입력해주세요"/> 
+						<br/>
+						<label for="exampleInputPassword1">비밀번호</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="비밀번호를 입력해주세요"/>
+					</div>
+					<button type="submit" class="btn btn-default">로그인</button>
+					<br>
+					<hr>
+					<br>
+					<h2>회원가입</h2>
+					<div class="form-group">
+						
+						<label for="exampleInputEmail1">아이디</label><br/>
+						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+							<input type="text" class="form-control" id="exampleInputEmail1" placeholder="아이디를 입력해주세요"/>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							<button type="submit" class="btn btn-default">중복확인</button>
+						</div>
+						<p>* 사용 가능한 아이디 입니다. </p>
+						<br/>
+						
+						<label for="exampleInputEmail1">이름</label>
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="이름을 입력해주세요"/>
+						<br/>
+						
+						<label for="exampleInputEmail1">비밀번호</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="비밀번호를 입력해주세요"/>
+						<br>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="비밀번호를 한번더 입력해주세요"/>
+						<br/>
+						<button type="submit" class="btn btn-default">완 료</button>
+					</div>
+					<br/>
+					<hr>
+					<br/>
+					
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>
