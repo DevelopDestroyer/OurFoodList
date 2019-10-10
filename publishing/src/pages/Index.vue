@@ -1,145 +1,151 @@
 <template>
+
+
   <div>
     <div class="page-header clear-filter" filter-color="orange">
       <parallax
         class="page-header-image"
-        style="background-image:url('img/header.jpg')"
       >
       </parallax>
+	  <!--
+        style="background-image:url('img/header.jpg')"-->
+	  
+	  <br><br><br><br>
+
+		<div id="dmap" style="width:100%;height:100%;">
+          <div id="map" style="width:100%;height:100%;"></div>
+        </div>
+		
+		
+		<a id="buttonBottomAllow" href="#gmatList" class="float" onclick="clickBottomAllow();">
+		  <i class="fa fa-arrow-down my-float"></i>
+        </a>
+		<!--a id="buttonTopAllow" href="#" class="float" style="display:none" onclick="clickTopAllow();">
+		  <i class="fa fa-arrow-up my-float"></i>
+        </a-->		
+		
       <div class="container">
         <div class="content-center brand">
-          <!--img class="n-logo" src="img/now-logo.png" alt="" /-->
-          <!--h1 class="h1-seo">그맛</h1>
-          <h3>내가 아는 그맛이 제일 맛있는 맛</h3-->
-        </div>
-		<div id="dmap">
-          <div id="map" style="width:100%; height:600px;"></div>
-        </div>
-        <!--h6 class="category category-absolute">
-          Designed by
-          <a href="http://invisionapp.com/" target="_blank">
-            <img src="img/invision-white-slim.png" class="invision-logo" /> </a
-          >. Coded by
-          <a href="https://www.creative-tim.com" target="_blank">
-            <img
-              src="img/creative-tim-white-slim2.png"
-              class="creative-tim-logo"
-            /> </a
-          >.
-        </h6-->
+    
+		
+		</div>
+		
       </div>
     </div>
-    <div class="main">
-      <div class="section section-images">
-        <div class="container">
-          <div class="row">
-            <!--div class="col-md-12"-->
-	     	  <card style="width: 100%;">
-                <ul slot="raw-content" class="list-group list-group-flush">
-                  <li class="list-group-item" style="height:150px;">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-                  <li class="list-group-item" style="height:150px;">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-                  <li class="list-group-item" style="height:150px;">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-                  <li class="list-group-item" style="height:150px;">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-                  <li class="list-group-item" style="height:150px;">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-                  <li class="list-group-item" style="height:150px;">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>				  
-                </ul>
-              </card>
-			  <br/>
-			  <br/>
-			  <br/>
-              <!--아아아아
-			  <img alt="Thumbnail Image" class="rounded-circle img-raised" data-src="img/julie.jpg" src="img/julie.jpg" lazy="loaded" style="width:85px;">dd
-					<i class="now-ui-icons ui-2_favourite-28"></i-->
 
-			  </div>
-          <!--/div-->
-        </div>
-      </div>
-    </div>
+	<template>
+    	<div class="container">
+				  <br>
+		  <br>
+		  <div id="gmatList" class="row">
+		     <card style="width: 100%;">
+                <ul slot="raw-content" class="list-group list-group-flush">
+                  <li class="list-group-item">
+					<p style="font-size:24px;">이태리 부대찌개 </p>
+					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+					  <table style="width:100%">
+					    <tr>
+					      <td>
+					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+					      </td>
+					      <td style="text-align:right;">
+						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+		      			  </td>
+					    </tr>
+					</table>
+			      </li>
+			  
+                </ul>
+             </card>
+		     <card style="width: 100%;">
+                <ul slot="raw-content" class="list-group list-group-flush">
+                  <li class="list-group-item">
+					<p style="font-size:24px;">이태리 부대찌개 </p>
+					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+					  <table style="width:100%">
+					    <tr>
+					      <td>
+					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+					      </td>
+					      <td style="text-align:right;">
+						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+		      			  </td>
+					    </tr>
+					</table>
+			      </li>
+			  
+                </ul>
+             </card>	
+
+		     <card style="width: 100%;">
+                <ul slot="raw-content" class="list-group list-group-flush">
+                  <li class="list-group-item">
+					<p style="font-size:24px;">이태리 부대찌개 </p>
+					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+					  <table style="width:100%">
+					    <tr>
+					      <td>
+					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+					      </td>
+					      <td style="text-align:right;">
+						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+		      			  </td>
+					    </tr>
+					</table>
+			      </li>
+			  
+                </ul>
+             </card>
+
+		     <card style="width: 100%;">
+                <ul slot="raw-content" class="list-group list-group-flush">
+                  <li class="list-group-item">
+					<p style="font-size:24px;">이태리 부대찌개 </p>
+					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+					  <table style="width:100%">
+					    <tr>
+					      <td>
+					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+					      </td>
+					      <td style="text-align:right;">
+						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+		      			  </td>
+					    </tr>
+					</table>
+			      </li>
+			  
+                </ul>
+             </card>
+
+			 
+		     <!--card style="width: 100%;">
+                <ul slot="raw-content" class="list-group list-group-flush">
+                  <li class="list-group-item">
+					<p style="font-size:24px;">이태리 부대찌개 </p>
+					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+					  <table style="width:100%">
+					    <tr>
+					      <td>
+					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+					      </td>
+					      <td style="text-align:right;">
+						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+		      			  </td>
+					    </tr>
+					</table>
+			      </li>
+			  
+                </ul>
+             </card-->	
+           </div>
+          </div>		   
+			 
+	</template>
     <!--basic-elements></basic-elements>
     <navigation></navigation>
     <tabs-section></tabs-section>
@@ -190,7 +196,8 @@ export default {
   bodyClass: 'index-page',
   components: {
     Parallax,
-	Card
+	Card,
+	BasicElements,
 	/*
     //BasicElements,
     //Navigation,
@@ -201,10 +208,11 @@ export default {
     //JavascriptComponents,
     //CarouselSection,
     //NucleoIconsSection,
-    SignupForm,
+    */
+	SignupForm,
     ExamplesSection,
     DownloadSection
-	*/
+	
   },
     mounted() {
       var container = document.getElementById('map');
@@ -215,5 +223,19 @@ export default {
         var map = new daum.maps.Map(container, mapOptions);
     }  
 };
+
+
+function clickTopAllow(){
+	document.getElementById("buttonBottomAllow").style.display = "block";
+	document.getElementById("buttonTopAllow").style.display = "none";
+
+}
+
+
+function clickBottomAllow(){
+	//document.getElementById("buttonBottomAllow").style.display = "none";
+	//document.getElementById("buttonTopAllow").style.display = "block";
+}
+
 </script>
 <style></style>
