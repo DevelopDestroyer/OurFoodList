@@ -26,14 +26,31 @@
       <li class="nav-item">
         <a
           class="nav-link"
-          href="https://www.creative-tim.com/product/vue-now-ui-kit"
-          target="_blank"
+          href="/#/login"
         >
-          <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-          <p>Download</p>
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="#ffffff" d="M12,9l3-3l-2.3-2.3l2-2l-1.4-1.4l-8,8C3.9,7.7,2.3,8,1.2,9.2c-1.6,1.6-1.6,4.1,0,5.7c1.6,1.6,4.1,1.6,5.7,0 C8.3,13.3,8.4,11,7,9.4l2.7-2.7L12,9z"></path></g></svg>
+          <p>　로그인</p>
         </a>
       </li>
-      <drop-down
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          href="/#/"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
+          <p>　맛집등록</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          href="/#/"
+        >
+          <i class="now-ui-icons users_circle-08"></i>
+          <p>　내 정보</p>
+        </a>
+      </li>	  	  
+      <!--drop-down
         tag="li"
         title="Components"
         icon="now-ui-icons design_app"
@@ -115,7 +132,7 @@
           <i class="fab fa-instagram"></i>
           <p class="d-lg-none d-xl-none">Instagram</p>
         </a>
-      </li>
+      </li-->
     </template>
   </navbar>
 </template>
