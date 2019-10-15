@@ -16,10 +16,11 @@
           <div id="map" style="width:100%;height:100%;"></div>
         </div>
 		
-		
-		<a id="buttonBottomAllow" href="#gmatList" class="float" onclick="clickBottomAllow();">
-		  <i class="fa fa-arrow-down my-float"></i>
-        </a>
+		<transition name="slide-fade">
+		  <a v-if="show" id="buttonBottomAllow" href="#gmatList" class="float"><!--  onclick="clickBottomAllow();" -->
+		    <i class="fa fa-arrow-down my-float"></i>
+          </a>
+		</transition>
 		<!--a id="buttonTopAllow" href="#" class="float" style="display:none" onclick="clickTopAllow();">
 		  <i class="fa fa-arrow-up my-float"></i>
         </a-->		
@@ -34,10 +35,12 @@
     </div>
 
 	<template>
-    	<div class="container">
-				  <br>
+    	<div id="gmatList" class="container">
 		  <br>
-		  <div id="gmatList" class="row">
+		  <br>
+		  <br>
+		  <br>		  
+		  <div class="row">
 		     <card style="width: 100%;">
                 <ul slot="raw-content" class="list-group list-group-flush">
                   <li class="list-group-item">
@@ -454,6 +457,11 @@ export default {
     DownloadSection
 	
   },
+  data() {
+    return {
+      show: true
+	}
+  },
   mounted() {
       var container = document.getElementById('map');
         var mapOptions = {
@@ -464,16 +472,11 @@ export default {
   },
   methods : {
     handleScroll (event){
-//	  console.log(window.pageYOffset + document.getElementById("gmatList").getBoundingClientRect().top + ", " + document.getElementById("gmatList").getBoundingClientRect().top);
-//	  const absoluteTop = window.pageYOffset + element.getBoundingClientRect().top;
-//const relativeTop = element.getBoundingClientRect().top;//gmatList
-	  if(PAGE_DOWN_BUTTON_ON && 95 >= document.getElementById("gmatList").getBoundingClientRect().top){
-	    document.getElementById("buttonBottomAllow").style.display = "none";
-		PAGE_DOWN_BUTTON_ON = false;
-	  }
-	  else if (!PAGE_DOWN_BUTTON_ON && 95 < document.getElementById("gmatList").getBoundingClientRect().top){
-   	    document.getElementById("buttonBottomAllow").style.display = "block";
-		PAGE_DOWN_BUTTON_ON = true;
+	  if(this.show && 95 >= document.getElementById("gmatList").getBoundingClientRect().top){
+		this.show = false;
+		}
+	  else if (!this.show && 110 < document.getElementById("gmatList").getBoundingClientRect().top){
+		this.show = true;
 	  }
 	}
   },
@@ -485,19 +488,6 @@ export default {
   }
 };
 
-var PAGE_DOWN_BUTTON_ON = true;
-
-function clickTopAllow(){
-	document.getElementById("buttonBottomAllow").style.display = "block";
-	document.getElementById("buttonTopAllow").style.display = "none";
-
-}
-
-
-function clickBottomAllow(){
-	//document.getElementById("buttonBottomAllow").style.display = "none";
-	//document.getElementById("buttonTopAllow").style.display = "block";
-}
 
 </script>
 <style></style>

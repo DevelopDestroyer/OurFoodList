@@ -80,7 +80,9 @@ export default {
   data() {
     return {
 	  inputPassword : '',
-	  inputID : ''
+	  inputID : '',
+	  inputPasswordConfirm: '',
+	  inputNickname: ''
     }
   }
   

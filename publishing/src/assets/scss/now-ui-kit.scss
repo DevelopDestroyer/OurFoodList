@@ -66,7 +66,9 @@
 @import "now-ui-kit/element-ui-plugins/input";
 @import "now-ui-kit/element-ui-plugins/tooltip";
 @import "now-ui-kit/element-ui-plugins/popover";
-
+html {
+  scroll-behavior: smooth;
+}
 body {
     font-family: 'NanumSquare', sans-serif;
 }
@@ -91,3 +93,16 @@ body {
 	margin-top:22px;
 }
 
+/* 애니메이션 진입 및 진출은 다른 지속 시간 및  */
+/* 타이밍 기능을 사용할 수 있습니다. */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
