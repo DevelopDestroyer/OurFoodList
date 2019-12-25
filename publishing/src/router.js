@@ -5,8 +5,10 @@ import Landing from './pages/Landing.vue';
 import Login from './pages/Login.vue';
 import Join from './pages/Join.vue';
 import Profile from './pages/Profile.vue';
+import registRestaurant from './pages/registRestaurant.vue';
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
+
 
 Vue.use(Router);
 
@@ -55,7 +57,15 @@ export default new Router({
         header: { colorOnScroll: 400 },
         footer: { backgroundColor: 'black' }
       }
-    }
+    },
+    {
+      path: '/registRestaurant',
+      name: 'registRestaurant',
+      components: { default: registRestaurant, header: MainNavbar, footer: MainFooter },
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    }	
   ],
   scrollBehavior: to => {
     if (to.hash) {
