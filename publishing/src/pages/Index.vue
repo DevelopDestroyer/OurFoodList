@@ -117,6 +117,7 @@
     <download-section></download-section-->
   </div>
 </template>
+<!--script src="https://unpkg.com/axios/dist/axios.min.js"></script-->
 <script>
 import { Parallax } from '@/components';
 import BasicElements from './components/BasicElementsSection';

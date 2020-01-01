@@ -1,5 +1,6 @@
 <template>
   <button
+    id="navbarToggleButton"
     type="button"
     class="navbar-toggler"
     :class="[{ toggled: toggled }, { collapsed: !toggled }]"

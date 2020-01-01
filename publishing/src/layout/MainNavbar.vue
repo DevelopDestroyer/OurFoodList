@@ -27,6 +27,7 @@
         <a
           class="nav-link"
           href="/#/login"
+		  @click="closeNavbar"
         >
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="#ffffff" d="M12,9l3-3l-2.3-2.3l2-2l-1.4-1.4l-8,8C3.9,7.7,2.3,8,1.2,9.2c-1.6,1.6-1.6,4.1,0,5.7c1.6,1.6,4.1,1.6,5.7,0 C8.3,13.3,8.4,11,7,9.4l2.7-2.7L12,9z"></path></g></svg>
           <p>　로그인</p>
@@ -36,6 +37,7 @@
         <a
           class="nav-link"
           href="/#/registRestaurant"
+		  @click="closeNavbar"
         >
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
           <p>　맛집등록</p>
@@ -45,6 +47,7 @@
         <a
           class="nav-link"
           href="/#/"
+		  @click="closeNavbar"
         >
           <i class="now-ui-icons users_circle-08"></i>
           <p>　내 정보</p>
@@ -152,8 +155,20 @@ export default {
     NavbarToggleButton,
     NavLink,
     [Popover.name]: Popover
-  }
+  },
+  data() {
+    return {
+	  inputKeyword : '',
+	  closeNavbar: function(){
+		toggleClick();
+      }  
+    }
+  }  
 };
+
+function toggleClick(){
+		document.getElementById("navbarToggleButton").click();
+}
 </script>
 
 <style scoped></style>
