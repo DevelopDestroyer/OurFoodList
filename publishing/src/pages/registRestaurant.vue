@@ -36,10 +36,13 @@
 	  slot="raw-content" class="list-group list-group-flush">
      <li class="list-group-item">
 	   <h5>{{item.title}}</h5>
-	   {{item.address}} <br/>
-	   {{item.roadAddress}} <br/>
-	   {{item.category}}<br/>
-	   {{item.mapx}}, {{item.mapx}}<br/>
+   	   <i class="now-ui-icons location_bookmark"></i> {{item.category}}<br/><br/>
+	   <badge type="primary">지번</badge> {{item.address}} <br/>
+	   <badge type="primary">도로명</badge> {{item.roadAddress}} <br/>
+	   <input type="hidden" :value=item.mapx></input>
+	   <input type="hidden" :value=item.mapy></input>
+	   
+	   
        <n-button type="primary" size="sm">등록하기</n-button>
      </li> 
    </ul>
@@ -48,8 +51,8 @@
 
    <ul slot="raw-content" class="list-group list-group-flush">
      <li class="list-group-item">
-	   <h5>이태리 부대찌개</h5>
-	   성남시 분당구 판교로 <br/>
+	   <h5>이태리 부대찌개2</h5>
+	   <badge type="primary">도로명</badge> 성남시 분당구 판교로 <br/>
        <n-button type="primary" size="sm">등록하기</n-button>
      </li> 
    </ul>
@@ -80,14 +83,15 @@ export default {
     Card,
     MainFooter,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
+    [FormGroupInput.name]: FormGroupInput,
+	[Badge.name]: Badge
   },
   data() {
     return {
 	  inputKeyword : '',
 	  list: [
 		{
-			title: "<b>수진역</b> 8호선",
+			title: "수진역 8호선",
 			link: "",
 			category: "교통,운수>지하철,전철",
 			description: "",
@@ -142,13 +146,15 @@ export default {
 		*/
         axios.get('/api/searchRestaurant.php?keyword=' + this.inputKeyword)
           .then(function(response){
-            //alert("다 받아왓당" + response.items.length);
-			console.log("다 받아왓당" + response.data.items.length);
             console.log(response);
 			vm.list = [];
 			for(var i = 0; i < response.data.items.length; i++){
+			    var remove_tag_title = response.data.items[i].title;
+				remove_tag_title = remove_tag_title.replace('<b>', '');
+				remove_tag_title = remove_tag_title.replace('</b>', '');
+
 				vm.list.push({
-					title: response.data.items[i].title,
+					title: remove_tag_title,
 					link: response.data.items[i].link,
 					category: response.data.items[i].category,
 					description: response.data.items[i].description,

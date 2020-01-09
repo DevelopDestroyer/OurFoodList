@@ -9,9 +9,7 @@ import registRestaurant from './pages/registRestaurant.vue';
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
 
-
 Vue.use(Router);
-
 export default new Router({
   linkExactActiveClass: 'active',
   routes: [
@@ -61,7 +59,7 @@ export default new Router({
     {
       path: '/registRestaurant',
       name: 'registRestaurant',
-      components: { default: registRestaurant, header: MainNavbar, footer: MainFooter },
+      components: { default: registRestaurant, header: MainNavbar, footer: MainFooter},
       props: {
         header: { colorOnScroll: 400 }
       }
