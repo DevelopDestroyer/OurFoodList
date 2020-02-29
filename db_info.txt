@@ -1,0 +1,114 @@
+CREATE TABLE HP_INVITATION ( 
+  invitation_id varchar(64) NOT NULL,
+  password varchar(32) NOT NULL,
+  name varchar(32) NOT NULL,
+  subject varchar(256) NOT NULL,
+  contents varchar(5000) NOT NULL,
+  date_regist varchar(32),
+  date_start varchar(32),
+  date_end varchar(32),
+  image varchar(5),
+  font_color varchar(10),
+  status varchar(5),
+  PRIMARY KEY (invitation_id)
+);
+
+CREATE TABLE HP_COMMENT ( 
+  comment_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  invitation_id varchar(64) NOT NULL,
+  password varchar(32) NOT NULL,
+  name varchar(32) NOT NULL,
+  contents varchar(500) NOT NULL,
+  date varchar(32) NOT NULL,
+  status varchar(5),
+  PRIMARY KEY (comment_id)
+);
+///////////////////////////////////
+ 
+ 
+// 유저 정보
+CREATE Table USER_MST(
+    user_seq    bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    user_id     varchar(32),
+    user_pw    varchar(32),
+    nickname  varchar(32),
+    profile_img_cd      varchar(10),
+    status_cd    varchar(32),  //유저의 활성화 상태(회원상태, 탈퇴상태, 정지상태 등)
+    level int(4), //기본회원, 유료회원, 관리자
+    create_date varchar(32),
+    update_date varchar(32),
+    primary key(user_seq, user_id)
+)
+
+
+
+//매장 정보
+CREATE Table STORE_MST
+(
+    store_id varchar(128) NOT NULL,
+    store_name  varchar(128) NOT NULL,
+    category   varchar(128),
+    description   varchar(1000),
+    telephone   varchar(32),
+    address   varchar(500),
+    roadaddress   varchar(128),
+    lon   varchar(30),
+    lat    varchar(30),
+    create_date   varchar(30),
+    primary key(store_id)
+)
+
+
+
+Table STORE_REVIEW as review{
+  review_idx int //auto increased
+  user_id int [ref: > users.user_id]
+  store_idx int [ref: > store.store_idx]
+  is_visit 
+  review text
+  grade varchar //별점
+  created String
+  updated String
+}
+
+
+Table BOOKMARK as bookmark{
+  bookmark_idx String //auto increased
+  user_id String [ref: > users.user_id]
+  store_idx String  [ref: > store.store_idx]
+  status String
+  created String
+  updated String
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+Table STORE_REVIEW_ATTACH as review_attach{
+  attach_idx String //auto increased
+  review_idx String [ref: > review.review_idx]
+  attach_url String
+  created String
+  updated String
+}
+
+
+
+// 유저의 팔로잉 정보
+Table USER_FOLLOWING_RELATION as relation{
+  relation_idx int //auto increased
+	user_id String [ref: > users.user_id]
+	follow_user_idx String
+	status String //지켜보는 상태, 지켜보지 않는 상태
+	created String
+	updated String
+}
