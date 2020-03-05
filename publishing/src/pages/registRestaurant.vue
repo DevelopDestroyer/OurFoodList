@@ -325,7 +325,7 @@ export default {
     },
     setEXP(id){
         //전송부분 구현...
-        
+
     },
     setEXPForm(id){
         //폼 초기화
