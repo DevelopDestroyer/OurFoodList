@@ -29,9 +29,8 @@ CREATE TABLE HP_COMMENT (
 // 유저 정보
 CREATE Table USER_MST(
     user_seq    bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-    user_id     varchar(32),
-    user_pw    varchar(32),
-    nickname  varchar(32),
+    user_id     varchar(128),
+    user_pw    varchar(500),
     profile_img_cd      varchar(10),
     status_cd    varchar(32),  //유저의 활성화 상태(회원상태, 탈퇴상태, 정지상태 등)
     level int(4), //기본회원, 유료회원, 관리자
@@ -60,16 +59,25 @@ CREATE Table STORE_MST
 
 
 
-Table STORE_REVIEW as review{
-  review_idx int //auto increased
-  user_id int [ref: > users.user_id]
-  store_idx int [ref: > store.store_idx]
-  is_visit 
-  review text
-  grade varchar //별점
-  created String
-  updated String
-}
+CREATE Table REVIEW_MST
+(
+  review_seq int NOT NULL AUTO_INCREMENT,
+  user_id varchar(500),
+  store_id varchar(128),
+  visit_yn varchar(3),
+  del_yn  varchar(3),
+  rating varchar(5),
+  review varchar(500),
+  created varchar(30),
+  updated varchar(30),
+  primary key(review_seq)
+)
+
+CREATE Table REVIEW_TAG
+(
+  review_seq int,
+  tag_code int
+)
 
 
 Table BOOKMARK as bookmark{
