@@ -14,13 +14,13 @@
         <div class="row justify-content-md-center" style="margin-left:12px;">
           <fg-input class="col-10"
  	        	v-model="inputKeyword"
-                placeholder="맛집을 검색해주세요">
+                placeholder="맛집을 검색해주세요" v-on:keyup.enter="searchReq()">
           </fg-input>
 				  
 		  <n-button v-on:click="searchReq()" style="margin-top:1px;" type="primary" icon round>
-			<i class="fa fa-heart"></i>
-		  </n-button>			  
-		  
+			<i class="fa fa-search"></i>
+		  </n-button>
+
         </div>
 		<br/>
 		<br/>
@@ -44,7 +44,21 @@
 	   <input type="hidden" :value=item.mapy></input-->
 	   
 	   
-       <n-button type="primary" size="sm" @click.native="modals.notice=true">등록하기</n-button>
+       <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckEXP" @click.native="modals.notice=true" v-on:click="setEXPForm(item.mapx + '-' + item.mapy + '-' + item.title)">
+           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
+           가봤던 곳
+       </n-button>
+       <n-button type="primary" size="sm"  v-if="item.mapx != 0 && item.isCheckEXP">
+           ✔ 가봤던 곳
+       </n-button>
+       <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckBookmark && !item.isCheckEXP" v-on:click="setBookmark(item.mapx + '-' + item.mapy + '-' + item.title)">
+           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
+           찜하기
+       </n-button>
+       <n-button type="primary" size="sm" v-if="item.mapx != 0 && item.isCheckBookmark && !item.isCheckEXP" disabled>
+           ✔ 찜하기
+       </n-button>
+
      </li> 
    </ul>
 
@@ -71,45 +85,110 @@
              type="notice" style="color:gray;margin-top:80px;">
 			 <br><br>
 		 
-        <h5 slot="header" class="modal-title">How Do You Become an Affiliate?</h5>
-        <template>
-<div class="col-md-12 col-lg-12" style="border:0px solid white;width:100%;height:400px; overflow-y:scroll;overflow-x:hidden">			
-          <div class="instruction"  style="color:gray">
-            <div class="row">
-              <div class="col-md-8">
-                <strong>1. Register</strong>
-                <p class="description"  style="color:gray">The first step is to create an account at <a
-                  href="http://www.creative-tim.com/">Creative Tim</a>. You can choose a social network or
-                  go for the classic version, whatever works best for you.</p>
-              </div>
-              <div class="col-md-4">
-                <div class="picture">
-                  <img src="/img/bg1.jpg" alt="Thumbnail Image" class="rounded img-raised">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="instruction">
-            <div class="row">
-              <div class="col-md-8">
-                <strong>2. Apply</strong>
-                <p class="description"  style="color:gray">The first step is to create an account at <a
-                  href="http://www.creative-tim.com/">Creative Tim</a>. You can choose a social network or
-                  go for the classic version, whatever works best for you.</p>
-              </div>
-              <div class="col-md-4">
-                <div class="picture">
-                  <img src="/img/bg3.jpg" alt="Thumbnail Image" class="rounded img-raised">
-                </div>
-              </div>
-            </div>
-          </div>
-          <p>If you have more questions, don't hesitate to contact us or send us a tweet @creativetim. We're
-            here to help!</p>
-			</div><!--스크롤 영역 끝-->
-        </template>
+        <h5 slot="header" class="modal-title">맛집 등록</h5>
+    <div class="row">
+        <fieldset class="rating" style="margin-top: -70px; height:50px;">
+
+            <input type="radio" id="5star" name="rating" value="5" v-onclick="clickStar('5')"/>
+            <label class="full" for="5star" title="Excellent"></label>
+
+            <input type="radio" id="4halfstar" name="rating" value="4.5"  v-onclick="clickStar('4.5')"/>
+            <label class="half" for="4halfstar" title="Good"></label>
+
+            <input type="radio" id="4star" name="rating" value="4"  v-onclick="clickStar('4')"/>
+            <label class="full" for="4star" title="Pretty good"></label>
+
+            <input type="radio" id="3halfstar" name="rating" value="3.5"  v-onclick="clickStar('3.5')"/>
+            <label class="half" for="3halfstar" title="Nice"></label>
+
+            <input type="radio" id="3star" name="rating" value="3"  v-onclick="clickStar('3')"/>
+            <label class="full" for="3star" title="Ok"></label>
+
+            <input type="radio" id="2halfstar" name="rating" value="2.5"  v-onclick="clickStar('2.5')"/>
+            <label class="half" for="2halfstar" title="Kinda bad"></label>
+
+            <input type="radio" id="2star" name="rating" value="2"  v-onclick="clickStar('2')"/>
+            <label class="full" for="2star" title="Bad"></label>
+
+            <input type="radio" id="1halfstar" name="rating" value="1.5" v-onclick="clickStar('1.5')" />
+            <label class="half" for="1halfstar" title="Meh"></label>
+
+            <input type="radio" id="1star" name="rating" value="1" v-onclick="clickStar('1')" />
+            <label class="full" for="1star" title="Umm"></label>
+
+            <input type="radio" id="halfstar" name="rating" value="0.5" v-onclick="clickStar('0.5')" />
+            <label class="half" for="halfstar" title="Worst"></label>
+
+        </fieldset>
+    </div>
+    <div class="row">
+        <div class="form-check">
+            <label for="check1" class="form-check-label">
+                <input id="check1" type="checkbox" class="form-check-input" value="1" v-model="tags" />
+                <span class="form-check-sign"></span>
+                가성비　
+            </label>
+
+            <label for="check2" class="form-check-label">
+                <input id="check2" type="checkbox" class="form-check-input" value="2" v-model="tags" />
+                <span class="form-check-sign"></span>
+                분위기　
+            </label>
+
+            <label for="check3" class="form-check-label">
+                <input id="check3" type="checkbox" class="form-check-input" value="3" v-model="tags" />
+                <span class="form-check-sign"></span>
+                배달맛집　
+            </label>
+
+            <label for="check4" class="form-check-label">
+                <input id="check4" type="checkbox" class="form-check-input" value="4" v-model="tags" />
+                <span class="form-check-sign"></span>
+                경치좋은　
+            </label>
+
+        </div>
+        <div class="form-check">
+
+
+            <label for="check5" class="form-check-label">
+                <input id="check5" type="checkbox" class="form-check-input" value="5" v-model="tags" />
+                <span class="form-check-sign"></span>
+                깔끔한　
+            </label>
+
+            <label for="check6" class="form-check-label">
+                <input id="check6" type="checkbox" class="form-check-input" value="6" v-model="tags" />
+                <span class="form-check-sign"></span>
+                비오는날　
+            </label>
+
+            <label for="check7" class="form-check-label">
+                <input id="check7" type="checkbox" class="form-check-input" value="7" v-model="tags" />
+                <span class="form-check-sign"></span>
+                럭셔리　
+            </label>
+
+            <label for="check8" class="form-check-label">
+                <input id="check8" type="checkbox" class="form-check-input" value="8" v-model="tags" />
+                <span class="form-check-sign"></span>
+                회식　
+            </label>
+        </div>
+        <br/>
+        <br/>
+        <div class="row" style="padding-left: 20px">
+        　　<fg-input placeholder="한줄평 (안써도 됩니다)" style="width:400px;" v-model="memo"></fg-input>
+        </div>
+        <!--div class="row" style="padding: 20px">
+           <n-button type="info" round @click.native="modals.notice = false" v-on:click="setEXP(item.mapx + '-' + item.mapy + '-' + item.title)">Sounds good!</n-button>
+        </div-->
+    </div>
+
         <div slot="footer" class="justify-content-center">
-          <n-button type="info" round @click.native="modals.notice = false">Sounds good!</n-button>
+
+
+          <n-button type="info" round @click.native="modals.notice = false" v-on:click="setEXP(item.mapx + '-' + item.mapy + '-' + item.title)">나의 맛집으로 등록</n-button>
         </div>
 
 </modal>
@@ -132,7 +211,7 @@
 </template>
 
 <script>
-import { Card, Button, FormGroupInput, Badge, Modal } from '@/components';
+import { Card, Button, FormGroupInput, Badge, Modal, Checkbox } from '@/components';
 import MainFooter from '@/layout/MainFooter';
 const axios = require('axios');
 export default {
@@ -144,7 +223,8 @@ export default {
 	Modal,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
-	[Badge.name]: Badge
+	[Badge.name]: Badge,
+    Checkbox
   },
   data() {
     return {
@@ -161,25 +241,14 @@ export default {
 			telephone: "",
 			address: "",
 			roadAddress: "",
-			mapx: "",
-			mapy: ""
-		},
-		{
-			title: "Cafe Kudeta",
-			link: "",
-			category: "음식점>카페,디저트",
-			description: "",
-			telephone: "031-757-6364",
-			address: "경기도 성남시 수정구 수진동 2207",
-			roadAddress: "경기도 성남시 수정구 산성대로 199-1",
-			mapx: "324117",
-			mapy: "537639"
-
+			mapx: "0",
+			mapy: "0",
+            isCheckEXP: false,
+            isCheckBookmark: false
 		}
 	  ],
 	  getData: function(){
-		//alert('보이루');
-	  	
+
 		/*
         axios.get('https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json')
 //        axios.get('/api/searchRestaurant.php?keyword=')
@@ -188,7 +257,12 @@ export default {
             console.log(response); // 객체 형태로 반환. 파싱작업 불필요
            });
 		  */ 
-      }  
+      },
+        rating: 0,
+        tags: [],
+        memo: ""
+
+
     }
   },
   methods: {
@@ -232,14 +306,35 @@ export default {
 					address: response.data.items[i].address,
 					roadAddress: response.data.items[i].roadAddress,
 					mapx: out_pt.x,
-					mapy: out_pt.y
+					mapy: out_pt.y,
+                    isStoreInfo: true,
+                    isCheckEXP: false,
+                    isCheckBookmark: false
 				})
 			}
         });	
 		
 		
 
-	}
+	},
+    setBookmark(id){
+	    var res = confirm("여기를 찜하기로 기록 할까요?");
+	    if(res){
+	        alert(id + " 찜했어요!");
+        }
+    },
+    setEXP(id){
+        //전송부분 구현...
+        
+    },
+    setEXPForm(id){
+        //폼 초기화
+        this.memo = "";
+        this.tags = [];
+    },
+      clickStar(score){
+	    this.rating = score;
+      }
   }
 };
 
