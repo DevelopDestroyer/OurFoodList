@@ -1,42 +1,18 @@
-CREATE TABLE HP_INVITATION ( 
-  invitation_id varchar(64) NOT NULL,
-  password varchar(32) NOT NULL,
-  name varchar(32) NOT NULL,
-  subject varchar(256) NOT NULL,
-  contents varchar(5000) NOT NULL,
-  date_regist varchar(32),
-  date_start varchar(32),
-  date_end varchar(32),
-  image varchar(5),
-  font_color varchar(10),
-  status varchar(5),
-  PRIMARY KEY (invitation_id)
-);
-
-CREATE TABLE HP_COMMENT ( 
-  comment_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  invitation_id varchar(64) NOT NULL,
-  password varchar(32) NOT NULL,
-  name varchar(32) NOT NULL,
-  contents varchar(500) NOT NULL,
-  date varchar(32) NOT NULL,
-  status varchar(5),
-  PRIMARY KEY (comment_id)
-);
 ///////////////////////////////////
  
  
 // 유저 정보
 CREATE Table USER_MST(
-    user_seq    bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-    user_id     varchar(128),
-    user_pw    varchar(500),
-    profile_img_cd      varchar(10),
-    status_cd    varchar(32),  //유저의 활성화 상태(회원상태, 탈퇴상태, 정지상태 등)
-    level int(4), //기본회원, 유료회원, 관리자
+    user_id     varchar(250),
+    user_pw    varchar(400),
+    user_email    varchar(250),
+    level int, --기본회원, 유료회원, 관리자
+    introduce   varchar(1000),
+    avatar       varchar(128),
     create_date varchar(32),
     update_date varchar(32),
-    primary key(user_seq, user_id)
+    status_cd    varchar(5),  --유저의 활성화 상태(회원상태, 탈퇴상태, 정지상태 등)
+    primary key(user_id)
 )
 
 
@@ -80,24 +56,9 @@ CREATE Table REVIEW_TAG
 )
 
 
-Table BOOKMARK as bookmark{
-  bookmark_idx String //auto increased
-  user_id String [ref: > users.user_id]
-  store_idx String  [ref: > store.store_idx]
-  status String
-  created String
-  updated String
-}
 
 
-
-
-
-
-
-
-
-
+/////////////////////////////////////////////////////////////
 
 
 

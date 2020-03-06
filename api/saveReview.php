@@ -9,15 +9,9 @@
 103 : 리뷰하려는데 이미 리뷰, 업데이트 처리
 -1 : isset 공백 에러
 
-to do.. :
-1. 프론트단 개발 후 api 테스트
-2. tags 처리기능 개발
-3. api 테스트
  */
 
   $config = parse_ini_file('../config.ini', true);
-  $client_id = $config['naverSearchClientId'];
-  $client_secret = $config['naverSearchSecret'];
   $db_host = "localhost";
   $db_user_name = $config['dbusername'];
   $db_name = $config['dbname'];
