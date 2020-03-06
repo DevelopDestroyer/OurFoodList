@@ -48,7 +48,7 @@
            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
            가봤던 곳
        </n-button>
-       <n-button type="primary" size="sm"  v-if="item.mapx != 0 && item.isCheckEXP">
+       <n-button type="primary" size="sm"  v-if="item.mapx != 0 && item.isCheckEXP" disabled>
            ✔ 가봤던 곳
        </n-button>
        <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckBookmark && !item.isCheckEXP" v-on:click="setBookmark(item.mapx + '-' + item.mapy + '-' + item.title)">
@@ -141,15 +141,13 @@
                 배달맛집　
             </label>
 
+        </div>
+        <div class="form-check">
             <label for="check4" class="form-check-label">
                 <input id="check4" type="checkbox" class="form-check-input" value="4" v-model="tags" />
                 <span class="form-check-sign"></span>
                 경치좋은　
             </label>
-
-        </div>
-        <div class="form-check">
-
 
             <label for="check5" class="form-check-label">
                 <input id="check5" type="checkbox" class="form-check-input" value="5" v-model="tags" />
@@ -162,7 +160,8 @@
                 <span class="form-check-sign"></span>
                 비오는날　
             </label>
-
+        </div>
+        <div class="form-check">
             <label for="check7" class="form-check-label">
                 <input id="check7" type="checkbox" class="form-check-input" value="7" v-model="tags" />
                 <span class="form-check-sign"></span>
@@ -174,11 +173,16 @@
                 <span class="form-check-sign"></span>
                 회식　
             </label>
+            <label for="check9" class="form-check-label">
+                <input id="check9" type="checkbox" class="form-check-input" value="9" v-model="tags" />
+                <span class="form-check-sign"></span>
+                술　
+            </label>
         </div>
         <br/>
         <br/>
         <div class="row" style="padding-left: 20px">
-        　　<fg-input placeholder="한줄평 (안써도 됩니다)" style="width:400px;" v-model="memo"></fg-input>
+        　　<fg-input placeholder="한줄기록 (안써도 됩니다)" style="width:280px;" v-model="memo"></fg-input>
         </div>
         <!--div class="row" style="padding: 20px">
            <n-button type="info" round @click.native="modals.notice = false" v-on:click="setEXP(item.mapx + '-' + item.mapy + '-' + item.title)">Sounds good!</n-button>
@@ -186,9 +190,7 @@
     </div>
 
         <div slot="footer" class="justify-content-center">
-
-
-          <n-button type="info" round @click.native="modals.notice = false" v-on:click="setEXP(item.mapx + '-' + item.mapy + '-' + item.title)">나의 맛집으로 등록</n-button>
+          <n-button type="info" round @click.native="modals.notice = false" v-on:click="setEXP()">나의 맛집 등록</n-button>
         </div>
 
 </modal>
@@ -234,6 +236,7 @@ export default {
       },	  
 	  list: [
 		{
+		    storeId: "",
 			title: "검색해주세요!",
 			link: "",
 			category: "",
@@ -260,7 +263,9 @@ export default {
       },
         rating: 0,
         tags: [],
-        memo: ""
+        memo: "",
+        targetId: "",
+        visitYn: "N"
 
 
     }
@@ -305,11 +310,14 @@ export default {
 					telephone: response.data.items[i].telephone,
 					address: response.data.items[i].address,
 					roadAddress: response.data.items[i].roadAddress,
-					mapx: out_pt.x,
-					mapy: out_pt.y,
+					//mapx: out_pt.x,
+					//mapy: out_pt.y,
+                    mapx: response.data.items[i].mapx,
+                    mapy: response.data.items[i].mapy,
                     isStoreInfo: true,
                     isCheckEXP: false,
-                    isCheckBookmark: false
+                    isCheckBookmark: false,
+                    storeId: response.data.items[i].mapx + "-" + response.data.items[i].mapy + "-" + remove_tag_title
 				})
 			}
         });	
@@ -320,17 +328,108 @@ export default {
     setBookmark(id){
 	    var res = confirm("여기를 찜하기로 기록 할까요?");
 	    if(res){
-	        alert(id + " 찜했어요!");
+	        this.targetId = id;
+	        this.visitYn = 'N';
+
+            //전송부분 구현...
+            var idBiff = this.targetId;
+
+            let vm = this;
+            let form = new FormData();
+            form.append('storeId', this.targetId);
+            form.append('rating',this.rating);
+            form.append('review',this.memo);
+            form.append('visitYn',this.visitYn);
+            form.append('tags',this.tags);
+
+
+            axios.post('/api/saveReview.php', form)
+                .then(function(response){
+                    console.log(response);
+                    if(response.data.result == 'success'){
+                        if(response.data.code == '1'){
+                            alert("찜했어요!");
+                        }
+                        else if(response.data.code == '100'){
+                            alert("이미 찜한 맛집 입니다.");
+                        }
+                        else if(response.data.code == '101'){
+                            alert("이미 리뷰한 맛집 입니다.");
+                        }
+                        else if(response.data.code == '102'){
+                            alert("나의 맛집이 등록되었습니다!!");
+                        }
+                        else if(response.data.code == '103'){
+                            alert("이미 리뷰했던 맛집이지만.. 내용을 최신본으로 업데이트 했어요!");
+                        }
+                        else{
+                            alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+                        }
+                        for(var i = 0; i < vm.list.length; i++){
+                            if(vm.list[i].storeId == idBiff){
+                                vm.list[i].isCheckBookmark = true;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+                    }
+
+                });
         }
     },
-    setEXP(id){
+    setEXP(){
         //전송부분 구현...
+        var idBiff = this.targetId;
+        let vm = this;
+        let form = new FormData();
+        form.append('storeId', this.targetId);
+        form.append('rating',this.rating);
+        form.append('review',this.memo);
+        form.append('visitYn',this.visitYn);
+        form.append('tags',this.tags);
+        axios.post('/api/saveReview.php', form)
+            .then(function(response){
+                console.log(response);
+                if(response.data.result == 'success'){
+                    if(response.data.code == '1'){
+                        alert("나의 맛집이 등록되었습니다!");
+                    }
+                    else if(response.data.code == '100'){
+                        alert("이미 찜한 맛집 입니다.");
+                    }
+                    else if(response.data.code == '101'){
+                        alert("이미 리뷰한 맛집 입니다.");
+                    }
+                    else if(response.data.code == '102'){
+                        alert("나의 맛집이 등록되었습니다!!");
+                    }
+                    else if(response.data.code == '103'){
+                        alert("이미 리뷰했던 맛집이지만 내용을 최신본으로 업데이트 했어요!");
+                    }
+                    else{
+                        alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+                    }
+                    for(var i = 0; i < vm.list.length; i++){
+                        if(vm.list[i].storeId == idBiff){
+                            vm.list[i].isCheckEXP = true;
+                            break;
+                        }
+                    }
+                }
+                else {
+                        alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+                }
 
+            });
     },
     setEXPForm(id){
         //폼 초기화
+        this.targetId = id;
         this.memo = "";
         this.tags = [];
+        this.visitYn = "Y";
     },
       clickStar(score){
 	    this.rating = score;

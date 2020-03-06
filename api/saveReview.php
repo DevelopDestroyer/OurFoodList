@@ -69,7 +69,7 @@ to do.. :
 
         //찜하려는데 이미 찜
         if($row[0]=='N' && $visit_yn == 'N') {//방문했을 경우 이 경우 INSERT대신 REPLACE사용
-            $returnMsg = "{result: \"success\", code: \"100\", message: \"이미 찜하기로 등록하였습니다.\"}";
+            $returnMsg = "{\"result\": \"success\", \"code\": \"100\", \"message\": \"이미 찜하기로 등록하였습니다.\"}";
             echo $returnMsg;
             return;
         }
@@ -77,7 +77,7 @@ to do.. :
         //찜하려는데 이미 리뷰
         else if($row[0]=='Y' && $visit_yn == 'N') {
 
-            $returnMsg = "{result: \"success\", code: \"101\", message: \"이미 리뷰하였습니다.\"}";
+            $returnMsg = "{\"result\": \"success\", \"code\": \"101\", \"message\": \"이미 리뷰하였습니다.\"}";
             echo $returnMsg;
             return;
 
@@ -86,7 +86,7 @@ to do.. :
         else if($row[0]=='N' && $visit_yn == 'Y') {
             $updateToReviewFromBookmark = true;
             $reviewSeqForUpdate = $row[2];
-            $returnMsg = "{result: \"success\", code: \"102\", message: \"이미 찜하였습니다. 업데이트 처리합니다..\"}";;
+            $returnMsg = "{\"result\": \"success\", \"code\": \"102\", \"message\": \"이미 찜하였습니다. 업데이트 처리합니다..\"}";;
             echo $returnMsg;
             return;
         }
@@ -94,7 +94,7 @@ to do.. :
         else{
             $updateToReviewFromReview = true;
             $reviewSeqForUpdate = $row[2];
-            $returnMsg = "{result: \"success\", code: \"103\", message: \"이미 리뷰 하였습니다. 업데이트 처리 합니다..\"}";;
+            $returnMsg = "{\"result\": \"success\", \"code\": \"103\", \"message\": \"이미 리뷰 하였습니다. 업데이트 처리 합니다..\"}";;
 
         }
 
@@ -104,13 +104,33 @@ to do.. :
 
     if(!$updateToReviewFromBookmark && !$updateToReviewFromReview) {
         $sql = "insert into REVIEW_MST (user_id, store_id, visit_yn, del_yn, rating, review, created, updated) values ";
-        $sql = $sql . "values ('1', '" . mysqli_real_escape_string($connect, $store_id) . "', '" . mysqli_real_escape_string($connect, $visit_yn) . "', 'N', '.mysqli_real_escape_string($connect, $rating).', '" . mysqli_real_escape_string($connect, $review) . "', '" .date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
+        $sql = $sql."('1', '".mysqli_real_escape_string($connect, $store_id)."', '".mysqli_real_escape_string($connect, $visit_yn)."', 'N', '".mysqli_real_escape_string($connect, $rating)."', '".mysqli_real_escape_string($connect, $review)."', '".date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
 
         //질의 전송
         $result = mysqli_query($connect, $sql);
+
+        //ID값 가져오자
+        $sql = "SELECT LAST_INSERT_ID();";
+        $result = mysqli_query($connect, $sql);
+        $autoIncreasedId = '';
+        while($row = mysqli_fetch_row($result)){
+            $autoIncreasedId = $row[0];
+            break;
+        }
+
+        //태그정보 입력
+        $tags_arr = explode(',', $tags);
+        $sql = "insert into REVIEW_TAG (review_seq, tag_code) values ";
+        for($i=0; $i < count($tags_arr); $i++){
+            $sql = $sql."(".$autoIncreasedId.",".$tags_arr[$i].")";
+            if($i < (count($tags_arr) - 1))
+                $sql = $sql.",";
+        }
+        $result = mysqli_query($connect, $sql);
+
         //$fields = mysql_num_fields($result);
         mysqli_close($connect);
-        $returnMsg = "{result: \"success\", code: \"1\", message: \"등록하였습니다.\"}";;
+        $returnMsg = "{\"result\": \"success\", \"code\": \"1\", \"message\": \"등록하였습니다.\"}";
         echo $returnMsg;
         //while($row = mysql_fetch_row($result)){
         //  echo $row[0].$row[1].$row[2];
@@ -137,7 +157,7 @@ to do.. :
   }
   else{
     //비어있는 post데이터가 있음
-    echo '{result: "error", code: "-1", message: "empty data"}';
+    echo '{"result": "error", "code": "-1", "message": "empty data"}';
   }
 
 
