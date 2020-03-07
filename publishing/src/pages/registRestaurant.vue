@@ -9,7 +9,17 @@
 
 
       <div class="container">
-      <h1 id="menu_title">맛집등록</h1>	
+      <h1 id="menu_title">내 맛집등록</h1>
+          <p v-if="!isRealUserLogin">* 맛집기록은 할 수 있지만 로그인하면 더 많은 기능을 사용 할 수 있습니다.</p>
+          <n-button v-if="!isRealUserLogin" v-on:click="moveJoinPage()" style="margin-top:0px;" type="warning">
+              10초만에 가입
+          </n-button>
+          <n-button v-if="!isRealUserLogin" v-on:click="moveLoginPage()" style="margin-top:0px;" type="warning">
+              로그인
+          </n-button>
+          <n-button v-if="!isRealUserLogin" v-on:click="help()" style="margin-top:0px;" type="info">
+              설명충
+          </n-button>
 	  <template>
         <div class="row justify-content-md-center" style="margin-left:12px;">
           <fg-input class="col-10"
@@ -230,6 +240,7 @@ export default {
   },
   data() {
     return {
+      isRealUserLogin: true,
 	  inputKeyword : '',
       modals: {
           notice: false
@@ -270,6 +281,19 @@ export default {
 
     }
   },
+    created: function() {
+        let vm = this;
+        axios.get('/api/userAuth.php')
+            .then(function(response){
+                console.log(response);
+                if(response.data.code == '2'){
+                    vm.isRealUserLogin = true;
+                }
+                else{
+                    vm.isRealUserLogin = false;
+                }
+            });
+    },
   methods: {
   
 	emptyList(){
@@ -433,6 +457,17 @@ export default {
     },
       clickStar(score){
 	    this.rating = score;
+      },
+      moveLoginPage(){
+	    location.href="/#/login";
+      },
+      moveJoinPage(){
+	    location.href="/#/join";
+      },
+      help(){
+          alert('현재 비로그인 상태로 맛집기록을 하고 있습니다.\n' +
+              '캐시 데이터가 삭제돼면 데이터를 잃을 수도 있으니 가입해서 맛집을 기록해주세요!\n' +
+              '가입하면 자동으로 비회원 상태에서 쌓은 데이터도 이전됩니다.\n')
       }
   }
 };
