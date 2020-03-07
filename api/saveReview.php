@@ -8,6 +8,7 @@
 102 : 리뷰하려는데 이미 찜, 업데이트 처리
 103 : 리뷰하려는데 이미 리뷰, 업데이트 처리
 -1 : isset 공백 에러
+-5000 : 로그인 안되어 있음
 
  */
 
@@ -19,6 +20,19 @@
 
   //sql인젝션 방지
   if (isset($_POST['storeId']) && isset($_POST['visitYn']) && isset($_POST['rating']) && isset($_POST['review']) && isset($_POST['tags']) ) {
+
+      //유저 인증
+      session_start();
+      $LOGIN_USER_ID = '';
+      if($_SESSION['userId'] == null && $_SESSION['tmpUserId' == null]){
+          echo '{"result": "error", "code": "-5000", "message": "이 기능은 로그인이 필요합니다. 현재 서버에 로그인된 상태가 아닙니다."}';
+      }
+      else {
+          if($_SESSION['userId'] != null)
+              $LOGIN_USER_ID = $_SESSION['userId'];
+          else
+              $LOGIN_USER_ID = $_SESSION['tmpUserId'];
+      }
 
     //db저장
     $connect = mysqli_connect($db_host, $db_user_name, $db_pw, $db_name);
@@ -55,7 +69,7 @@
     $reviewSeqForUpdate = '';
 
 
-      $sql = "select visit_yn, del_yn, review_seq from REVIEW_MST where user_id='1' and store_id='".$store_id."'";
+    $sql = "select visit_yn, del_yn, review_seq from REVIEW_MST where user_id='".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."' and store_id='".$store_id."'";
     $result = mysqli_query($connect, $sql);
     while($row = mysqli_fetch_row($result)){
       if($row[1]=='Y')
@@ -98,7 +112,7 @@
 
     if(!$updateToReviewFromBookmark && !$updateToReviewFromReview) {
         $sql = "insert into REVIEW_MST (user_id, store_id, visit_yn, del_yn, rating, review, created, updated) values ";
-        $sql = $sql."('1', '".mysqli_real_escape_string($connect, $store_id)."', '".mysqli_real_escape_string($connect, $visit_yn)."', 'N', '".mysqli_real_escape_string($connect, $rating)."', '".mysqli_real_escape_string($connect, $review)."', '".date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
+        $sql = $sql."('".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."', '".mysqli_real_escape_string($connect, $store_id)."', '".mysqli_real_escape_string($connect, $visit_yn)."', 'N', '".mysqli_real_escape_string($connect, $rating)."', '".mysqli_real_escape_string($connect, $review)."', '".date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
 
         //질의 전송
         $result = mysqli_query($connect, $sql);

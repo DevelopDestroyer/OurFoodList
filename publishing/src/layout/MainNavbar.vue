@@ -30,7 +30,7 @@
 		  @click="closeNavbar"
         >
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="#ffffff" d="M12,9l3-3l-2.3-2.3l2-2l-1.4-1.4l-8,8C3.9,7.7,2.3,8,1.2,9.2c-1.6,1.6-1.6,4.1,0,5.7c1.6,1.6,4.1,1.6,5.7,0 C8.3,13.3,8.4,11,7,9.4l2.7-2.7L12,9z"></path></g></svg>
-          <p>　로그인</p>
+          <p>　로그인/가입</p>
         </a>
       </li>
       <li class="nav-item">
@@ -143,6 +143,7 @@
 <script>
 import { DropDown, NavbarToggleButton, Navbar, NavLink } from '@/components';
 import { Popover } from 'element-ui';
+const axios = require('axios');
 export default {
   name: 'main-navbar',
   props: {
@@ -158,12 +159,104 @@ export default {
   },
   data() {
     return {
-	  inputKeyword : '',
+	  isUserLogin : false,
 	  closeNavbar: function(){
 		toggleClick();
       }  
     }
-  }  
+  },
+  created: function() {
+    let vm = this;
+    axios.get('/api/userAuth.php')
+            .then(function(response){
+              console.log(response);
+              if(response.data.code == '1'){
+                vm.isUserLogin = true;
+              }
+              //로그인 상태가 아닐 경우
+              else{
+                //오토로그인 유저의 경우 바로 로그인처리를 해줍니다
+                if(localStorage.getItem('gmatAutoLoginMode') != null && localStorage.getItem('gmatAutoLoginMode') == 'on'){
+                  vm.userAutoLogin();
+                  console.log("로긴상태아님 : 오토로긴");
+                }
+                //비회원모드 유저의 경우 즉시 오토로그인
+                else if(localStorage.getItem('gmatTmpUserId') == null){  //비회원모드 계정이 없을 경우
+                  vm.createTmpUserAccount();  //계정생성 후 바로 로그인 처리 된다.
+                  console.log("로긴상태아님 : 비회원모드 오토가입");
+                }
+                else { //비회원 계정정보를 갖고 있다면 비회원모드 로그인 처리
+                  vm.tmpUserLogin();
+                  console.log("로긴상태아님 : 비회원 로그인");
+
+                }
+              }
+
+            });
+  },
+  methods: {
+    createTmpUserAccount(){
+      //유효성 검사
+      let vm = this;
+      let form = new FormData();
+      form.append('isTmpUser', 'Y');
+      form.append('tmpIdForUpgradeAccount', '');
+      form.append('userId', '');
+      form.append('userPw', '');
+
+      axios.post('/api/userJoin.php', form)
+              .then(function(response){
+                console.log(response);
+                if(response.data.result == 'success'){
+                  if(response.data.code == '1'){
+                    localStorage.setItem('gmatTmpUserId', response.data.result);
+                  }
+                }
+              });
+    },
+    tmpUserLogin(){
+      let vm = this;
+      let form = new FormData();
+      form.append('isTmpUser', 'Y');
+      form.append('isLoginReq', 'Y');
+      form.append('userId', localStorage.getItem('gmatTmpUserId'));
+      form.append('userPw', '');
+
+      axios.post('/api/userLogin.php', form)
+              .then(function(response){
+                console.log(response);
+                if(response.data.result == 'success'){
+                  if(response.data.code == '1'){
+
+                  }
+                }
+
+
+              });
+    },
+    userAutoLogin(){
+      let vm = this;
+      let form = new FormData();
+      form.append('isTmpUser', 'N');
+      form.append('isLoginReq', 'Y');
+      form.append('userId', localStorage.getItem('gmatUserId'));
+      form.append('userPw', localStorage.getItem('gmatUserPw'));
+
+      axios.post('/api/userLogin.php', form)
+              .then(function(response){
+                console.log(response);
+                if(response.data.result == 'success'){
+                  if(response.data.code == '2'){
+                    vm.isUserLogin = true;
+
+                  }
+                  else{
+                  }
+                }
+
+              });
+    }
+  }
 };
 
 function toggleClick(){

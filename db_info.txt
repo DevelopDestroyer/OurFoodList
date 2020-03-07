@@ -81,3 +81,9 @@ Table USER_FOLLOWING_RELATION as relation{
 	created String
 	updated String
 }
+
+* 로컬스토리지 정보
+                      localStorage.setItem('gmatAutoLoginMode', 'on');
+                      localStorage.setItem('gmatUserId', vm.inputID);
+                      localStorage.setItem('gmatUserPw', );
+                      localStorage.setItem('gmatTmpUserId', null);
