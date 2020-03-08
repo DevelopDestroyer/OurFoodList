@@ -23,6 +23,16 @@
       </el-popover>
     </template>
     <template slot="navbar-menu">
+      <li class="nav-item">
+        <a
+                class="nav-link"
+                href="#"
+                v-on:click="gohome()"
+        >
+          <i class="now-ui-icons location_map-big"></i>
+          <p>　맛집지도</p>
+        </a>
+      </li>
       <li v-if="!isUserLogin" class="nav-item">
         <a
           class="nav-link"
@@ -43,6 +53,16 @@
           <p>　맛집등록</p>
         </a>
       </li>
+      <li class="nav-item">
+        <a
+                class="nav-link"
+                href="/#/"
+                @click="closeNavbar"
+        >
+          <i class="now-ui-icons sport_trophy"></i>
+          <p>　랭킹</p>
+        </a>
+      </li>
       <li v-if="isUserLogin" class="nav-item">
         <a
           class="nav-link"
@@ -53,12 +73,23 @@
           <p>　내 정보</p>
         </a>
       </li>
+      <li v-if="isUserLogin" class="nav-item">
+        <a
+                class="nav-link"
+                href="#"
+                v-on:click="logout()"
+        >
+          <i class="now-ui-icons media-1_button-power"></i>
+          <p>　로그아웃</p>
+        </a>
+      </li>
     </template>
   </navbar>
 </template>
 
 <script>
 import { DropDown, NavbarToggleButton, Navbar, NavLink } from '@/components';
+import { BUS } from '../pages/EventBus';
 import { Popover } from 'element-ui';
 const axios = require('axios');
 export default {
@@ -72,7 +103,8 @@ export default {
     Navbar,
     NavbarToggleButton,
     NavLink,
-    [Popover.name]: Popover
+    [Popover.name]: Popover,
+    BUS
   },
   data() {
     return {
@@ -87,8 +119,10 @@ export default {
     axios.get('/api/userAuth.php')
             .then(function(response){
               console.log(response);
-              if(response.data.code == '2')
+              if(response.data.code == '2') {
                 vm.isUserLogin = true;
+                vm.sendEmit(2);
+              }
               if(response.data.code == '-1'){
                 //오토로그인 유저의 경우 바로 로그인처리를 해줍니다
                 if(localStorage.getItem('gmatAutoLoginMode') != null && localStorage.getItem('gmatAutoLoginMode') == 'on'){
@@ -142,7 +176,7 @@ export default {
                 console.log(response);
                 if(response.data.result == 'success'){
                   if(response.data.code == '1'){
-
+                    vm.sendEmit(1);
                   }
                 }
 
@@ -163,14 +197,51 @@ export default {
                 if(response.data.result == 'success'){
                   if(response.data.code == '2'){
                     vm.isUserLogin = true;
-
+                    vm.sendEmit(2);
                   }
                   else{
                   }
                 }
 
               });
+    },
+    logout(){
+      let vm = this;
+      let form = new FormData();
+      form.append('isTmpUser', '');
+      form.append('isLoginReq', 'N');
+      form.append('userId', '');
+      form.append('userPw', '');
+
+      axios.post('/api/userLogin.php', form)
+              .then(function(response){
+                console.log(response);
+                if(response.data.result == 'success'){
+                  if(response.data.code == '3'){
+                    vm.isUserLogin = true;
+                    console.log("자동로그인 off");
+                    localStorage.setItem('gmatAutoLoginMode', 'off');
+                    localStorage.setItem('gmatUserId', '');
+                    localStorage.setItem('gmatUserPw', '');
+                    location.href = "/";
+
+                    location.href="/";
+
+                  }
+                  else{
+                    alert("다시 시도해 주세요.");
+                  }
+                }
+
+              });
+    },
+    sendEmit(msg){
+      BUS.$emit('sessionState', msg);
+    },
+    gohome() {
+      location.href="/#/";
     }
+
   }
 };
 

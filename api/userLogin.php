@@ -57,7 +57,7 @@
                   echo '{"result": "success", "code": "1", "message": "게스트계정 로그인 완료"}';
                   return;
               }
-              echo '{"result": "error", "code": "-100", "message": "존재하지 않는 게스트아이디 입니다."}';
+              echo '{"result": "error", "code": "-100", "message": "존재하지 않는 게스트아이디 입니다 : '.$userId.'"}';
               return;
           }
           else{//실유저 로그인 처리

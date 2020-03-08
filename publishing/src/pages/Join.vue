@@ -38,6 +38,9 @@
               maxlength="30"
             >
             </fg-input>
+              <p style="color:#f3e97a" v-if="inputPasswordConfirm != '' && inputPasswordConfirm != inputPassword">* 입력한 비밀번호 두개가 일치하지 않습니다.</p>
+              <p v-if="inputPasswordConfirm != '' && inputPasswordConfirm == inputPassword">* 입력한 비밀번호 두개가 일치해요!</p>
+
               <a
                       v-on:click="reqJoin()"
                       href="#"
@@ -105,7 +108,7 @@ export default {
                   console.log(response);
                   if(response.data.result == 'success'){
                       if(response.data.code == '2'){
-                          let autoreq = confirm("가입이 완료되었습니다! 매번 자동로그인기능을 활성화 할까요?");
+                          let autoreq = confirm("가입이 완료되었습니다! 매번 자동로그인기능을 활성화 할까요?\n현재 개인 PC/모바일 장치일 경우 권장드립니다 :)");
                           if(autoreq){
                               localStorage.setItem('gmatAutoLoginMode', 'on');
                               localStorage.setItem('gmatUserId', vm.inputID);

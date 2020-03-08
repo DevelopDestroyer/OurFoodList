@@ -8,7 +8,7 @@
         :disabled="disabled"
         v-model="model"
       />
-      <span class="form-check-sign"></span>
+      <span class="form-check-sign" style="background-color: #FFFFFF"></span>
       <slot>
         <span v-if="inline">&nbsp;</span>
       </slot>

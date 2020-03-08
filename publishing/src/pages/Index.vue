@@ -87,37 +87,8 @@
 	</template>
 	<br>
 	<br>
-	
-    <!--basic-elements></basic-elements>
-    <navigation></navigation>
-    <tabs-section></tabs-section>
-    <progress-pagination></progress-pagination>
-    <notifications></notifications>
-    <typography></typography>
-    <javascript-components></javascript-components>
-    <carousel-section></carousel-section>
-    <nucleo-icons-section></nucleo-icons-section>
-    <div class="section">
-      <div class="container text-center">
-        <div class="row justify-content-md-center">
-          <div class="col-md-12 col-lg-8">
-            <h2 class="title">Completed with examples</h2>
-            <h5 class="description">
-              The kit comes with three pre-built pages to help you get started
-              faster. You can change the text and images and you're good to go.
-              More importantly, looking at them will give you a picture of what
-              you can built with this powerful Bootstrap 4 ui kit.
-            </h5>
-          </div>
-        </div>
-      </div>
-    </div>
-    <signup-form></signup-form>
-    <examples-section></examples-section>
-    <download-section></download-section-->
   </div>
 </template>
-<!--script src="https://unpkg.com/axios/dist/axios.min.js"></script-->
 <script>
 import { Parallax } from '@/components';
 import BasicElements from './components/BasicElementsSection';
@@ -133,6 +104,8 @@ import SignupForm from './components/SignupForm';
 import ExamplesSection from './components/ExamplesSection';
 import DownloadSection from './components/DownloadSection';
 import { Card } from '@/components';
+import { BUS } from './EventBus';
+const axios = require('axios');
 
 export default {
   name: 'index',
@@ -154,7 +127,8 @@ export default {
     */
 	SignupForm,
     ExamplesSection,
-    DownloadSection
+    DownloadSection,
+	BUS
 	
   },
   data() {
@@ -258,10 +232,25 @@ export default {
 			  kakao.maps.event.addListener(this.mapMarker, 'click', makeOverListener(this.mapData, this.mapMarker, infowindow));
 			  kakao.maps.event.addListener(this.mapMarker, 'mouseout', makeOutListener(infowindow));
 		  }
-	  }
+	  },
+
   },
   created () {
     window.addEventListener('scroll', this.handleScroll);
+
+	  BUS.$on('sessionState',function(data){
+		  console.log("메인네브바에서 보낸 메시지 : " + data); //abc
+		  let vm = this;
+		  axios.get('/api/gmatList.php')
+				  .then(function(response){
+					  console.log(response);
+					  if(response.data.code == '1') {
+					  }
+					  else{
+					  	alert("맛집 리스트를 가져오는데 실패했습니다.. 서버 문제 같습니다..");
+					  }
+				  });
+	  });
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);

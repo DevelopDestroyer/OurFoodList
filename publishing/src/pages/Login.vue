@@ -2,7 +2,7 @@
   <div class="page-header clear-filter" filter-color="orange">
     <div
       class="page-header-image"
-      style="background-image: url('img/login.jpg')"
+
     ></div>
     <div class="content">
       <div class="container">
@@ -29,7 +29,20 @@
 			  type="password"
               placeholder="패스워드를 입력해주세요"
             >
-            </fg-input>			
+            </fg-input>
+
+            <div class="form-check">
+              <label v-if="checkAutoLogin" for="check1" class="form-check-label">
+                <input id="check1" type="checkbox" class="form-check-input" v-model="checkAutoLogin" checked/>
+                <span class="form-check-sign"></span>
+                자동로그인 (체크됨)
+              </label>
+              <label v-else for="check1" class="form-check-label">
+                <input id="check1" type="checkbox" class="form-check-input" v-model="checkAutoLogin" checked/>
+                <span class="form-check-sign"></span>
+                자동로그인 (해제됨, 그치만.. 개인장치에서 이용 중이시라면 체크하는게 편리합니다)
+              </label>
+            </div>
 			
             <template slot="raw-content">
               <div class="card-footer text-center">
@@ -67,7 +80,7 @@
   </div>
 </template>
 <script>
-import { Card, Button, FormGroupInput, NavLink } from '@/components';
+import { Card, Button, FormGroupInput, NavLink, Checkbox} from '@/components';
 import MainFooter from '@/layout/MainFooter';
 const axios = require('axios');
 export default {
@@ -78,12 +91,14 @@ export default {
     Card,
     MainFooter,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
+    [FormGroupInput.name]: FormGroupInput,
+    Checkbox
   },
   data() {
     return {
 	  inputPassword : '',
-	  inputID : ''
+	  inputID : '',
+      checkAutoLogin : true
     }
   },
   methods:{
@@ -101,20 +116,18 @@ export default {
                 console.log(response);
                 if(response.data.result == 'success'){
                   if(response.data.code == '2'){
-                    let autoreq = confirm("로그인이 완료되었습니다! 매번 자동로그인기능을 활성화 할까요?");
-                    if(autoreq){
+                    if(vm.checkAutoLogin){
+                      console.log("자동로그인 on");
                       localStorage.setItem('gmatAutoLoginMode', 'on');
                       localStorage.setItem('gmatUserId', vm.inputID);
                       localStorage.setItem('gmatUserPw', SHA256(vm.inputPassword));
-                      //localStorage.setItem('gmatTmpUserId', null);
-                      alert("자동로그인이 활성화 되었습니다.");
                       location.href = "/";
                     }
                     else{
+                      console.log("자동로그인 off");
                       localStorage.setItem('gmatAutoLoginMode', 'off');
                       localStorage.setItem('gmatUserId', '');
                       localStorage.setItem('gmatUserPw', '');
-                      //localStorage.setItem('gmatTmpUserId', null);
                       location.href = "/";
                     }
                   }

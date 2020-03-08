@@ -20,6 +20,7 @@ import Tabs from './Tabs/Tabs.vue';
 import Modal from './Modal.vue';
 import Parallax from './Parallax.vue';
 import Slider from './Slider.vue';
+import BUS from './EventBus.js';
 
 import Pagination from './Pagination.vue';
 
@@ -44,5 +45,6 @@ export {
   Modal,
   Parallax,
   Slider,
-  Button
+  Button,
+  BUS
 };

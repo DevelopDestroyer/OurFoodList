@@ -44,7 +44,7 @@ if ($connect->connect_error) {
 
 //JSON 첫부분 생성
 $resultJson = '{
-                 "result":"success"
+                 "result":"success",
                  "code":"1",
                  "mydata":[';
 
@@ -85,7 +85,7 @@ if($flagMy)
 
 //JSON 중간 생성
 $resultJson = $resultJson.'],
-                          "othersdata:[';
+                          "othersdata":[';
 
 $sql = "select distinct store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav
         from STORE_MST store, REVIEW_MST review,
@@ -114,5 +114,7 @@ if($flagOthers)
 //JSON 끝 생성
 $resultJson = $resultJson.']}';
 echo $resultJson;
+
+mysqli_close($connect);
 
 ?>
