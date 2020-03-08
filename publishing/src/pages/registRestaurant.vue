@@ -99,34 +99,34 @@
     <div class="row">
         <fieldset class="rating" style="margin-top: -70px; height:50px;">
 
-            <input type="radio" id="5star" name="rating" value="5" v-onclick="clickStar('5')"/>
+            <input type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')"/>
             <label class="full" for="5star" title="Excellent"></label>
 
-            <input type="radio" id="4halfstar" name="rating" value="4.5"  v-onclick="clickStar('4.5')"/>
+            <input type="radio" id="4halfstar" name="rating" value="4.5"  v-on:click="clickStar('4.5')"/>
             <label class="half" for="4halfstar" title="Good"></label>
 
-            <input type="radio" id="4star" name="rating" value="4"  v-onclick="clickStar('4')"/>
+            <input type="radio" id="4star" name="rating" value="4"  v-on:click="clickStar('4')"/>
             <label class="full" for="4star" title="Pretty good"></label>
 
-            <input type="radio" id="3halfstar" name="rating" value="3.5"  v-onclick="clickStar('3.5')"/>
+            <input type="radio" id="3halfstar" name="rating" value="3.5"  v-on:click="clickStar('3.5')"/>
             <label class="half" for="3halfstar" title="Nice"></label>
 
-            <input type="radio" id="3star" name="rating" value="3"  v-onclick="clickStar('3')"/>
+            <input type="radio" id="3star" name="rating" value="3"  v-on:click="clickStar('3')"/>
             <label class="full" for="3star" title="Ok"></label>
 
-            <input type="radio" id="2halfstar" name="rating" value="2.5"  v-onclick="clickStar('2.5')"/>
+            <input type="radio" id="2halfstar" name="rating" value="2.5"  v-on:click="clickStar('2.5')"/>
             <label class="half" for="2halfstar" title="Kinda bad"></label>
 
-            <input type="radio" id="2star" name="rating" value="2"  v-onclick="clickStar('2')"/>
+            <input type="radio" id="2star" name="rating" value="2"  v-on:click="clickStar('2')"/>
             <label class="full" for="2star" title="Bad"></label>
 
-            <input type="radio" id="1halfstar" name="rating" value="1.5" v-onclick="clickStar('1.5')" />
+            <input type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" />
             <label class="half" for="1halfstar" title="Meh"></label>
 
-            <input type="radio" id="1star" name="rating" value="1" v-onclick="clickStar('1')" />
+            <input type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" />
             <label class="full" for="1star" title="Umm"></label>
 
-            <input type="radio" id="halfstar" name="rating" value="0.5" v-onclick="clickStar('0.5')" />
+            <input type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" />
             <label class="half" for="halfstar" title="Worst"></label>
 
         </fieldset>

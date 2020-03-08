@@ -49,7 +49,7 @@
 					  <table style="width:100%">
 					    <tr>
 					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+					        <button type="button" class="btn btn-round btn-info" v-on:click="maptest()"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
 					      </td>
 					      <td style="text-align:right;">
 						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
@@ -159,16 +159,58 @@ export default {
   },
   data() {
     return {
-      show: true
+      show: true,
+		mapData: null,
+		mapMarker: null
 	}
   },
   mounted() {
       var container = document.getElementById('map');
         var mapOptions = {
-            center: new daum.maps.LatLng(37.4011778,127.1112022),
+            center: new kakao.maps.LatLng(37.4011778,127.1112022),
             level: 4 //지도의 레벨(확대, 축소 정도)
         };
-        var map = new daum.maps.Map(container, mapOptions);
+        this.mapData = new kakao.maps.Map(container, mapOptions);
+
+// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다
+	  var positions = [
+		  {
+			  content: '카카오',
+			  latlng: new kakao.maps.LatLng(33.450705, 126.570677)
+		  },
+		  {
+			  content: '생태연못',
+			  latlng: new kakao.maps.LatLng(33.450936, 126.569477)
+		  },
+		  {
+			  content: '<div style="color:black;">텃밭</div>',
+			  latlng: new kakao.maps.LatLng(33.450879, 126.569940)
+		  },
+		  {
+			  content: '<div style="color:black;">근린공원</div>',
+			  latlng: new kakao.maps.LatLng(33.451393, 126.570738)
+		  }
+	  ];
+
+	  for (var i = 0; i < positions.length; i ++) {
+		  // 마커를 생성합니다
+		  this.mapMarker = new kakao.maps.Marker({
+			  map: this.mapData, // 마커를 표시할 지도
+			  position: positions[i].latlng // 마커의 위치
+		  });
+
+		  // 마커에 표시할 인포윈도우를 생성합니다
+		  var infowindow = new kakao.maps.InfoWindow({
+			  content: positions[i].content // 인포윈도우에 표시할 내용
+		  });
+
+		  // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+		  // 이벤트 리스너로는 클로저를 만들어 등록합니다
+		  // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+		  kakao.maps.event.addListener(this.mapMarker, 'click', makeOverListener(this.mapData, this.mapMarker, infowindow));
+		  kakao.maps.event.addListener(this.mapMarker, 'mouseout', makeOutListener(infowindow));
+		  //this.mapData = map;
+	  }
   },
   methods : {
     handleScroll (event){
@@ -178,7 +220,45 @@ export default {
 	  else if (!this.show && 110 < document.getElementById("gmatList").getBoundingClientRect().top){
 		this.show = true;
 	  }
-	}
+	},
+	  maptest() {
+
+// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다
+
+		  this.mapMarker.setMap(null);
+		  var positions = [
+
+			  {
+				  content: '테스트111',
+				  latlng: new kakao.maps.LatLng(33.450805, 126.570777)
+			  },
+			  {
+				  content: '테스트2222',
+				  latlng: new kakao.maps.LatLng(33.450836, 126.569377)
+			  }
+
+
+		  ];
+
+		  for (var i = 0; i < positions.length; i++) {
+			  // 마커를 생성합니다
+			  this.mapMarker = new kakao.maps.Marker({
+				  map: this.mapData, // 마커를 표시할 지도
+				  position: positions[i].latlng // 마커의 위치
+			  });
+
+			  // 마커에 표시할 인포윈도우를 생성합니다
+			  var infowindow = new kakao.maps.InfoWindow({
+				  content: positions[i].content // 인포윈도우에 표시할 내용
+			  });
+
+			  // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+			  // 이벤트 리스너로는 클로저를 만들어 등록합니다
+			  // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+			  kakao.maps.event.addListener(this.mapMarker, 'click', makeOverListener(this.mapData, this.mapMarker, infowindow));
+			  kakao.maps.event.addListener(this.mapMarker, 'mouseout', makeOutListener(infowindow));
+		  }
+	  }
   },
   created () {
     window.addEventListener('scroll', this.handleScroll);
@@ -188,6 +268,18 @@ export default {
   }
 };
 
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+	return function() {
+		infowindow.open(map, marker);
+	};
+}
 
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+	return function() {
+		infowindow.close();
+	};
+}
 </script>
 <style></style>
