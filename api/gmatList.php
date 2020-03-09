@@ -52,7 +52,7 @@ $resultJson = '{
 $sql = "select personallist.*, IFNULL(personaltag.taglist,'') as taglist
         from 
               ( 
-              select store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq, review.rating, review.review
+              select store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq, review.rating, review.review, review.visit_yn
               from  STORE_MST store, REVIEW_MST review, 
                       (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav FROM REVIEW_MST Group by store_id) calcul 
               where store.store_id = review.store_id and store.store_id = calcul.store_id and review.user_id = '".mysqli_real_escape_string($connect, $myId)."' ) personallist 
@@ -78,7 +78,9 @@ while ($row = mysqli_fetch_row($result)) {
     $resultJson = $resultJson.'"review_seq":"'.$row[10].'",';
     $resultJson = $resultJson.'"rating":"'.$row[11].'",';
     $resultJson = $resultJson.'"review":"'.$row[12].'",';
-    $resultJson = $resultJson.'"taglist":"'.$row[13].'"},';
+    $resultJson = $resultJson.'"visit_yn":"'.$row[13].'",';
+    $resultJson = $resultJson.'"taglist":"'.$row[14].'"},';
+
 }
 if($flagMy)
     $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
@@ -90,7 +92,7 @@ $resultJson = $resultJson.'],
 $sql = "select distinct store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav
         from STORE_MST store, REVIEW_MST review,
                (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav  FROM REVIEW_MST Group by store_id) calcul
-        where store.store_id = review.store_id and store.store_id = calcul.store_id;";
+        where store.store_id = review.store_id and review.visit_yn = 'Y' and store.store_id = calcul.store_id;";
 $result = mysqli_query($connect, $sql);
 $flagOthers = false;
 while ($row = mysqli_fetch_row($result)) {

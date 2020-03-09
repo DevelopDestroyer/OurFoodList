@@ -2,7 +2,7 @@
   <navbar position="fixed" type="primary" menu-classes="ml-auto">
     <template slot-scope="{ toggle, isToggled }">
       <router-link v-popover:popover1 class="navbar-brand" to="/presentation">
-        My Site Name
+        그맛
       </router-link>
       <el-popover
         ref="popover1"
@@ -12,7 +12,7 @@
         trigger="hover"
       >
         <div class="popover-body">
-          Designed by Invision. Coded by Creative Tim
+          Leeth
         </div>
       </el-popover>
     </template>
