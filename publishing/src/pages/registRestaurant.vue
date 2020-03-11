@@ -54,14 +54,14 @@
 	   <input type="hidden" :value=item.mapy></input-->
 	   
 	   
-       <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckEXP" @click.native="modals.notice=true" v-on:click="setEXPForm(item.mapx + '-' + item.mapy + '-' + item.title)">
+       <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckEXP" @click.native="modals.notice=true" v-on:click="setEXPForm(item.storeId)">
            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
            가봤던 곳
        </n-button>
        <n-button type="primary" size="sm"  v-if="item.mapx != 0 && item.isCheckEXP" disabled>
            ✔ 가봤던 곳
        </n-button>
-       <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckBookmark && !item.isCheckEXP" v-on:click="setBookmark(item.mapx + '-' + item.mapy + '-' + item.title)">
+       <n-button type="primary" size="sm" v-if="item.mapx != 0 && !item.isCheckBookmark && !item.isCheckEXP" v-on:click="setBookmark(item.storeId)">
            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
            찜하기
        </n-button>
@@ -310,37 +310,26 @@ export default {
             console.log(response); // 객체 형태로 반환. 파싱작업 불필요
            });		
 		*/
-        axios.get('/api/searchRestaurant.php?keyword=' + this.inputKeyword)
+        axios.get('/api/searchRestaurantK.php?keyword=' + this.inputKeyword)
           .then(function(response){
             console.log(response);
 			vm.list = [];
-			for(var i = 0; i < response.data.items.length; i++){
-			    /*
-			    //카텍좌표계 위경도로 변환
-			    var geo = new GeoTrans();
-				geo.init("katec", "geo");
-				var pt = new Point(response.data.items[i].mapx, response.data.items[i].mapy);
-				var out_pt = geo.conv(pt);
-				*/
-				//타이틀에 있는 태그 제거
-				var remove_tag_title = response.data.items[i].title;
-				remove_tag_title = remove_tag_title.replace('<b>', '');
-				remove_tag_title = remove_tag_title.replace('</b>', '');
+			for(var i = 0; i < response.data.documents.length; i++){
 
 				vm.list.push({
-					title: remove_tag_title,
-					link: response.data.items[i].link,
-					category: response.data.items[i].category,
-					description: response.data.items[i].description,
-					telephone: response.data.items[i].telephone,
-					address: response.data.items[i].address,
-					roadAddress: response.data.items[i].roadAddress,
-                    mapx: response.data.items[i].mapx,
-                    mapy: response.data.items[i].mapy,
+					title: response.data.documents[i].place_name,
+					link: response.data.documents[i].place_url,
+					category: response.data.documents[i].category_name,
+					description: response.data.documents[i].description,
+					telephone: response.data.documents[i].phone,
+					address: response.data.documents[i].address_name,
+					roadAddress: response.data.documents[i].road_address_name,
+                    mapx: response.data.documents[i].x,
+                    mapy: response.data.documents[i].y,
                     isStoreInfo: true,
                     isCheckEXP: false,
                     isCheckBookmark: false,
-                    storeId: response.data.items[i].mapx + "-" + response.data.items[i].mapy + "-" + remove_tag_title
+                    storeId: response.data.documents[i].id
 				})
 			}
         });	

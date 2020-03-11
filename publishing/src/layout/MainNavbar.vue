@@ -7,7 +7,7 @@
     menu-classes="ml-auto"
   >
     <template slot-scope="{ toggle, isToggled }">
-      <router-link v-popover:popover1 class="navbar-brand" to="/" style="font-size:24px;">
+      <router-link v-popover:popover1 class="navbar-brand" to="/" v-on:click="sendEmit(3)" style="font-size:24px;">
         그맛
       </router-link>
       <el-popover
@@ -240,6 +240,7 @@ export default {
     },
     gohome() {
       location.href="/#/";
+      this.sendEmit(3);
     }
 
   }

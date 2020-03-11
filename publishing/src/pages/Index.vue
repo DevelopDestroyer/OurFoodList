@@ -81,19 +81,7 @@
 			  
                 </ul>
              </card>
-			  <input id="closeOverlay" type="button" value="0" v-on:click="closeOverlay()" />
-			  <script>
-				  let overlayCnt = 1000;
 
-				  // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
-				  function closeOverlayClassicJavas() {
-				  	alert("나 여깄어!");document.getElementById('closeOverlay').dispatchEvent(document.createEvent("HTMLEvents").initEvent("click", true, false));
-
-//				  document.getElementById('closeOverlay').value = overlayCnt;
-				  overlayCnt++;
-				  }
-
-			  </script>
            </div>
           </div>		   
 			 
@@ -176,8 +164,6 @@ export default {
 	  }
 	},
 	  closeOverlay() {
-    	  alert("으아아아");
-    	  console.log("으아아아ㅏ아아ㅏㅏ");
 	      this.mapOverlay.setMap(null);
       },
 	  ratingImgMaker(num){
@@ -227,7 +213,7 @@ export default {
 							  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
 							  '           </div-->' +
 							  '            <div class="desc">' +
-							  '                <div class="ellipsis" style="color:black;"><b>' + this.myReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰 개수 : ' + this.myReviewData[i].cnt + '개)</a></div>' +
+							  '                <div class="ellipsis" style="color:black;"><b>' + this.myReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.myReviewData[i].cnt + '개)</a></div>' +
 							  '                <div class="ellipsis" style="color:gray;">' + this.myReviewData[i].category + '</div>' +
 							  '                <div class="ellipsis" style="color:black;"> 나의별점 ' + myRatingImg + '<br/>평균별점 ' + othersRatingImg + ' (' + this.myReviewData[i].ratingav + '점)</div>' +
 							  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
@@ -258,6 +244,7 @@ export default {
 	  },
 	  makeMarkerMyBookmark() {
 		  for (let i = 0; i < this.myBookmarkData.length; i++) {
+
 			  if (this.myBookmarkData[i].visit_yn == 'N') {  //사용자 리뷰만..
 			  	//alert(this.myReviewData[i].store_name);
 				  var imageSrc = 'img/marker/my_bookmark.png', // 마커이미지의 주소입니다
@@ -290,7 +277,7 @@ export default {
 						  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
 						  '           </div-->' +
 						  '            <div class="desc">' +
-						  '                <div class="ellipsis" style="color:black;"><b>' + this.myBookmarkData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰 개수 : ' + this.myBookmarkData[i].cnt + '개)</a></div>' +
+						  '                <div class="ellipsis" style="color:black;"><b>' + this.myBookmarkData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.myBookmarkData[i].cnt + '개)</a></div>' +
 						  '                <div class="ellipsis" style="color:gray;">' + this.myBookmarkData[i].category + '</div>' +
 						  '                <div class="ellipsis" style="color:black;"> 평균별점 ' + othersRatingImg + ' (' + this.myBookmarkData[i].ratingav + '점)</div>' +
 						  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
@@ -350,7 +337,7 @@ export default {
 						  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
 						  '           </div-->' +
 						  '            <div class="desc">' +
-						  '                <div class="ellipsis" style="color:black;"><b>' + this.othersReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰 개수 : ' + this.othersReviewData[i].cnt + '개)</a></div>' +
+						  '                <div class="ellipsis" style="color:black;"><b>' + this.othersReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.othersReviewData[i].cnt + '개)</a></div>' +
 						  '                <div class="ellipsis" style="color:gray;">' + this.othersReviewData[i].category + '</div>' +
 						  '                <div class="ellipsis" style="color:black;"> 평균별점 ' + othersRatingImg + ' (' + this.othersReviewData[i].ratingav + '점)</div>' +
 						  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
@@ -369,7 +356,7 @@ export default {
 
 				  // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
 				  kakao.maps.event.addListener(mapMarker, 'click', function () {
-					  if ("block" == document.getElementById("over" + i).style.display)
+					  if ("block" == document.getElementById("overO" + i).style.display)
 						  document.getElementById("overO" + i).style.display = "none";
 					  else
 						  document.getElementById("overO" + i).style.display = "block";
