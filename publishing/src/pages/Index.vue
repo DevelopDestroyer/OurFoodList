@@ -152,26 +152,7 @@ export default {
 		mapMarker: null,
 		mapOverlay: null,
 
-		myReviewData: [{
-			store_id: '',
-			store_name: '',
-			category: '',
-			telephone: '',
-			address: '',
-			roadaddress: '',
-			lon: '',
-			//mapx: out_pt.x,
-			//mapy: out_pt.y,
-			lat: '33.450705',
-			cnt: '',
-			ratingav: '',
-			review_seq: '',
-			rating: '',
-			review: '',
-			visit_yn: '',
-			taglist: ''
-
-		}],
+		myReviewData: [],
 		myBookmarkData: [],
 		othersReviewData: []
 	}
@@ -180,50 +161,10 @@ export default {
       var container = document.getElementById('map');
         var mapOptions = {
             center: new kakao.maps.LatLng(37.4011778,127.1112022),
-            level: 4 //지도의 레벨(확대, 축소 정도)
+            level: 9 //지도의 레벨(확대, 축소 정도)
         };
         this.mapData = new kakao.maps.Map(container, mapOptions);
 
-// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다
-	  var positions = [
-		  {
-			  content: '카카오',
-			  latlng: new kakao.maps.LatLng(33.450705, 126.570677)
-		  },
-		  {
-			  content: '생태연못',
-			  latlng: new kakao.maps.LatLng(33.450936, 126.569477)
-		  },
-		  {
-			  content: '<div style="color:black;">텃밭</div>',
-			  latlng: new kakao.maps.LatLng(33.450879, 126.569940)
-		  },
-		  {
-			  content: '<div style="color:black;">근린공원</div>',
-			  latlng: new kakao.maps.LatLng(33.451393, 126.570738)
-		  }
-	  ];
-
-	  for (var i = 0; i < positions.length; i ++) {
-		  // 마커를 생성합니다
-		  this.mapMarker = new kakao.maps.Marker({
-			  map: this.mapData, // 마커를 표시할 지도
-			  position: positions[i].latlng, // 마커의 위치
-			  isOn: false
-		  });
-
-		  // 마커에 표시할 인포윈도우를 생성합니다
-		  var infowindow = new kakao.maps.InfoWindow({
-			  content: positions[i].content // 인포윈도우에 표시할 내용
-		  });
-
-		  // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-		  // 이벤트 리스너로는 클로저를 만들어 등록합니다
-		  // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-		  kakao.maps.event.addListener(this.mapMarker, 'click', makeOverListener(this.mapData, this.mapMarker, infowindow));
-		  //kakao.maps.event.addListener(this.mapMarker, 'mouseout', makeOutListener(infowindow));
-		  //this.mapData = map;
-	  }
   },
   methods : {
     handleScroll (event){
@@ -239,62 +180,92 @@ export default {
     	  console.log("으아아아ㅏ아아ㅏㅏ");
 	      this.mapOverlay.setMap(null);
       },
-	  maptest() {
-
-// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다
-		  /*
-		  var positions = [];
-		  for(let i = 0; i < this.myReviewData.length; i++){
-
-			  positions.push({
-				  content:  '<div style="z-index:10000; width:200px; height:120px; color:black; box-shadow: 5px 5px 5px #BDBDBD; border:0px solid white;">'
-						      + "<p style='font-size:10px;'><b>" + this.myReviewData[i].store_name + "</b></p>"
-							  + "<p style='font-size:8px; color:gray;'>" + this.myReviewData[i].address + "</p>"
-						  + '</div>',
-				  latlng: new kakao.maps.LatLng(this.myReviewData[i].lat, this.myReviewData[i].lon)
-			  })
+	  ratingImgMaker(num){
+    	  var msg = "";
+		  var calcul = Math.ceil(num *2 ) / 2;
+		  for(var i = calcul; i > 0; i--){
+		  	  if(i == 0.5) {
+				  msg += "<img src='img/marker/star_half.png' height='10px'/>";
+				  break;
+			  }
+			  msg += "<img src='img/marker/star.png' height='10px'/>";
 		  }
 
-		  for (var i = 0; i < positions.length; i ++) {
-			  // 마커를 생성합니다
-			  this.mapMarker = new kakao.maps.Marker({
-				  map: this.mapData, // 마커를 표시할 지도
-				  position: positions[i].latlng, // 마커의 위치
-				  isOn: false
-			  });
-
-			  // 마커에 표시할 인포윈도우를 생성합니다
-			  var infowindow = new kakao.maps.InfoWindow({
-				  content: positions[i].content, // 인포윈도우에 표시할 내용
-				  removable : true
-			  });
-
-
-
-			  // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-			  // 이벤트 리스너로는 클로저를 만들어 등록합니다
-			  // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-			  kakao.maps.event.addListener(this.mapMarker, 'click', makeOverListener(this.mapData, this.mapMarker, infowindow));
-			  //kakao.maps.event.addListener(this.mapMarker, 'mouseleave', makeOutListener(infowindow));
-
-		  }
-		  */
-			  ////////////////여기 위로 그거 여기 아래로 오버레이
-			  ////////////////////////////////////////////////////////////
-			// 지도에 마커를 표시합니다
-
-
-				// 커스텀 오버레이에 표시할 컨텐츠 입니다
-				// 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-				// 별도의 이벤트 메소드를 제공하지 않습니다
-
+		  return msg;
+	  },
+	  makeMarkerMyReview() {
 			  for (let i = 0; i < this.myReviewData.length; i++) {
-				  var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다
-						  imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-						  imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+				  if (this.myReviewData[i].visit_yn == 'Y') {  //사용자 리뷰만..
+					  var imageSrc = 'img/marker/my_review.png', // 마커이미지의 주소입니다
+							  imageSize = new kakao.maps.Size(20, 25), // 마커이미지의 크기입니다
+							  imageOption = {offset: new kakao.maps.Point(45, 40)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+					  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+							  markerPosition = new kakao.maps.LatLng(this.myReviewData[i].lat, this.myReviewData[i].lon); // 마커가 표시될 위치입니다
+
+
+					  let mapMarker = new kakao.maps.Marker({
+						  //map: this.mapData,
+						  //position: new kakao.maps.LatLng(this.myReviewData[i].lat, this.myReviewData[i].lon)
+						  image: markerImage,
+						  position: markerPosition,
+					  });
+					  mapMarker.setMap(this.mapData);
+
+					  var myRatingImg = this.ratingImgMaker(this.myReviewData[i].rating);
+					  var othersRatingImg = this.ratingImgMaker(this.myReviewData[i].ratingav);
+
+
+					  var content = '<div class="wrap" id="over' + i + '" style="display:none;">' +
+							  '    <div class="info">' +
+							  '        <div class="title" style="background-color: #e4606d">' +
+							  '            나의 맛집' +
+							  '            <div class="close" onclick="document.getElementById(\'over' + i + '\').style.display=\'none\';" title="닫기"></div>' +
+							  '        </div>' +
+							  '        <div class="body">' +
+							  '            <!--div class="img">' +
+							  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+							  '           </div-->' +
+							  '            <div class="desc">' +
+							  '                <div class="ellipsis" style="color:black;"><b>' + this.myReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰 개수 : ' + this.myReviewData[i].cnt + '개)</a></div>' +
+							  '                <div class="ellipsis" style="color:gray;">' + this.myReviewData[i].category + '</div>' +
+							  '                <div class="ellipsis" style="color:black;"> 나의별점 ' + myRatingImg + '<br/>평균별점 ' + othersRatingImg + ' (' + this.myReviewData[i].ratingav + '점)</div>' +
+							  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
+							  '            </div>' +
+							  '        </div>' +
+							  '    </div>' +
+							  '</div>';
+
+					  // 마커 위에 커스텀오버레이를 표시합니다
+					  // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+					  this.mapOverlay = new kakao.maps.CustomOverlay({
+						  content: content,
+						  map: this.mapData,
+						  position: mapMarker.getPosition()
+					  });
+
+					  // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+					  kakao.maps.event.addListener(mapMarker, 'click', function () {
+						  if ("block" == document.getElementById("over" + i).style.display)
+							  document.getElementById("over" + i).style.display = "none";
+						  else
+							  document.getElementById("over" + i).style.display = "block";
+
+					  });
+				  }
+			  }
+
+	  },
+	  makeMarkerMyBookmark() {
+		  for (let i = 0; i < this.myBookmarkData.length; i++) {
+			  if (this.myBookmarkData[i].visit_yn == 'N') {  //사용자 리뷰만..
+			  	//alert(this.myReviewData[i].store_name);
+				  var imageSrc = 'img/marker/my_bookmark.png', // 마커이미지의 주소입니다
+						  imageSize = new kakao.maps.Size(20, 25), // 마커이미지의 크기입니다
+						  imageOption = {offset: new kakao.maps.Point(45, 40)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
 				  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-						  markerPosition = new kakao.maps.LatLng(this.myReviewData[i].lat, this.myReviewData[i].lon); // 마커가 표시될 위치입니다
+						  markerPosition = new kakao.maps.LatLng(this.myBookmarkData[i].lat, this.myBookmarkData[i].lon); // 마커가 표시될 위치입니다
 
 
 				  let mapMarker = new kakao.maps.Marker({
@@ -305,123 +276,108 @@ export default {
 				  });
 				  mapMarker.setMap(this.mapData);
 
+				  var othersRatingImg = this.ratingImgMaker(this.myBookmarkData[i].ratingav);
 
-				  var content = '<div class="wrap" id="over' + i + '" style="display:none;">' +
+
+				  var content = '<div class="wrap" id="overB' + i + '" style="display:none;">' +
 						  '    <div class="info">' +
-						  '        <div class="title">' +
-						  				this.myReviewData[i].store_name +
-//						  ' <div class="close" onclick="document.getElementById(\'closeOverlay\').value = \'' + this.myReviewData[i].store_id + '\';" title="닫기"></div>' +
-//alert("나 여깄어!");document.getElementById("closeOverlay").dispatchEvent(document.createEvent("HTMLEvents").initEvent("click", true, false));
-				  '            <div class="close" onclick="document.getElementById(\'over' + i + '\').style.display=\'none\';" title="닫기"></div>' +
+						  '        <div class="title" style="background-color: #ffac27">' +
+						  '            나의 찜' +
+						  '            <div class="close" onclick="document.getElementById(\'overB' + i + '\').style.display=\'none\';" title="닫기"></div>' +
 						  '        </div>' +
 						  '        <div class="body">' +
-						  '            <div class="img">' +
+						  '            <!--div class="img">' +
 						  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
-						  '           </div>' +
+						  '           </div-->' +
 						  '            <div class="desc">' +
-						  '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' +
-						  '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' +
-						  '                <div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' +
+						  '                <div class="ellipsis" style="color:black;"><b>' + this.myBookmarkData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰 개수 : ' + this.myBookmarkData[i].cnt + '개)</a></div>' +
+						  '                <div class="ellipsis" style="color:gray;">' + this.myBookmarkData[i].category + '</div>' +
+						  '                <div class="ellipsis" style="color:black;"> 평균별점 ' + othersRatingImg + ' (' + this.myBookmarkData[i].ratingav + '점)</div>' +
+						  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
 						  '            </div>' +
 						  '        </div>' +
 						  '    </div>' +
 						  '</div>';
 
-					// 마커 위에 커스텀오버레이를 표시합니다
-					// 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+				  // 마커 위에 커스텀오버레이를 표시합니다
+				  // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
 				  this.mapOverlay = new kakao.maps.CustomOverlay({
 					  content: content,
 					  map: this.mapData,
 					  position: mapMarker.getPosition()
 				  });
 
-				  //document.getElementById("over" + i).style.display = "none";
 				  // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
 				  kakao.maps.event.addListener(mapMarker, 'click', function () {
-					  //this.mapOverlay.setMap(this.mapData);
-					  document.getElementById("over" + i).style.display = "block";
+					  if ("block" == document.getElementById("overB" + i).style.display)
+						  document.getElementById("overB" + i).style.display = "none";
+					  else
+						  document.getElementById("overB" + i).style.display = "block";
 
 				  });
-				 //kakao.maps.event.addListener(mapMarker, 'mouseout', function () {
-				//	  this.mapOverlay.setMap(null);
-				 // });
 			  }
-
-
-			  /*
-                            this.mapOverlay = new kakao.maps.CustomOverlay({
-                                content: positions[i].content,
-                                map: this.mapData,
-                                position: this.mapMarker.getPosition()
-                            });
-                        */
-
-			  /*
-			  kakao.maps.event.addListener(this.mapMarker, 'click', function() {
-				  this.mapOverlay.setMap(this.map);
-			  });
-			  kakao.maps.event.addListener(this.mapMarker, 'mouseout', function() {
-				  this.mapOverlay.setMap(null);
-			  });
-			  */
-
-
-
-
-/*
-		  this.mapMarker.setMap(null);
-		  var positions = [];
-			alert(this.myReviewData.length);
-		  for(let i = 0; i < this.myReviewData.length; i++){
-
-			  positions.push({
-				  content: this.myReviewData[i].store_name,
-				  latlng: new kakao.maps.LatLng(this.myReviewData[i].lat, this.myReviewData[i].lon)
-			  })
 		  }
-		  */
 
-
-
-
-		  /*
-		  var positions = [
-
-			  {
-				  content: '테스트111',
-				  latlng: new kakao.maps.LatLng(33.450805, 126.570777)
-			  },
-			  {
-				  content: '테스트2222',
-				  latlng: new kakao.maps.LatLng(33.450836, 126.569377)
-			  }
-
-
-		  ];
-		  */
-/*
-		  for (var i = 0; i < positions.length; i++) {
-			  // 마커를 생성합니다
-			  this.mapMarker = new kakao.maps.Marker({
-				  map: this.mapData, // 마커를 표시할 지도
-				  position: positions[i].latlng // 마커의 위치
-			  });
-
-			  // 마커에 표시할 인포윈도우를 생성합니다
-			  var infowindow = new kakao.maps.InfoWindow({
-				  content: positions[i].content // 인포윈도우에 표시할 내용
-			  });
-
-			  // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-			  // 이벤트 리스너로는 클로저를 만들어 등록합니다
-			  // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-			  kakao.maps.event.addListener(this.mapMarker, 'click', makeOverListener(this.mapData, this.mapMarker, infowindow));
-			  kakao.maps.event.addListener(this.mapMarker, 'mouseout', makeOutListener(infowindow));
-
-		  }
-		  */
 	  },
+	  makeMarkerOthersReview() {
+		  for (let i = 0; i < this.othersReviewData.length; i++) {
+				  var imageSrc = 'img/marker/others_review.png', // 마커이미지의 주소입니다
+						  imageSize = new kakao.maps.Size(20, 25), // 마커이미지의 크기입니다
+						  imageOption = {offset: new kakao.maps.Point(45, 40)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+				  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+						  markerPosition = new kakao.maps.LatLng(this.othersReviewData[i].lat, this.othersReviewData[i].lon); // 마커가 표시될 위치입니다
 
+				  let mapMarker = new kakao.maps.Marker({
+					  //map: this.mapData,
+					  //position: new kakao.maps.LatLng(this.myReviewData[i].lat, this.myReviewData[i].lon)
+					  image: markerImage,
+					  position: markerPosition,
+				  });
+				  mapMarker.setMap(this.mapData);
+
+				  var othersRatingImg = this.ratingImgMaker(this.othersReviewData[i].ratingav);
+
+
+				  var content = '<div class="wrap" id="overO' + i + '" style="display:none;">' +
+						  '    <div class="info">' +
+						  '        <div class="title" style="background-color: #1da2ff ">' +
+						  '            다른사람이 등록한 맛집' +
+						  '            <div class="close" onclick="document.getElementById(\'overO' + i + '\').style.display=\'none\';" title="닫기"></div>' +
+						  '        </div>' +
+						  '        <div class="body">' +
+						  '            <!--div class="img">' +
+						  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
+						  '           </div-->' +
+						  '            <div class="desc">' +
+						  '                <div class="ellipsis" style="color:black;"><b>' + this.othersReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰 개수 : ' + this.othersReviewData[i].cnt + '개)</a></div>' +
+						  '                <div class="ellipsis" style="color:gray;">' + this.othersReviewData[i].category + '</div>' +
+						  '                <div class="ellipsis" style="color:black;"> 평균별점 ' + othersRatingImg + ' (' + this.othersReviewData[i].ratingav + '점)</div>' +
+						  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
+						  '            </div>' +
+						  '        </div>' +
+						  '    </div>' +
+						  '</div>';
+
+				  // 마커 위에 커스텀오버레이를 표시합니다
+				  // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+				  this.mapOverlay = new kakao.maps.CustomOverlay({
+					  content: content,
+					  map: this.mapData,
+					  position: mapMarker.getPosition()
+				  });
+
+				  // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+				  kakao.maps.event.addListener(mapMarker, 'click', function () {
+					  if ("block" == document.getElementById("over" + i).style.display)
+						  document.getElementById("overO" + i).style.display = "none";
+					  else
+						  document.getElementById("overO" + i).style.display = "block";
+
+				  });
+		  }
+
+	  },
   },
   created () {
     window.addEventListener('scroll', this.handleScroll);
@@ -462,11 +418,46 @@ export default {
 								})
 							}
 						  	else{//나의 북마크
-
+								vm.myBookmarkData.push({
+									store_id: response.data.mydata[i].store_id,
+									store_name: response.data.mydata[i].store_name,
+									category: response.data.mydata[i].category,
+									telephone: response.data.mydata[i].telephone,
+									address: response.data.mydata[i].address,
+									roadaddress: response.data.mydata[i].roadaddress,
+									lon: response.data.mydata[i].lon,
+									//mapx: out_pt.x,
+									//mapy: out_pt.y,
+									lat: response.data.mydata[i].lat,
+									cnt: response.data.mydata[i].cnt,
+									ratingav: response.data.mydata[i].ratingav,
+									review_seq: response.data.mydata[i].review_seq,
+									rating: response.data.mydata[i].rating,
+									review: response.data.mydata[i].review,
+									visit_yn: response.data.mydata[i].visit_yn,
+									taglist: response.data.mydata[i].taglist
+								})
 							}
 
 						  }
-						  vm.maptest();
+						  for(let i = 0; i < response.data.othersdata.length; i++){
+								  vm.othersReviewData.push({
+									  store_id: response.data.othersdata[i].store_id,
+									  store_name: response.data.othersdata[i].store_name,
+									  category: response.data.othersdata[i].category,
+									  telephone: response.data.othersdata[i].telephone,
+									  address: response.data.othersdata[i].address,
+									  roadaddress: response.data.othersdata[i].roadaddress,
+									  lon: response.data.othersdata[i].lon,
+									  lat: response.data.othersdata[i].lat,
+									  cnt: response.data.othersdata[i].cnt,
+									  ratingav: response.data.othersdata[i].ratingav
+								  })
+						  }
+
+						  vm.makeMarkerOthersReview();
+						  vm.makeMarkerMyBookmark();
+						  vm.makeMarkerMyReview();
 
 					  }
 					  else{
