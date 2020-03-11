@@ -39,48 +39,226 @@
 		  <br>
 		  <br>
 		  <br>
-		  <br>		  
+		  <br>
+			<tabs type="primary">
+				<tab-pane label="내 맛집">
+					<div class="row">
+						<card v-for="item in myReviewData" v-bind:key="item.id" style="width: 100%;">
+							<ul slot="raw-content" class="list-group list-group-flush">
+								<li class="list-group-item">
+									<p style="font-size:24px;">{{item.store_name}}
+										<n-button type="primary" icon round><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button> </p>
+									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> {{item.telephone}}<br>
+									<i class="now-ui-icons ui-1_check"> 내 별점　
+									<template v-if="item.rating > 4.5 && item.rating <= 5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 4 && item.rating <= 4.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 3.5 && item.rating <= 4">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 3 && item.rating <= 3.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 2.5 && item.rating <= 3">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 2 && item.rating <= 2.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 1.5 && item.rating <= 2">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 1 && item.rating <= 1.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.rating > 0.5 && item.rating <= 1">
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+
+									<br>
+									<i class="now-ui-icons ui-1_check"> 별점 평균 ({{item.ratingav}} 점)
+									<template v-if="item.ratingav > 4.5 && item.ratingav <= 5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 4 && item.ratingav <= 4.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 3.5 && item.ratingav <= 4">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 3 && item.ratingav <= 3.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 2.5 && item.ratingav <= 3">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 2 && item.ratingav <= 2.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 1.5 && item.ratingav <= 2">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 1 && item.ratingav <= 1.5">
+										<img src='img/marker/star.png' height='20px'/>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+									<template v-else-if="item.ratingav > 0.5 && item.ratingav <= 1">
+										<img src='img/marker/star.png' height='20px'/>
+									</template>
+									<template v-else>
+										<img src='img/marker/star_half.png' height='20px'/>
+									</template>
+
+									<br>
+
+									<badge type="warning" v-for="tagItem in item.taglist.split(',')" v-bind:key="tagItem.id" >
+										<template v-if="tagItem == '1'">
+											#가성비
+										</template>
+										<template v-else-if="tagItem == '2'">
+											#분위기
+										</template>
+										<template v-else-if="tagItem == '3'">
+											#배달맛집
+										</template>
+										<template v-else-if="tagItem == '4'">
+											#경치좋은
+										</template>
+										<template v-else-if="tagItem == '5'">
+											#깔끔한
+										</template>
+										<template v-else-if="tagItem == '6'">
+											#비오는날
+										</template>
+										<template v-else-if="tagItem == '7'">
+											#럭셔리
+										</template>
+										<template v-else-if="tagItem == '8'">
+											#회식
+										</template>
+										<template v-else>
+											#술
+										</template>
+									</badge>
+
+
+
+
+
+
+									<table style="width:100%">
+										<tr>
+											<td>
+												<button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+											</td>
+											<td style="text-align:right;">
+												<!--button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button-->　　
+												<button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_favourite-28"></i>　리뷰/찜　{{item.cnt}}</button>
+											</td>
+										</tr>
+									</table>
+								</li>
+							</ul>
+						</card>
+					</div>
+				</tab-pane>
+				<tab-pane label="내 찜하기">
+					<p>하이1</p>
+					<p>하이2</p>
+				</tab-pane>
+				<tab-pane label="다른 맛집">
+					<div class="row">
+						<card style="width: 100%;">
+							<ul slot="raw-content" class="list-group list-group-flush">
+								<li class="list-group-item">
+									<p style="font-size:24px;">이태리 부대찌개 </p>
+									<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+									<table style="width:100%">
+										<tr>
+											<td>
+												<button type="button" class="btn btn-round btn-info" v-on:click="maptest()"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+											</td>
+											<td style="text-align:right;">
+												<button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+												<button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+											</td>
+										</tr>
+									</table>
+								</li>
+
+							</ul>
+						</card>
+						<card style="width: 100%;">
+							<ul slot="raw-content" class="list-group list-group-flush">
+								<li class="list-group-item">
+									<p style="font-size:24px;">이태리 부대찌개 </p>
+									<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
+									<table style="width:100%">
+										<tr>
+											<td>
+												<button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
+											</td>
+											<td style="text-align:right;">
+												<button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
+												<button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
+											</td>
+										</tr>
+									</table>
+								</li>
+
+							</ul>
+						</card>
+					</div>
+				</tab-pane>
+			</tabs>
 		  <div class="row">
-		     <card style="width: 100%;">
-                <ul slot="raw-content" class="list-group list-group-flush">
-                  <li class="list-group-item">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info" v-on:click="maptest()"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-			  
-                </ul>
-             </card>
-		     <card style="width: 100%;">
-                <ul slot="raw-content" class="list-group list-group-flush">
-                  <li class="list-group-item">
-					<p style="font-size:24px;">이태리 부대찌개 </p>
-					<i class="now-ui-icons location_pin"></i>경기 성남시 분당구 판교역로 230　　<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> 031-696-0310<br>
-					  <table style="width:100%">
-					    <tr>
-					      <td>
-					        <button type="button" class="btn btn-round btn-info"> <i class="now-ui-icons ui-1_zoom-bold"></i>　상세보기</button>
-					      </td>
-					      <td style="text-align:right;">
-						    <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_chat-round"></i>　5</button>　　
-					        <button type="button" class="btn btn-round btn-primary"> <i class="now-ui-icons ui-2_like"></i>　19</button>
-		      			  </td>
-					    </tr>
-					</table>
-			      </li>
-			  
-                </ul>
-             </card>
+			  <button type="button" onclick="location.href='#'" class="btn btn-round btn-info" style="width: 100%;">올라가용!</button>
 
            </div>
           </div>		   
@@ -104,7 +282,7 @@ import NucleoIconsSection from './components/NucleoIconsSection';
 import SignupForm from './components/SignupForm';
 import ExamplesSection from './components/ExamplesSection';
 import DownloadSection from './components/DownloadSection';
-import { Card } from '@/components';
+import { Card, Tabs , TabPane, Badge, Button} from '@/components';
 import { BUS } from './EventBus';
 const axios = require('axios');
 
@@ -115,7 +293,11 @@ export default {
   components: {
     Parallax,
 	Card,
+	Tabs,
+	TabPane,
 	BasicElements,
+	[Badge.name]: Badge,
+	[Button.name]: Button,
 	/*
     //BasicElements,
     //Navigation,
@@ -149,7 +331,7 @@ export default {
       var container = document.getElementById('map');
         var mapOptions = {
             center: new kakao.maps.LatLng(37.4011778,127.1112022),
-            level: 9 //지도의 레벨(확대, 축소 정도)
+            level: 12 //지도의 레벨(확대, 축소 정도)
         };
         this.mapData = new kakao.maps.Map(container, mapOptions);
 
