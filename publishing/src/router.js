@@ -6,6 +6,7 @@ import Login from './pages/Login.vue';
 import Join from './pages/Join.vue';
 import Profile from './pages/Profile.vue';
 import registRestaurant from './pages/registRestaurant.vue';
+import EditReview from "./pages/EditReview";
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
 
@@ -63,7 +64,15 @@ export default new Router({
       props: {
         header: { colorOnScroll: 400 }
       }
-    }	
+    },
+    {
+      path: '/EditReview',
+      name: 'EditReview',
+      components: { default: EditReview, header: MainNavbar, footer: MainFooter},
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    }
   ],
   scrollBehavior: to => {
     if (to.hash) {

@@ -7,18 +7,18 @@
     menu-classes="ml-auto"
   >
     <template slot-scope="{ toggle, isToggled }">
-      <router-link v-popover:popover1 class="navbar-brand" to="/" v-on:click="sendEmit(3)" style="font-size:24px;">
-        그맛
+      <router-link v-popover:popover1 class="navbar-brand" to="/" style="font-size:24px;">
+        <a href="#" v-on:click="gohome()" style="text-decoration:none;">그맛</a>
       </router-link>
       <el-popover
         ref="popover1"
         popper-class="popover"
         placement="bottom"
-        width="200"
+        width="500"
         trigger="hover"
       >
         <div class="popover-body">
-          그맛
+          내가 아는 그 맛이 제일 맛있는 맛
         </div>
       </el-popover>
     </template>
@@ -27,7 +27,7 @@
         <a
                 class="nav-link"
                 href="#"
-                v-on:click="gohome()"
+                v-on:click="gohome"
         >
           <i class="now-ui-icons location_map-big"></i>
           <p>　맛집지도</p>
@@ -109,10 +109,20 @@ export default {
   data() {
     return {
 	  isUserLogin : false,
-	  closeNavbar: function(){
+      //showMeTheMap : false,
+      markerDrawReq : null,
+      closeNavbar: function(){
 		toggleClick();
       }  
     }
+  },
+  mounted: function() {
+    var vm = this;
+    BUS.$on('startDrawMaker',function(data){
+      //this.showMeTheMap = true;
+      console.log("그린다고하니 멈춥시다");
+      clearInterval(vm.markerDrawReq);//지도 컴포넌트에서 그리겠다는 응답이 오면 요청 멈춰라
+    })
   },
   created: function() {
     let vm = this;
@@ -122,6 +132,9 @@ export default {
               if(response.data.code == '2') {
                 vm.isUserLogin = true;
                 vm.sendEmit(2);
+              }
+              else if(response.data.code == '1'){
+                vm.sendEmit(1);
               }
               if(response.data.code == '-1'){
                 //오토로그인 유저의 경우 바로 로그인처리를 해줍니다
@@ -236,11 +249,16 @@ export default {
               });
     },
     sendEmit(msg){
-      BUS.$emit('sessionState', msg);
+      this.markerDrawReq =  setInterval(function() {
+        BUS.$emit('sessionState', msg);
+        console.log("마커를 그려달라 요청을 보냅니다");
+      }, 100);
+      //BUS.$emit('sessionState', msg);
     },
     gohome() {
       location.href="/#/";
       this.sendEmit(3);
+      this.closeNavbar();
     }
 
   }
