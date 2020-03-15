@@ -353,6 +353,7 @@ export default {
             form.append('review',this.memo);
             form.append('visitYn',this.visitYn);
             form.append('tags',this.tags);
+            form.append('delYn',"N");
 
 
             axios.post('/api/saveReview.php', form)
@@ -401,6 +402,8 @@ export default {
         form.append('review',this.memo);
         form.append('visitYn',this.visitYn);
         form.append('tags',this.tags);
+        form.append('delYn',"N");
+
         axios.post('/api/saveReview.php', form)
             .then(function(response){
                 console.log(response);

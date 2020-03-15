@@ -69,7 +69,7 @@
     $reviewSeqForUpdate = '';
 
 
-    $sql = "select visit_yn, del_yn, review_seq from REVIEW_MST where user_id='".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."' and store_id='".$store_id."'";
+    $sql = "select visit_yn, del_yn, review_seq from REVIEW_MST where user_id='".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."' and store_id='".$store_id."' and del_yn = 'N'";
     $result = mysqli_query($connect, $sql);
     while($row = mysqli_fetch_row($result)){
       if($row[1]=='Y')

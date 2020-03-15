@@ -47,7 +47,7 @@
 							<ul slot="raw-content" class="list-group list-group-flush">
 								<li class="list-group-item">
 									<p style="font-size:24px;">{{item.store_name}}
-										<n-button type="primary" icon round><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
+										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
 										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
@@ -216,7 +216,7 @@
 							<ul slot="raw-content" class="list-group list-group-flush">
 								<li class="list-group-item">
 									<p style="font-size:24px;">{{item.store_name}}
-										<n-button type="primary" icon round><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
+										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
 										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
@@ -299,6 +299,8 @@
 							<ul slot="raw-content" class="list-group list-group-flush">
 								<li class="list-group-item">
 									<p style="font-size:24px;">{{item.store_name}}
+										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, 0, '', '', 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
+										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, 0, '', '', 'N')"><i class="now-ui-icons ui-2_favourite-28"></i></n-button>
 										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
@@ -444,7 +446,8 @@ export default {
 
 		myReviewData: [],
 		myBookmarkData: [],
-		othersReviewData: []
+		othersReviewData: [],
+		editReviewReq: null
 	}
   },
   mounted() {
@@ -550,6 +553,12 @@ export default {
 					  }
 				  });
 	  });
+
+	  BUS.$on('startEditReview',function(data){
+		  //this.showMeTheMap = true;
+		  console.log("에딧리뷰를 쓴다하니 멈춥시다");
+		  clearInterval(vm.editReviewReq);//지도 컴포넌트에서 그리겠다는 응답이 오면 요청 멈춰라
+	  })
   },
   methods : {
     handleScroll (event){
@@ -762,6 +771,21 @@ export default {
 		  }
 
 	  },
+	  goEditReview(storeId, rating, taglist, memo, visitYn){
+    	let reviewObj = {
+    		storeId : storeId,
+			rating : rating,
+			tagList : taglist,
+			review : memo,
+			visitYn: visitYn
+		};
+    	this.editReviewReq =  setInterval(function() {
+			BUS.$emit('editReview', reviewObj);
+			console.log("마커를 그려달라 요청을 보냅니다");
+		}, 100);
+
+    	location.href="/#/EditReview";
+	  }
   },
   created () {
     window.addEventListener('scroll', this.handleScroll);

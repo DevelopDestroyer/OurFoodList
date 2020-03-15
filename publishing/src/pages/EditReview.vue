@@ -35,34 +35,45 @@
 
             <fieldset class="rating" style="margin-top: -70px; height:50px;">
 
-                  <input type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')"/>
+                  <input v-if="rating==5" type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')" checked/>
+                  <input v-else type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')"/>
                   <label class="full" for="5star" title="Excellent"></label>
 
-                  <input type="radio" id="4halfstar" name="rating" value="4.5"  v-on:click="clickStar('4.5')"/>
+
+                  <input v-if="rating==4.5" type="radio" id="4halfstar" name="rating" value="4.5" v-on:click="clickStar('4.5')" checked/>
+                  <input v-else type="radio" id="4halfstar" name="rating" value="4.5"  v-on:click="clickStar('4.5')"/>
                   <label class="half" for="4halfstar" title="Good"></label>
 
-                  <input type="radio" id="4star" name="rating" value="4"  v-on:click="clickStar('4')"/>
+                  <input v-if="rating==4" type="radio" id="4star" name="rating" value="4" v-on:click="clickStar('4')" checked/>
+                  <input v-else type="radio" id="4star" name="rating" value="4"  v-on:click="clickStar('4')"/>
                   <label class="full" for="4star" title="Pretty good"></label>
 
-                  <input type="radio" id="3halfstar" name="rating" value="3.5"  v-on:click="clickStar('3.5')"/>
+                <input v-if="rating==3.5" type="radio" id="3halfstar" name="rating" value="3.5" v-on:click="clickStar('3.5')" checked/>
+                <input v-else type="radio" id="3halfstar" name="rating" value="3.5"  v-on:click="clickStar('3.5')" />
                   <label class="half" for="3halfstar" title="Nice"></label>
 
-                  <input type="radio" id="3star" name="rating" value="3"  v-on:click="clickStar('3')"/>
+                <input v-if="rating==3" type="radio" id="3star" name="rating" value="3" v-on:click="clickStar('3')" checked/>
+                <input v-else type="radio" id="3star" name="rating" value="3"  v-on:click="clickStar('3')"/>
                   <label class="full" for="3star" title="Ok"></label>
 
-                  <input type="radio" id="2halfstar" name="rating" value="2.5"  v-on:click="clickStar('2.5')"/>
+                <input v-if="rating==2.5" type="radio" id="2halfstar" name="rating" value="2.5" v-on:click="clickStar('2.5')" checked/>
+                <input v-else type="radio" id="2halfstar" name="rating" value="2.5"  v-on:click="clickStar('2.5')"/>
                   <label class="half" for="2halfstar" title="Kinda bad"></label>
 
-                  <input type="radio" id="2star" name="rating" value="2"  v-on:click="clickStar('2')"/>
+                <input v-if="rating==2" type="radio" id="2star" name="rating" value="2" v-on:click="clickStar('2')" checked/>
+                <input v-else type="radio" id="2star" name="rating" value="2"  v-on:click="clickStar('2')"/>
                   <label class="full" for="2star" title="Bad"></label>
 
-                  <input type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" />
+                <input v-if="rating==1.5" type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" checked/>
+                <input v-else type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" />
                   <label class="half" for="1halfstar" title="Meh"></label>
 
-                  <input type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" />
+                <input v-if="rating==1" type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" checked/>
+                <input v-else type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" />
                   <label class="full" for="1star" title="Umm"></label>
 
-                  <input type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" />
+                <input v-if="rating==0.5" type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" checked/>
+                <input v-else type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" />
                   <label class="half" for="halfstar" title="Worst"></label>
 
               </fieldset>
@@ -160,6 +171,7 @@
 
 <script>
 import { Card, Button, FormGroupInput, Badge, Modal, Checkbox } from '@/components';
+import { BUS } from './EventBus';
 import MainFooter from '@/layout/MainFooter';
 const axios = require('axios');
 export default {
@@ -172,7 +184,8 @@ export default {
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
 	[Badge.name]: Badge,
-    Checkbox
+    Checkbox,
+      BUS
   },
   data() {
     return {
@@ -208,6 +221,10 @@ export default {
            });
 		  */ 
       },
+
+        markerDrawReq: null,
+
+
         rating: 0,
         tags: [],
         memo: "",
@@ -217,8 +234,39 @@ export default {
 
     }
   },
+    mounted: function(){
+
+    },
     created: function() {
         let vm = this;
+        BUS.$on('startDrawMaker',function(data){
+            //this.showMeTheMap = true;
+            console.log("그린다고하니 멈춥시다");
+            clearInterval(vm.markerDrawReq);//지도 컴포넌트에서 그리겠다는 응답이 오면 요청 멈춰라
+        })
+
+        BUS.$on('editReview',function(data) {
+            BUS.$emit('startEditReview', 1)
+            console.log("에딧리뷰 요청이 왔어요 : " + data.storeId);
+            vm.targetId = data.storeId;
+            vm.memo = data.review;
+            vm.rating = data.rating;
+            vm.tags = data.tagList.split(',');
+            vm.visitYn = data.visitYn;
+            /*
+            storeId : storeId,
+			rating : rating,
+			tagList : taglist,
+			review : memo
+
+			        rating: 0,
+        tags: [],
+        memo: "",
+        targetId: "",
+        visitYn: "N"
+            */
+        });
+
         axios.get('/api/userAuth.php')
             .then(function(response){
                 console.log(response);
@@ -289,6 +337,7 @@ export default {
             form.append('review',this.memo);
             form.append('visitYn',this.visitYn);
             form.append('tags',this.tags);
+            form.append('delYn',"N");
 
 
             axios.post('/api/saveReview.php', form)
@@ -313,12 +362,7 @@ export default {
                         else{
                             alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
                         }
-                        for(var i = 0; i < vm.list.length; i++){
-                            if(vm.list[i].storeId == idBiff){
-                                vm.list[i].isCheckBookmark = true;
-                                break;
-                            }
-                        }
+                        location.href="/#/";
                     }
                     else {
                         alert("에러가 발생하였습니다. 관리자에게 문의하세요");
@@ -337,6 +381,8 @@ export default {
         form.append('review',this.memo);
         form.append('visitYn',this.visitYn);
         form.append('tags',this.tags);
+        form.append('delYn',"N");
+
         axios.post('/api/saveReview.php', form)
             .then(function(response){
                 console.log(response);
@@ -359,25 +405,16 @@ export default {
                     else{
                         alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
                     }
-                    for(var i = 0; i < vm.list.length; i++){
-                        if(vm.list[i].storeId == idBiff){
-                            vm.list[i].isCheckEXP = true;
-                            break;
-                        }
-                    }
+                    vm.markerDrawReq =  setInterval(function() {
+                        BUS.$emit('sessionState', msg);
+                        console.log("마커를 그려달라 요청을 보냅니다");
+                    }, 100);
                 }
                 else {
                         alert("에러가 발생하였습니다. 관리자에게 문의하세요");
                 }
 
             });
-    },
-    setEXPForm(id){
-        //폼 초기화
-        this.targetId = id;
-        this.memo = "";
-        this.tags = [];
-        this.visitYn = "Y";
     },
       clickStar(score){
 	    this.rating = score;

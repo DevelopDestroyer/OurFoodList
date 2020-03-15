@@ -172,6 +172,7 @@ export default {
                 if(response.data.result == 'success'){
                   if(response.data.code == '1'){
                     localStorage.setItem('gmatTmpUserId', response.data.message);
+                    vm.sendEmit(1);
                   }
                 }
               });

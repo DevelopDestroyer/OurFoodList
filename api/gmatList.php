@@ -55,7 +55,7 @@ $sql = "select personallist.*, IFNULL(personaltag.taglist,'') as taglist
               select store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq, review.rating, review.review, review.visit_yn
               from  STORE_MST store, REVIEW_MST review, 
                       (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav FROM REVIEW_MST Group by store_id) calcul 
-              where store.store_id = review.store_id and store.store_id = calcul.store_id and review.user_id = '".mysqli_real_escape_string($connect, $myId)."' ) personallist 
+              where store.store_id = review.store_id and store.store_id = calcul.store_id and review.del_yn != 'Y' and review.user_id = '".mysqli_real_escape_string($connect, $myId)."' ) personallist 
         left join 
              (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
         on 
