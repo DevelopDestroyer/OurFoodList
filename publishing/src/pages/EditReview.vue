@@ -118,7 +118,7 @@
                   <label for="check6" class="form-check-label">
                       <input id="check6" type="checkbox" class="form-check-input" value="6" v-model="tags" />
                       <span class="form-check-sign"></span>
-                      비오는날　
+                      데이트　
                   </label>
                   <br/>
                   <br/>
@@ -127,7 +127,7 @@
                   <label for="check7" class="form-check-label">
                       <input id="check7" type="checkbox" class="form-check-input" value="7" v-model="tags" />
                       <span class="form-check-sign"></span>
-                      럭셔리　
+                      인스타감성　
                   </label>
 
                   <label for="check8" class="form-check-label">
@@ -229,7 +229,7 @@ export default {
         tags: [],
         memo: "",
         targetId: "",
-        visitYn: "N"
+        visitYn: "Y"
 
 
     }
@@ -247,11 +247,12 @@ export default {
 
         BUS.$on('editReview',function(data) {
             BUS.$emit('startEditReview', 1)
-            console.log("에딧리뷰 요청이 왔어요 : " + data.storeId);
+            console.log("에딧리뷰 요청이 왔어요 : " + data.tagList);
             vm.targetId = data.storeId;
             vm.memo = data.review;
             vm.rating = data.rating;
             vm.tags = data.tagList.split(',');
+            vm.tags.slice().sort(function(a,b){return a - b}).reduce(function(a,b){if (a.slice(-1)[0] !== b) a.push(b);return a;},[]);
             vm.visitYn = data.visitYn;
             /*
             storeId : storeId,
@@ -336,7 +337,7 @@ export default {
             form.append('rating',this.rating);
             form.append('review',this.memo);
             form.append('visitYn',this.visitYn);
-            form.append('tags',this.tags);
+            form.append('tags',this.tags.slice().sort(function(a,b){return a - b}).reduce(function(a,b){if (a.slice(-1)[0] !== b) a.push(b);return a;},[]));
             form.append('delYn',"N");
 
 
@@ -379,8 +380,9 @@ export default {
         form.append('storeId', this.targetId);
         form.append('rating',this.rating);
         form.append('review',this.memo);
-        form.append('visitYn',this.visitYn);
-        form.append('tags',this.tags);
+        form.append('visitYn','Y');
+        //이 페이지의 tags는 emit의 특성으로 인해 여러개의 중첩된 소스를 갖고있을 가능성이 있다.. 중복된 녀석들을 제거해준다.
+        form.append('tags',this.tags.slice().sort(function(a,b){return a - b}).reduce(function(a,b){if (a.slice(-1)[0] !== b) a.push(b);return a;},[]));
         form.append('delYn',"N");
 
         axios.post('/api/saveReview.php', form)
@@ -406,9 +408,10 @@ export default {
                         alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
                     }
                     vm.markerDrawReq =  setInterval(function() {
-                        BUS.$emit('sessionState', msg);
+                        BUS.$emit('sessionState', '10');
                         console.log("마커를 그려달라 요청을 보냅니다");
                     }, 100);
+                    location.href="/#/";
                 }
                 else {
                         alert("에러가 발생하였습니다. 관리자에게 문의하세요");

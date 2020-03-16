@@ -168,14 +168,14 @@
             <label for="check6" class="form-check-label">
                 <input id="check6" type="checkbox" class="form-check-input" value="6" v-model="tags" />
                 <span class="form-check-sign"></span>
-                비오는날　
+                데이트　
             </label>
         </div>
         <div class="form-check">
             <label for="check7" class="form-check-label">
                 <input id="check7" type="checkbox" class="form-check-input" value="7" v-model="tags" />
                 <span class="form-check-sign"></span>
-                럭셔리　
+                인스타감성　
             </label>
 
             <label for="check8" class="form-check-label">

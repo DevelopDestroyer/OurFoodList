@@ -193,15 +193,15 @@
 											# 깔끔한
 										</template>
 										<template v-else-if="tagItem == '6'">
-											# 비오는날
+											# 데이트
 										</template>
 										<template v-else-if="tagItem == '7'">
-											# 럭셔리
+											# 인스타감성
 										</template>
 										<template v-else-if="tagItem == '8'">
 											# 회식
 										</template>
-										<template v-else>
+										<template v-else-if="tagItem == '9'">
 											# 술
 										</template>
 									</badge>
@@ -466,7 +466,7 @@ export default {
 		  	console.log("이미 그리기 시작했으니 더이상 마커그리기 요청은 무시합니다");
 			  return;
 		  }
-		  vm.shoeMeTheMap = true;
+		  //vm.shoeMeTheMap = true;
 		  axios.get('/api/gmatList.php')
 				  .then(function(response){
 					  console.log(response);
@@ -494,7 +494,7 @@ export default {
 									  //mapy: out_pt.y,
 									  lat: response.data.mydata[i].lat,
 									  cnt: response.data.mydata[i].cnt,
-									  ratingav: response.data.mydata[i].ratingav,
+									  ratingav: Number.parseFloat(response.data.mydata[i].ratingav).toFixed(2),
 									  review_seq: response.data.mydata[i].review_seq,
 									  rating: response.data.mydata[i].rating,
 									  review: response.data.mydata[i].review,

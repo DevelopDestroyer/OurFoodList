@@ -94,15 +94,14 @@
         else if($row[0]=='N' && $visit_yn == 'Y') {
             $updateToReviewFromBookmark = true;
             $reviewSeqForUpdate = $row[2];
-            $returnMsg = "{\"result\": \"success\", \"code\": \"102\", \"message\": \"이미 찜하였습니다. 업데이트 처리합니다..\"}";;
-            echo $returnMsg;
-            return;
+            $returnMsg = "{\"result\": \"success\", \"code\": \"102\", \"message\": \"이미 찜하였습니다. 업데이트 처리합니다..".$reviewSeqForUpdate."\"}";
+            //echo $returnMsg;
         }
         //리뷰하려는데 이미 리뷰
         else{
             $updateToReviewFromReview = true;
             $reviewSeqForUpdate = $row[2];
-            $returnMsg = "{\"result\": \"success\", \"code\": \"103\", \"message\": \"이미 리뷰 하였습니다. 업데이트 처리 합니다..\"}";;
+            $returnMsg = "{\"result\": \"success\", \"code\": \"103\", \"message\": \"이미 리뷰 하였습니다. 업데이트 처리 합니다..\"}";
 
         }
 
@@ -134,9 +133,11 @@
         $tags_arr = explode(',', $tags);
         $sql = "insert into REVIEW_TAG (review_seq, tag_code) values ";
         for($i=0; $i < count($tags_arr); $i++){
-            $sql = $sql."(".$autoIncreasedId.",".$tags_arr[$i].")";
-            if($i < (count($tags_arr) - 1))
-                $sql = $sql.",";
+            if($tags_arr[$i] != null && $tags_arr[$i] != '') {
+                $sql = $sql . "(" . $reviewSeqForUpdate . "," . $tags_arr[$i] . ")";
+                if ($i < (count($tags_arr) - 1))
+                    $sql = $sql . ",";
+            }
         }
         $result = mysqli_query($connect, $sql);
 
@@ -153,7 +154,25 @@
 
         //질의 전송
         $result = mysqli_query($connect, $sql);
+
+        //태그정보 초기화
+        $sql = "delete from REVIEW_TAG where review_seq = '".$reviewSeqForUpdate."' ";
+        $result = mysqli_query($connect, $sql);
+        //태그정보 입력
+        $tags_arr = explode(',', $tags);
+        $sql = "insert into REVIEW_TAG (review_seq, tag_code) values ";
+        for($i=0; $i < count($tags_arr); $i++){
+            if($tags_arr[$i] != null && $tags_arr[$i] != '') {
+                $sql = $sql . "(" . $reviewSeqForUpdate . "," . $tags_arr[$i] . ")";
+                if ($i < (count($tags_arr) - 1))
+                    $sql = $sql . ",";
+            }
+        }
+        $result = mysqli_query($connect, $sql);
+
         mysqli_close($connect);
+        //$returnMsg = "{\"result\": \"success\", \"code\": \"102\", \"message\": \"이미 찜하였습니다. 업데이트 처리합니다..2345".$reviewSeqForUpdate."\"}";
+
         echo $returnMsg;
 
     }
@@ -162,6 +181,22 @@
 
         //질의 전송
         $result = mysqli_query($connect, $sql);
+
+        //태그정보 초기화
+        $sql = "delete from REVIEW_TAG where review_seq = '".$reviewSeqForUpdate."' ";
+        $result = mysqli_query($connect, $sql);
+        //태그정보 입력
+        $tags_arr = explode(',', $tags);
+        $sql = "insert into REVIEW_TAG (review_seq, tag_code) values ";
+        for($i=0; $i < count($tags_arr); $i++){
+            if($tags_arr[$i] != null && $tags_arr[$i] != '') {
+                $sql = $sql . "(" . $reviewSeqForUpdate . "," . $tags_arr[$i] . ")";
+                if ($i < (count($tags_arr) - 1))
+                    $sql = $sql . ",";
+            }
+        }
+        $result = mysqli_query($connect, $sql);
+
         mysqli_close($connect);
         echo $returnMsg;
 
