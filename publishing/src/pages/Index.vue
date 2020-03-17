@@ -300,7 +300,7 @@
 								<li class="list-group-item">
 									<p style="font-size:24px;">{{item.store_name}}
 										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, 0, '', '', 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
-										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, 0, '', '', 'N')"><i class="now-ui-icons ui-2_favourite-28"></i></n-button>
+										<n-button type="primary" icon round v-on:click="setBookmark(item)"><i class="now-ui-icons ui-2_favourite-28"></i></n-button>
 										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
@@ -516,7 +516,7 @@ export default {
 									  //mapy: out_pt.y,
 									  lat: response.data.mydata[i].lat,
 									  cnt: response.data.mydata[i].cnt,
-									  ratingav: response.data.mydata[i].ratingav,
+									  ratingav: Number.parseFloat(response.data.mydata[i].ratingav).toFixed(2),
 									  review_seq: response.data.mydata[i].review_seq,
 									  rating: response.data.mydata[i].rating,
 									  review: response.data.mydata[i].review,
@@ -537,7 +537,7 @@ export default {
 								  lon: response.data.othersdata[i].lon,
 								  lat: response.data.othersdata[i].lat,
 								  cnt: response.data.othersdata[i].cnt,
-								  ratingav: response.data.othersdata[i].ratingav
+								  ratingav: Number.parseFloat(response.data.othersdata[i].ratingav).toFixed(2)
 							  })
 						  }
 
@@ -584,6 +584,70 @@ export default {
 		  }
 
 		  return msg;
+	  },
+	  setBookmark(item){
+		  var res = confirm("여기를 찜하기로 기록 할까요?");
+		  if(res){
+
+			  //전송부분 구현...
+
+			  let item2 = item;
+			  let vm = this;
+			  let form = new FormData();
+			  form.append('storeId', item.store_id);
+			  form.append('rating', '0');
+			  form.append('review','');
+			  form.append('visitYn','N');
+			  form.append('tags','');
+			  form.append('delYn',"N");
+
+
+			  axios.post('/api/saveReview.php', form)
+					  .then(function(response){
+						  console.log(response);
+						  if(response.data.result == 'success'){
+							  if(response.data.code == '1'){
+								  alert("찜했어요!");
+								  vm.myBookmarkData.push({
+									  store_id: item2.store_id,
+									  store_name: item2.store_name,
+									  category: item2.category,
+									  telephone: item2.telephone,
+									  address: item2.address,
+									  roadaddress: item2.roadaddress,
+									  lon: item2.lon,
+									  lat: item2.lat,
+									  cnt: item2.cnt,
+									  ratingav: item2.ratingav,
+									  review_seq: item2.review_seq,
+									  rating: item2.rating,
+									  review: item2.review,
+									  visit_yn: item2.visit_yn,
+									  taglist: item2.taglist
+								  });
+							  }
+							  else if(response.data.code == '100'){
+								  alert("이미 찜한 맛집 입니다.");
+							  }
+							  else if(response.data.code == '101'){
+								  alert("이미 리뷰한 맛집 입니다.");
+							  }
+							  else if(response.data.code == '102'){
+								  alert("나의 맛집이 등록되었습니다!!");
+							  }
+							  else if(response.data.code == '103'){
+								  alert("이미 리뷰했던 맛집이지만.. 내용을 최신본으로 업데이트 했어요!");
+							  }
+							  else{
+								  alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+							  }
+						  }
+						  else {
+							  alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+						  }
+
+					  });
+		  }
 	  },
 	  makeMarkerMyReview() {
 			  for (let i = 0; i < this.myReviewData.length; i++) {
