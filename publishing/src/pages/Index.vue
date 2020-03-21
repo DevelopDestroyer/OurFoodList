@@ -49,6 +49,7 @@
 									<p style="font-size:24px;">{{item.store_name}}
 										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
 										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+										<n-button type="primary" icon round v-on:click="deleteReview(item.review_seq)"><i class="now-ui-icons ui-1_simple-remove"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> {{item.telephone}}<br>
@@ -196,7 +197,7 @@
 											# 데이트
 										</template>
 										<template v-else-if="tagItem == '7'">
-											# 인스타감성
+											# 인스타
 										</template>
 										<template v-else-if="tagItem == '8'">
 											# 회식
@@ -218,6 +219,7 @@
 									<p style="font-size:24px;">{{item.store_name}}
 										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
 										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+										<n-button type="primary" icon round v-on:click="deleteReview(item.review_seq)"><i class="now-ui-icons ui-1_simple-remove"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> {{item.telephone}}<br>
@@ -569,6 +571,47 @@ export default {
 		this.show = true;
 	  }
 	},
+	  deleteReview(revSeq){
+    	let con = confirm("정말 삭제하시겠습니까?");
+    	if(con){
+    		let con2 = confirm("지우면 복구가 어렵습니다.. 그래도 진짜 지우실건가요?");
+    		if(con2){
+				let vm = this;
+				let form = new FormData();
+				let reviewSeqBuf = revSeq;
+				form.append('reviewSeq',revSeq);
+				axios.post('/api/deleteReview.php', form)
+						.then(function(response){
+							console.log(response);
+							if(response.data.result == 'success'){
+								if(response.data.code == '1'){
+									alert("삭제처리 되었습니다.");
+
+									//뷰단에서도 제거
+									const idx = vm.myBookmarkData.findIndex(function(item) {return item.review_seq == reviewSeqBuf}) // findIndex = find + indexOf
+									if (idx > -1) vm.myBookmarkData.splice(idx, 1)
+
+									const idx2 = vm.myReviewData.findIndex(function(item2) {return item2.review_seq == reviewSeqBuf}) // findIndex = find + indexOf
+									if (idx2 > -1) vm.myReviewData.splice(idx2, 1)
+								}
+								else if(response.data.code == '-1'){
+									alert("잘못된 시도입니다. 문제 지속 시 관리자에게 문의하세요");
+								}
+								else if(response.data.code == '-5000'){
+									alert("로그인이 필요한 서비스 입니다. 로그인 상태인지 확인해주세요");
+								}
+								else{
+									alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+								}
+							}
+							else {
+								alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+							}
+
+						});
+			}
+		}
+	  },
 	  closeOverlay() {
 	      this.mapOverlay.setMap(null);
       },

@@ -127,7 +127,7 @@
                   <label for="check7" class="form-check-label">
                       <input id="check7" type="checkbox" class="form-check-input" value="7" v-model="tags" />
                       <span class="form-check-sign"></span>
-                      인스타감성　
+                      인스타　
                   </label>
 
                   <label for="check8" class="form-check-label">

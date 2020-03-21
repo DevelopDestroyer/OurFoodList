@@ -26,6 +26,7 @@
       $LOGIN_USER_ID = '';
       if($_SESSION['userId'] == null && $_SESSION['tmpUserId' == null]){
           echo '{"result": "error", "code": "-5000", "message": "이 기능은 로그인이 필요합니다. 현재 서버에 로그인된 상태가 아닙니다."}';
+          return;
       }
       else {
           if($_SESSION['userId'] != null)
