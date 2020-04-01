@@ -111,6 +111,7 @@ export default {
 	  isUserLogin : false,
       //showMeTheMap : false,
       markerDrawReq : null,
+      markerDrawReqCnt : 0,
       closeNavbar: function(){
 		toggleClick();
       }  
@@ -122,6 +123,7 @@ export default {
       //this.showMeTheMap = true;
       console.log("그린다고하니 멈춥시다");
       clearInterval(vm.markerDrawReq);//지도 컴포넌트에서 그리겠다는 응답이 오면 요청 멈춰라
+      vm.markerDrawReqCnt = 0;
     })
   },
   created: function() {
@@ -250,9 +252,17 @@ export default {
               });
     },
     sendEmit(msg){
+      let vm = this;
       this.markerDrawReq =  setInterval(function() {
         BUS.$emit('sessionState', msg);
-        console.log("마커를 그려달라 요청을 보냅니다");
+        console.log("마커를 그려달라 요청을 보냅니다" + vm.markerDrawReqCnt + ", " + vm.markerDrawReq);
+        vm.markerDrawReqCnt++;
+        if(vm.markerDrawReqCnt > 30){
+          console.log("30회나 요청했으니 그냥 멈춥니다");
+          clearInterval(vm.markerDrawReq);
+          vm.markerDrawReqCnt = 0;
+        }
+
       }, 100);
       //BUS.$emit('sessionState', msg);
     },

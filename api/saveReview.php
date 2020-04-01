@@ -151,6 +151,9 @@
         //}
     }
     else if($updateToReviewFromBookmark){
+        if($review == 'undefined'){
+            $review = '';
+        }
         $sql = "update REVIEW_MST set visit_yn = 'Y', rating = '".$rating."', review = '".$review."', updated = '".date("Y-m-d H:i:s")."' where review_seq = ".$reviewSeqForUpdate.";";
 
         //질의 전송

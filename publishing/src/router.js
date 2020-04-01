@@ -5,6 +5,7 @@ import Landing from './pages/Landing.vue';
 import Login from './pages/Login.vue';
 import Join from './pages/Join.vue';
 import Profile from './pages/Profile.vue';
+import Restaurant from './pages/Restaurant.vue';
 import registRestaurant from './pages/registRestaurant.vue';
 import EditReview from "./pages/EditReview";
 import MainNavbar from './layout/MainNavbar.vue';
@@ -61,6 +62,14 @@ export default new Router({
       path: '/registRestaurant',
       name: 'registRestaurant',
       components: { default: registRestaurant, header: MainNavbar, footer: MainFooter},
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    },
+    {
+      path: '/Restaurant/:id',
+      name: 'restaurant',
+      components: { default: Restaurant, header: MainNavbar, footer: MainFooter},
       props: {
         header: { colorOnScroll: 400 }
       }

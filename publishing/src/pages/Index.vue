@@ -170,7 +170,7 @@
 									<br/>
 									<br/>
 									<template v-if="item.review != null && item.review != ''">
-    									<span style="padding:10px; background-color: #e4606d; color:#fff;">{{item.review}}</span>
+    									<span style="padding:5px; background-color: #e4606d; color:#fff;">{{item.review}}</span>
 	     								<br/>
 		    							<br/>
 									</template>
@@ -536,6 +536,7 @@ export default {
 								  telephone: response.data.othersdata[i].telephone,
 								  address: response.data.othersdata[i].address,
 								  roadaddress: response.data.othersdata[i].roadaddress,
+								  review_seq: response.data.othersdata[i].review_seq,
 								  lon: response.data.othersdata[i].lon,
 								  lat: response.data.othersdata[i].lat,
 								  cnt: response.data.othersdata[i].cnt,
@@ -599,6 +600,9 @@ export default {
 								}
 								else if(response.data.code == '-5000'){
 									alert("로그인이 필요한 서비스 입니다. 로그인 상태인지 확인해주세요");
+								}
+								else if(response.data.code == '-3'){
+									alert("유효하지 않은 리뷰id입니다..");
 								}
 								else{
 									alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
