@@ -18,6 +18,7 @@
               <br/>
 
           </div>
+          <div style="background-color: #FFFFFF; color:black;">
           <n-button v-if="!isRealUserLogin" v-on:click="moveJoinPage()" style="margin-top:0px;" type="warning">
               10초만에 가입
           </n-button>
@@ -28,58 +29,53 @@
               설명충
           </n-button>
           <br/>
-          <br/>
-          <br/>
-          <br/>
+
+
           <div class="row justify-content-md-center">
-
-            <fieldset class="rating" style="margin-top: -70px; height:50px;">
-
+            <fieldset class="rating" style="margin-top: 0px; height:50px;">
                   <input v-if="rating==5" type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')" checked/>
                   <input v-else type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')"/>
                   <label class="full" for="5star" title="Excellent"></label>
 
 
-                  <input v-if="rating==4.5" type="radio" id="4halfstar" name="rating" value="4.5" v-on:click="clickStar('4.5')" checked/>
+                  <input v-if="rating==4.5" type="radio" id="4halfstar" name="rating" value="4.5" v-on:click="clickStar('4.5')"/>
                   <input v-else type="radio" id="4halfstar" name="rating" value="4.5"  v-on:click="clickStar('4.5')"/>
                   <label class="half" for="4halfstar" title="Good"></label>
 
-                  <input v-if="rating==4" type="radio" id="4star" name="rating" value="4" v-on:click="clickStar('4')" checked/>
+                  <input v-if="rating==4" type="radio" id="4star" name="rating" value="4" v-on:click="clickStar('4')"/>
                   <input v-else type="radio" id="4star" name="rating" value="4"  v-on:click="clickStar('4')"/>
                   <label class="full" for="4star" title="Pretty good"></label>
 
-                <input v-if="rating==3.5" type="radio" id="3halfstar" name="rating" value="3.5" v-on:click="clickStar('3.5')" checked/>
+                <input v-if="rating==3.5" type="radio" id="3halfstar" name="rating" value="3.5" v-on:click="clickStar('3.5')"/>
                 <input v-else type="radio" id="3halfstar" name="rating" value="3.5"  v-on:click="clickStar('3.5')" />
                   <label class="half" for="3halfstar" title="Nice"></label>
 
-                <input v-if="rating==3" type="radio" id="3star" name="rating" value="3" v-on:click="clickStar('3')" checked/>
+                <input v-if="rating==3" type="radio" id="3star" name="rating" value="3" v-on:click="clickStar('3')"/>
                 <input v-else type="radio" id="3star" name="rating" value="3"  v-on:click="clickStar('3')"/>
                   <label class="full" for="3star" title="Ok"></label>
 
-                <input v-if="rating==2.5" type="radio" id="2halfstar" name="rating" value="2.5" v-on:click="clickStar('2.5')" checked/>
+                <input v-if="rating==2.5" type="radio" id="2halfstar" name="rating" value="2.5" v-on:click="clickStar('2.5')"/>
                 <input v-else type="radio" id="2halfstar" name="rating" value="2.5"  v-on:click="clickStar('2.5')"/>
                   <label class="half" for="2halfstar" title="Kinda bad"></label>
 
-                <input v-if="rating==2" type="radio" id="2star" name="rating" value="2" v-on:click="clickStar('2')" checked/>
+                <input v-if="rating==2" type="radio" id="2star" name="rating" value="2" v-on:click="clickStar('2')"/>
                 <input v-else type="radio" id="2star" name="rating" value="2"  v-on:click="clickStar('2')"/>
                   <label class="full" for="2star" title="Bad"></label>
 
-                <input v-if="rating==1.5" type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" checked/>
+                <input v-if="rating==1.5" type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')"/>
                 <input v-else type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" />
                   <label class="half" for="1halfstar" title="Meh"></label>
 
-                <input v-if="rating==1" type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" checked/>
+                <input v-if="rating==1" type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')"/>
                 <input v-else type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" />
                   <label class="full" for="1star" title="Umm"></label>
 
-                <input v-if="rating==0.5" type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" checked/>
+                <input v-if="rating==0.5" type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')"/>
                 <input v-else type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" />
                   <label class="half" for="halfstar" title="Worst"></label>
 
               </fieldset>
           </div>
-          <br/>
-          <br/>
           <div class="row justify-content-md-center">
                  <div class="form-check">
                   <label for="check1" class="form-check-label">
@@ -154,7 +150,7 @@
           </div>
 
           <n-button type="info" round @click.native="modals.notice = false" v-on:click="setEXP()">나의 맛집 등록</n-button>
-
+          </div>
 
 	   
 
