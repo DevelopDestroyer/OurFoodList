@@ -68,6 +68,9 @@
        <n-button type="primary" size="sm" v-if="item.mapx != 0 && item.isCheckBookmark && !item.isCheckEXP" disabled>
            ✔ 찜하기
        </n-button>
+       <n-button type="info" size="sm" v-on:click="goRestaurantDetail(item.storeId)">
+           상세정보
+       </n-button>
 
      </li> 
    </ul>
@@ -246,6 +249,7 @@ export default {
           notice: false
       },	  
 	  list: [
+	      /*
 		{
 		    storeId: "",
 			title: "검색해주세요!",
@@ -260,6 +264,7 @@ export default {
             isCheckEXP: false,
             isCheckBookmark: false
 		}
+		*/
 	  ],
 	  getData: function(){
 
@@ -295,7 +300,9 @@ export default {
             });
     },
   methods: {
-  
+      goRestaurantDetail(id){
+          location.href = "/#/restaurant/" + id;
+      },
 	emptyList(){
      	this.list = [];
 	},
