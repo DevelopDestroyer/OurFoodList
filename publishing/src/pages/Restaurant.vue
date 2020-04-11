@@ -31,7 +31,7 @@
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <a href="#button" class="btn btn-primary btn-round btn-lg">리뷰하기</a>
+          <a href="#button" class="btn btn-primary btn-round btn-lg" v-on:click="goEditReview(restaurantId)">리뷰하기</a>
           <a href="#button" class="btn btn-default btn-round btn-lg">찜하기</a>
         </div>
         <h3 class="title">리뷰</h3>
@@ -100,7 +100,7 @@
 
               <br/>
               <br/>
-              <span style="padding: 5px; background-color: rgb(228, 96, 109); color: rgb(255, 255, 255);">
+              <span v-if="item.review != null && item.review != ''" style="padding: 5px; background-color: rgb(228, 96, 109); color: rgb(255, 255, 255);">
                 {{item.review}}
               </span>
               <br/>
@@ -139,48 +139,13 @@
         </div>
 
 
-
-        <div class="card" style="width: 100%;">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <p style="font-size: 24px;">
-                <img src="img/avatar/8.png" width="50px" style="border-radius: 25px">
-                배방읍보안관
-              </p>
-              <i class="fa fa-clock"></i> 날짜 : 2020-04-04
-              <br/>　
-              <i class="fa fa-star-o"></i> 별점 :
-              <img src="img/marker/star.png" height="20px"><img src="img/marker/star.png" height="20px"><img src="img/marker/star.png" height="20px"><img src="img/marker/star.png" height="20px"><img src="img/marker/star.png" height="20px">
-              <br/>
-              <br/>
-              <span style="padding: 5px; background-color: rgb(228, 96, 109); color: rgb(255, 255, 255);">
-                진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!진짜 맛있음 !!!
-              </span>
-              <br/>
-              <br/>
-              <span class="badge badge-warning">
-                # 분위기
-			  </span>
-              <span class="badge badge-warning">
-			    # 배달맛집
-			  </span>
-              <span class="badge badge-warning">
-                # 가성비
-              </span>
-            </li>
-          </ul>
-        </div>
-
-
-
-
-
       </div>
     </div>
   </div>
 </template>
 <script>
 import { Tabs, TabPane , Badge} from '@/components';
+import {BUS} from "./EventBus";
 const axios = require('axios');
 
 export default {
@@ -194,27 +159,15 @@ export default {
   data(){
     return {
       restaurantId : '',
-      storeName : '도안',
-      category : '음식점 > 카페',
-      telephone : '070-8884-1204',
-      address : '경기 수원시 팔달구 인계동 1118-7',
-      roadaddress : '경기 수원시 팔달구 효원로307번길 61',
-      reviewCnt : '3',
-      bookmarkCnt : '12',
-      score : '4.4499999',
-      reviewData : [
-        {
-          userId :"테스트3",
-          storeId:"1574833588",
-          rating:"4.5",
-          review:"공하기 조아여55",
-          visitYn:"Y",
-          taglist:"1,2,3",
-          created:"2020-03-16 14:57:15",
-          avatar : "img/avatar/1.png"
-        }
-
-      ]
+      storeName : '',
+      category : '',
+      telephone : '',
+      address : '',
+      roadaddress : '',
+      reviewCnt : '',
+      bookmarkCnt : '',
+      score : '',
+      reviewData : []
     }
   },
   mounted() {
@@ -235,6 +188,14 @@ export default {
                 vm.score = response.data.score;
 
                 for(let i = 0; i < response.data.reviewData.length; i++){
+                  let avatarURL = response.data.reviewData[i].avatar;
+                  if(avatarURL == null || avatarURL == ''){
+                    avatarURL = "img/avatar/1.png";
+                  }
+                  else{
+                    avatarURL = "img/avatar/" + avatarURL + ".png";
+                  }
+
                     vm.reviewData.push({
                       userId: response.data.reviewData[i].userId,
                       storeId: response.data.reviewData[i].storeId,
@@ -243,7 +204,7 @@ export default {
                       visitYn: response.data.reviewData[i].visitYn,
                       taglist: response.data.reviewData[i].taglist,
                       created: response.data.reviewData[i].created,
-                      avatar: "img/avatar/" + response.data.reviewData[i].avatar + ".png"
+                      avatar: avatarURL
                     })
 
                 }
@@ -253,7 +214,25 @@ export default {
                 alert("식당 정보를 가져오는데 실패하였습니다..");
               }
             });
+  },
+  methods:{
+    goEditReview(storeId){
+      let reviewObj = {
+        storeId : storeId,
+        rating : '5',
+        tagList : '',
+        review : '',
+        visitYn: 'Y'
+      };
+      this.editReviewReq =  setInterval(function() {
+        BUS.$emit('editReview', reviewObj);
+        console.log("리뷰를 수정하기위한 요청을 보냅니다");
+      }, 100);
+
+      location.href="/#/EditReview";
+    }
   }
+
 };
 </script>
 <style></style>

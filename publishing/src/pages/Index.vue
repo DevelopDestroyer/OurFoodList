@@ -46,9 +46,9 @@
 						<card v-for="item in myReviewData" v-bind:key="item.id" style="width: 100%;">
 							<ul slot="raw-content" class="list-group list-group-flush">
 								<li class="list-group-item">
-									<p style="font-size:24px;">{{item.store_name}}
+									<p style="font-size:24px;"><a v-on:click="goRestaurantDetail(item.store_id)">{{item.store_name}}</a>
 										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
-										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+										<n-button type="primary" icon round v-on:click="goRestaurantDetail(item.store_id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 										<n-button type="primary" icon round v-on:click="deleteReview(item.review_seq)"><i class="now-ui-icons ui-1_simple-remove"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
@@ -216,9 +216,9 @@
 						<card v-for="item in myBookmarkData" v-bind:key="item.id" style="width: 100%;">
 							<ul slot="raw-content" class="list-group list-group-flush">
 								<li class="list-group-item">
-									<p style="font-size:24px;">{{item.store_name}}
+									<p style="font-size:24px;"><a v-on:click="goRestaurantDetail(item.store_id)">{{item.store_name}}</a>
 										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
-										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+										<n-button type="primary" icon round v-on:click="goRestaurantDetail(item.store_id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 										<n-button type="primary" icon round v-on:click="deleteReview(item.review_seq)"><i class="now-ui-icons ui-1_simple-remove"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
@@ -300,10 +300,10 @@
 						<card v-for="item in othersReviewData" v-bind:key="item.id" style="width: 100%;">
 							<ul slot="raw-content" class="list-group list-group-flush">
 								<li class="list-group-item">
-									<p style="font-size:24px;">{{item.store_name}}
+									<p style="font-size:24px;"><a v-on:click="goRestaurantDetail(item.store_id)">{{item.store_name}}</a>
 										<n-button type="primary" icon round v-on:click="goEditReview(item.store_id, 0, '', '', 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
 										<n-button type="primary" icon round v-on:click="setBookmark(item)"><i class="now-ui-icons ui-2_favourite-28"></i></n-button>
-										<n-button type="primary" icon round><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+										<n-button type="primary" icon round v-on:click="goRestaurantDetail(item.store_id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
 									</p>
 									<i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> {{item.telephone}}<br>
@@ -564,6 +564,10 @@ export default {
 	  })
   },
   methods : {
+	  goRestaurantDetail(id){
+	  	location.href = "/#/restaurant/" + id;
+
+	  },
     handleScroll (event){
 	  if(this.show && 95 >= document.getElementById("gmatList").getBoundingClientRect().top){
 		this.show = false;
@@ -730,7 +734,7 @@ export default {
 							  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
 							  '           </div-->' +
 							  '            <div class="desc">' +
-							  '                <div class="ellipsis" style="color:black;"><b>' + this.myReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.myReviewData[i].cnt + '개)</a></div>' +
+							  '                <div class="ellipsis" style="color:black;text-decoration:underline;" onclick="location.href=\'/#/restaurant/' + this.myReviewData[i].store_id + '\'"><b>' + this.myReviewData[i].store_name + '</b><br/><a onclick="location.href=\'/#/restaurant/' + this.myReviewData[i].store_id + '\'" href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.myReviewData[i].cnt + '개)</a></div>' +
 							  '                <div class="ellipsis" style="color:gray;">' + this.myReviewData[i].category + '</div>' +
 							  '                <div class="ellipsis" style="color:black;"> 나의별점 ' + myRatingImg + '<br/>평균별점 ' + othersRatingImg + ' (' + this.myReviewData[i].ratingav + '점)</div>' +
 							  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
@@ -794,7 +798,7 @@ export default {
 						  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
 						  '           </div-->' +
 						  '            <div class="desc">' +
-						  '                <div class="ellipsis" style="color:black;"><b>' + this.myBookmarkData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.myBookmarkData[i].cnt + '개)</a></div>' +
+						  '                <div class="ellipsis" style="color:black;text-decoration:underline;" onclick="location.href=\'/#/restaurant/' + this.myBookmarkData[i].store_id + '\'"><b>' + this.myBookmarkData[i].store_name + '</b> <br/><a onclick="location.href=\'/#/restaurant/' + this.myBookmarkData[i].store_id + '\'" href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.myBookmarkData[i].cnt + '개)</a></div>' +
 						  '                <div class="ellipsis" style="color:gray;">' + this.myBookmarkData[i].category + '</div>' +
 						  '                <div class="ellipsis" style="color:black;"> 평균별점 ' + othersRatingImg + ' (' + this.myBookmarkData[i].ratingav + '점)</div>' +
 						  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
@@ -854,7 +858,7 @@ export default {
 						  '                <img src="http://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">' +
 						  '           </div-->' +
 						  '            <div class="desc">' +
-						  '                <div class="ellipsis" style="color:black;"><b>' + this.othersReviewData[i].store_name + '</b> <a href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.othersReviewData[i].cnt + '개)</a></div>' +
+						  '                <div class="ellipsis" style="color:black;text-decoration:underline;" onclick="location.href=\'/#/restaurant/' + this.othersReviewData[i].store_id + '\'"><b>' + this.othersReviewData[i].store_name + '</b><br/> <a onclick="location.href=\'/#/restaurant/' + this.othersReviewData[i].store_id + '\'" href="#" style="color:gray;"> (리뷰/찜하기 개수 : ' + this.othersReviewData[i].cnt + '개)</a></div>' +
 						  '                <div class="ellipsis" style="color:gray;">' + this.othersReviewData[i].category + '</div>' +
 						  '                <div class="ellipsis" style="color:black;"> 평균별점 ' + othersRatingImg + ' (' + this.othersReviewData[i].ratingav + '점)</div>' +
 						  '                <!--div><a href="http://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div-->' +
@@ -892,7 +896,7 @@ export default {
 		};
     	this.editReviewReq =  setInterval(function() {
 			BUS.$emit('editReview', reviewObj);
-			console.log("마커를 그려달라 요청을 보냅니다");
+			console.log("리뷰를 수정하기위한 요청을 보냅니다");
 		}, 100);
 
     	location.href="/#/EditReview";
