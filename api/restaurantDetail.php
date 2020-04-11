@@ -8,6 +8,53 @@
 -1 : isset 공백 에러
  */
 
+
+/*
+ * 샘플데이터 입니다
+{
+"result":"success",
+"code":"1",
+"storeId":"1574833588",
+"storeName":"도안",
+"category":"음식점 > 카페",
+"telephone":"070-8884-1204",
+"address":"경기 수원시 팔달구 인계동 1118-7",
+"roadaddress":"경기 수원시 팔달구 효원로307번길 61",
+"reviewCnt":"3",
+"bookmarkCnt":"0",
+"score":"4.333333333333333",
+"reviewData":[
+    {
+    "userId":"테스트3",
+    "storeId":"1574833588",
+    "rating":"5",
+    "review":"카공하기 조아여55",
+    "visitYn":"Y",
+    "taglist":"",
+    "created":"2020-03-16 14:57:15"
+    },
+    {
+    "userId":"테스트",
+    "storeId":"1574833588",
+    "rating":"5",
+    "review":"",
+    "visitYn":"Y",
+    "taglist":"",
+    "created":"2020-03-15 19:17:15"
+    },
+    {
+    "userId":"테스트2",
+    "storeId":"1574833588",
+    "rating":"3",
+    "review":"맛난당",
+    "visitYn":"Y",
+    "taglist":"2,5,1",
+    "created":"2020-03-12 00:52:33"
+    }
+]
+}
+ */
+
 $config = parse_ini_file('../config.ini', true);
 $db_host = "localhost";
 $db_user_name = $config['dbusername'];
@@ -116,7 +163,7 @@ if (isset($_GET['restaurantId'])) {
     $resultJson = $resultJson.'] }';
 
 
-    //비어있는 get데이터가 있음
+    echo $resultJson;
 
 }
 else{
