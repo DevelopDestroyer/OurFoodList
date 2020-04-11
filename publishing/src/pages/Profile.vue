@@ -124,14 +124,15 @@
   </div>
 </template>
 <script>
-import { Tabs, TabPane } from '@/components';
+import { Tabs, TabPane, Badge } from '@/components';
 
 export default {
   name: 'profile',
   bodyClass: 'profile-page',
   components: {
     Tabs,
-    TabPane
+    TabPane,
+    [Badge.name]: Badge
   }
 };
 </script>

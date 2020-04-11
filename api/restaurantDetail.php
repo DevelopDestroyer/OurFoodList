@@ -31,7 +31,8 @@
     "review":"카공하기 조아여55",
     "visitYn":"Y",
     "taglist":"",
-    "created":"2020-03-16 14:57:15"
+    "created":"2020-03-16 14:57:15",
+    "avatar" : "1"
     },
     {
     "userId":"테스트",
@@ -135,7 +136,8 @@ if (isset($_GET['restaurantId'])) {
 
     //식당 리뷰리스트를 반환합니다
     $resultJson = $resultJson.'"reviewData" : [';
-    $sql = "select personallist.user_id, personallist.store_id, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created
+    $sql = "SELECT review_info.*, user_mst.avatar FROM
+(select personallist.user_id, personallist.store_id, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created
         from 
               ( 
               select store.store_id, review.user_id, review.review_seq, review.rating, review.review, review.visit_yn, review.created
@@ -144,7 +146,7 @@ if (isset($_GET['restaurantId'])) {
         left join 
              (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
         on 
-            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC";
+            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC) review_info, USER_MST user_mst WHERE review_info.user_id = user_mst.user_id and user_mst.level > 0;";
     $result = mysqli_query($connect, $sql);
     $flag = false;
     while ($row = mysqli_fetch_row($result)) {
@@ -155,7 +157,8 @@ if (isset($_GET['restaurantId'])) {
         $resultJson = $resultJson.'"review" : "'.$row[3].'", ';
         $resultJson = $resultJson.'"visitYn" : "'.$row[4].'", ';
         $resultJson = $resultJson.'"taglist" : "'.$row[5].'", ';
-        $resultJson = $resultJson.'"created" : "'.$row[6].'"},';
+        $resultJson = $resultJson.'"created" : "'.$row[6].'", ';
+        $resultJson = $resultJson.'"avatar" : "'.$row[7].'"},';
     }
     if($flag){
         $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
