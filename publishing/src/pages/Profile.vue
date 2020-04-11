@@ -8,7 +8,7 @@
       </parallax>
       <div class="container">
         <div class="photo-container">
-          <img src="img/ryan.jpg" alt="" />
+          <img src="img/avatar/8.png" alt=""/>
         </div>
         <h3 class="title">Ryan Scheinder</h3>
         <p class="category">Photographer</p>

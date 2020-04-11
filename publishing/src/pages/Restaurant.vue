@@ -39,7 +39,7 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <p style="font-size: 24px;">
-                <button type="button" class="btn btn-icon btn-round btn-info"><i class="now-ui-icons ui-1_zoom-bold"></i></button>
+                <img src="img/avatar/8.png" width="50px" style="border-radius: 25px">
                 배방읍보안관
               </p>
               <i class="fa fa-clock"></i> 날짜 : 2020-04-04
