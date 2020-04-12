@@ -146,7 +146,7 @@ if (isset($_GET['restaurantId'])) {
         left join 
              (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
         on 
-            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC) review_info, USER_MST user_mst WHERE review_info.user_id = user_mst.user_id and user_mst.level > 0;";
+            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC) review_info, USER_MST user_mst WHERE review_info.user_id = user_mst.user_id and user_mst.level > 0 ORDER BY review_info.created DESC LIMIT 100;";
     $result = mysqli_query($connect, $sql);
     $flag = false;
     while ($row = mysqli_fetch_row($result)) {

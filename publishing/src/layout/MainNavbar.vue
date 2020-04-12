@@ -53,7 +53,7 @@
           <p>　맛집등록</p>
         </a>
       </li>
-      <li class="nav-item">
+      <!--li class="nav-item">
         <a
                 class="nav-link"
                 href="/#/"
@@ -71,6 +71,16 @@
         >
           <i class="now-ui-icons users_circle-08"></i>
           <p>　내 정보</p>
+        </a>
+      </li-->
+      <li class="nav-item">
+        <a
+                class="nav-link"
+                @click="closeNavbar"
+                href="/#/newsfeed"
+        >
+          <i class="fa fa-users"></i>
+          <p>　친구들리뷰</p>
         </a>
       </li>
       <li v-if="isUserLogin" class="nav-item">

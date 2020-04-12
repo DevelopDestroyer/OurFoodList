@@ -8,41 +8,25 @@
       </parallax>
       <div class="container">
 
-        <h1 class="title">{{storeName}}</h1>
-        <p class="category">{{address}}</p>
-        <p class="category">{{category}}</p>
-        <p class="category">{{telephone}}</p>
-        <div class="content">
-          <div class="social-description">
-            <h2>{{reviewCnt}}</h2>
-            <p>리뷰</p>
-          </div>
-          <div class="social-description">
-            <h2>{{bookmarkCnt}}</h2>
-            <p>찜하기</p>
-          </div>
-          <div class="social-description">
-            <h2>{{Number.parseFloat(score).toFixed(2)}}</h2>
-            <p>별점</p>
-          </div>
-        </div>
+        <h1 class="title">친구들리뷰</h1>
+        <p class="category">친구 및 다른사람의 리뷰를 확인할 수 있습니다.</p>
       </div>
     </div>
     <div class="section">
       <div class="container">
-        <div class="button-container">
-          <a href="#button" class="btn btn-primary btn-round btn-lg" v-on:click="goEditReview(restaurantId)">리뷰하기</a>
-          <a href="#button" class="btn btn-default btn-round btn-lg" v-on:click="setBookmark(restaurantId)">찜하기</a>
-        </div>
-        <h3 class="title">리뷰</h3>
-
-
+        <h3 class="title">친구들 리뷰</h3>
         <div class="card" style="width: 100%;"  v-for="item in reviewData" v-bind:key="item.id">
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <p style="font-size: 24px;">
                 <img :src=item.avatar width="50px" style="border-radius: 25px">
                 {{item.userId}}
+              </p>
+              <p style="font-size: 24px;">
+                <i class="fa fa-flag"></i>
+                {{item.storeName}}
+                <n-button type="primary" icon round v-on:click="goRestaurantDetail(item.storeId)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+
               </p>
               <i class="fa fa-clock"></i> 날짜 : {{item.created}}
               <br/>　
@@ -144,7 +128,7 @@
   </div>
 </template>
 <script>
-import { Tabs, TabPane , Badge} from '@/components';
+import { Tabs, TabPane , Badge, Button, FormGroupInput} from '@/components';
 import {BUS} from "./EventBus";
 const axios = require('axios');
 
@@ -154,7 +138,9 @@ export default {
   components: {
     Tabs,
     TabPane,
-    [Badge.name]: Badge
+    [Badge.name]: Badge,
+    [Button.name]: Button,
+    [FormGroupInput.name]: FormGroupInput
   },
   data(){
     return {
@@ -174,20 +160,10 @@ export default {
   mounted() {
     this.restaurantId = this.$route.params.id;
     let vm = this;
-    axios.get('/api/restaurantDetail.php?restaurantId=' + this.restaurantId)
+    axios.get('/api/newsfeed.php')
             .then(function(response){
               console.log(response);
               if(response.data.code == '1') {
-
-                vm.storeName = response.data.storeName;
-                vm.category = response.data.category;
-                vm.telephone = response.data.telephone;
-                vm.address = response.data.address;
-                vm.roadaddress = response.data.roadaddress;
-                vm.reviewCnt = response.data.reviewCnt;
-                vm.bookmarkCnt = response.data.bookmarkCnt;
-                vm.score = response.data.score;
-
                 for(let i = 0; i < response.data.reviewData.length; i++){
                   let avatarURL = response.data.reviewData[i].avatar;
                   if(avatarURL == null || avatarURL == ''){
@@ -205,6 +181,7 @@ export default {
                       visitYn: response.data.reviewData[i].visitYn,
                       taglist: response.data.reviewData[i].taglist,
                       created: response.data.reviewData[i].created,
+                      storeName: response.data.reviewData[i].storeName,
                       avatar: avatarURL
                     })
 
@@ -217,70 +194,9 @@ export default {
             });
   },
   methods:{
-    goEditReview(storeId){
-      let reviewObj = {
-        storeId : storeId,
-        rating : '5',
-        tagList : '',
-        review : '',
-        visitYn: 'Y'
-      };
-      var vm = this;
-      this.editReviewReq =  setInterval(function() {
-        BUS.$emit('editReview', reviewObj);
-        console.log("리뷰를 수정하기위한 요청을 보냅니다");
-        vm.editReviewReqCnt++;
-        if(vm.editReviewReqCnt > 30){
-          clearInterval(vm.editReviewReq);
-          vm.editReviewReqCnt = 0;
-        }
-      }, 100);
+    goRestaurantDetail(id){
+      location.href = "/#/restaurant/" + id;
 
-      location.href="/#/EditReview";
-    },
-    setBookmark(store_id){
-      var res = confirm("여기를 찜하기로 기록 할까요?");
-      if(res){
-
-        //전송부분 구현...
-        let form = new FormData();
-        form.append('storeId', store_id);
-        form.append('rating', '0');
-        form.append('review','');
-        form.append('visitYn','N');
-        form.append('tags','');
-        form.append('delYn',"N");
-
-
-        axios.post('/api/saveReview.php', form)
-                .then(function(response){
-                  console.log(response);
-                  if(response.data.result == 'success'){
-                    if(response.data.code == '1'){
-                      alert("찜했어요!");
-                    }
-                    else if(response.data.code == '100'){
-                      alert("이미 찜한 맛집 입니다.");
-                    }
-                    else if(response.data.code == '101'){
-                      alert("이미 리뷰한 맛집 입니다.");
-                    }
-                    else if(response.data.code == '102'){
-                      alert("나의 맛집이 등록되었습니다!!");
-                    }
-                    else if(response.data.code == '103'){
-                      alert("이미 리뷰했던 맛집이지만.. 내용을 최신본으로 업데이트 했어요!");
-                    }
-                    else{
-                      alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
-                    }
-                  }
-                  else {
-                    alert("에러가 발생하였습니다. 관리자에게 문의하세요");
-                  }
-
-                });
-      }
     }
   }
 

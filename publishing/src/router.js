@@ -8,6 +8,7 @@ import Profile from './pages/Profile.vue';
 import Restaurant from './pages/Restaurant.vue';
 import registRestaurant from './pages/registRestaurant.vue';
 import EditReview from "./pages/EditReview";
+import Newsfeed from "./pages/Newsfeed";
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
 
@@ -70,6 +71,14 @@ export default new Router({
       path: '/Restaurant/:id',
       name: 'restaurant',
       components: { default: Restaurant, header: MainNavbar, footer: MainFooter},
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    },
+    {
+      path: '/newsfeed',
+      name: 'newsfeed',
+      components: { default: Newsfeed, header: MainNavbar, footer: MainFooter},
       props: {
         header: { colorOnScroll: 400 }
       }

@@ -247,8 +247,12 @@ export default {
             vm.targetId = data.storeId;
             vm.memo = data.review;
             vm.rating = data.rating;
-            vm.tags = data.tagList.split(',');
-            vm.tags.slice().sort(function(a,b){return a - b}).reduce(function(a,b){if (a.slice(-1)[0] !== b) a.push(b);return a;},[]);
+            if(data.tagList == '')
+                vm.tags = [];
+            else{
+                vm.tags = data.tagList.split(',');
+                vm.tags.slice().sort(function(a,b){return a - b}).reduce(function(a,b){if (a.slice(-1)[0] !== b) a.push(b);return a;},[]);
+            }
             vm.visitYn = data.visitYn;
             /*
             storeId : storeId,

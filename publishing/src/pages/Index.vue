@@ -449,13 +449,14 @@ export default {
 		myReviewData: [],
 		myBookmarkData: [],
 		othersReviewData: [],
-		editReviewReq: null
+		editReviewReq: null,
+		editReviewReqCnt : 0
 	}
   },
   mounted() {
       var container = document.getElementById('map');
         var mapOptions = {
-            center: new kakao.maps.LatLng(37.4011778,127.1112022),
+            center: new kakao.maps.LatLng(36.5333321,127.8912452),
             level: 12 //지도의 레벨(확대, 축소 정도)
         };
         this.mapData = new kakao.maps.Map(container, mapOptions);
@@ -894,9 +895,15 @@ export default {
 			review : memo,
 			visitYn: visitYn
 		};
+    	var vm = this;
     	this.editReviewReq =  setInterval(function() {
 			BUS.$emit('editReview', reviewObj);
-			console.log("리뷰를 수정하기위한 요청을 보냅니다");
+			console.log("리뷰를 수정하기위한 요청을 보냅니다" + reviewObj.tagList);
+			vm.editReviewReqCnt++;
+			if(vm.editReviewReqCnt > 30){
+				clearInterval(vm.editReviewReq);
+				vm.editReviewReq = 0;
+			}
 		}, 100);
 
     	location.href="/#/EditReview";
