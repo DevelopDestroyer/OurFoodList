@@ -78,6 +78,8 @@
                   $result = mysqli_query($connect, $sql);
 
                   $sql = "update REVIEW_MST set user_id = '".mysqli_real_escape_string($connect, $userId)."' where user_id='".mysqli_real_escape_string($connect, $tmpIdForUpgradeAccount)."';";
+                  $result = mysqli_query($connect, $sql);
+
               }
               mysqli_close($connect);
               echo '{"result": "success", "code": "2", "message": "회원가입이 완료되었습니다."}';
