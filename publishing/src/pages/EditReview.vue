@@ -18,7 +18,7 @@
               <br/>
 
           </div>
-          <div style="background-color: #FFFFFF; color:black;">
+          <div style="background-color: #FFFFFF; color:black; padding:20px;">
           <n-button v-if="!isRealUserLogin" v-on:click="moveJoinPage()" style="margin-top:0px;" type="warning">
               10초만에 가입
           </n-button>

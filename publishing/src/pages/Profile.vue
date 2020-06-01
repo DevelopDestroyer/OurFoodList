@@ -14,12 +14,21 @@
         <p class="category">개발자</p>
         <div class="content">
           <div class="social-description">
-            <h2>26/126</h2>
-            <p>리뷰/찜</p>
+            <h2>26</h2>
+            <p>리뷰</p>
           </div>
           <div class="social-description">
-            <h2>35/1023</h2>
-            <p>팔로잉/팔로워</p>
+            <h2>126</h2>
+            <p>찜</p>
+          </div>
+
+          <div class="social-description">
+            <h2>35</h2>
+            <p>팔로잉</p>
+          </div>
+          <div class="social-description">
+            <h2>1023</h2>
+            <p>팔로워</p>
           </div>
         </div>
       </div>
@@ -79,10 +88,12 @@
           solid groove structure. An artist of considerable range.
         </h5>
         <div class="row">
-          <div class="col-md-6 ml-auto mr-auto">
+          <div class="col-md-12 ml-auto mr-auto">
             <h4 class="title text-center">프로필</h4>
           </div>
           <br/>
+
+          <div class="col-md-12 ml-auto mr-auto">
           <tabs
             pills
             class="nav-align-center"
@@ -405,6 +416,7 @@
             </tab-pane>
 
           </tabs>
+          </div>
         </div>
       </div>
     </div>
