@@ -33,45 +33,34 @@
 
           <div class="row justify-content-md-center">
             <fieldset class="rating" style="margin-top: 0px; height:50px;">
-                  <input v-if="rating==5" type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')" checked/>
-                  <input v-else type="radio" id="5star" name="rating" value="5" v-on:click="clickStar('5')"/>
+                  <input type="radio" ref="s5" id="5star" name="rating" value="5" v-on:click="clickStar('5')"/>
                   <label class="full" for="5star" title="Excellent"></label>
 
-
-                  <input v-if="rating==4.5" type="radio" id="4halfstar" name="rating" value="4.5" v-on:click="clickStar('4.5')"/>
-                  <input v-else type="radio" id="4halfstar" name="rating" value="4.5"  v-on:click="clickStar('4.5')"/>
+                  <input type="radio" ref="s4h" id="4halfstar" name="rating" value="4.5" v-on:click="clickStar('4.5')"/>
                   <label class="half" for="4halfstar" title="Good"></label>
 
-                  <input v-if="rating==4" type="radio" id="4star" name="rating" value="4" v-on:click="clickStar('4')"/>
-                  <input v-else type="radio" id="4star" name="rating" value="4"  v-on:click="clickStar('4')"/>
+                  <input type="radio" ref="s4" id="4star" name="rating" value="4" v-on:click="clickStar('4')"/>
                   <label class="full" for="4star" title="Pretty good"></label>
 
-                <input v-if="rating==3.5" type="radio" id="3halfstar" name="rating" value="3.5" v-on:click="clickStar('3.5')"/>
-                <input v-else type="radio" id="3halfstar" name="rating" value="3.5"  v-on:click="clickStar('3.5')" />
+                <input type="radio" ref="s3h" id="3halfstar" name="rating" value="3.5" v-on:click="clickStar('3.5')"/>
                   <label class="half" for="3halfstar" title="Nice"></label>
 
-                <input v-if="rating==3" type="radio" id="3star" name="rating" value="3" v-on:click="clickStar('3')"/>
-                <input v-else type="radio" id="3star" name="rating" value="3"  v-on:click="clickStar('3')"/>
+                <input type="radio" ref="s3" id="3star" name="rating" value="3" v-on:click="clickStar('3')"/>
                   <label class="full" for="3star" title="Ok"></label>
 
-                <input v-if="rating==2.5" type="radio" id="2halfstar" name="rating" value="2.5" v-on:click="clickStar('2.5')"/>
-                <input v-else type="radio" id="2halfstar" name="rating" value="2.5"  v-on:click="clickStar('2.5')"/>
+                <input type="radio" ref="s2h" id="2halfstar" name="rating" value="2.5" v-on:click="clickStar('2.5')"/>
                   <label class="half" for="2halfstar" title="Kinda bad"></label>
 
-                <input v-if="rating==2" type="radio" id="2star" name="rating" value="2" v-on:click="clickStar('2')"/>
-                <input v-else type="radio" id="2star" name="rating" value="2"  v-on:click="clickStar('2')"/>
+                <input type="radio" ref="s2" id="2star" name="rating" value="2" v-on:click="clickStar('2')"/>
                   <label class="full" for="2star" title="Bad"></label>
 
-                <input v-if="rating==1.5" type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')"/>
-                <input v-else type="radio" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')" />
+                <input type="radio" ref="s1h" id="1halfstar" name="rating" value="1.5" v-on:click="clickStar('1.5')"/>
                   <label class="half" for="1halfstar" title="Meh"></label>
 
-                <input v-if="rating==1" type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')"/>
-                <input v-else type="radio" id="1star" name="rating" value="1" v-on:click="clickStar('1')" />
+                <input type="radio" ref="s1" id="1star" name="rating" value="1" v-on:click="clickStar('1')"/>
                   <label class="full" for="1star" title="Umm"></label>
 
-                <input v-if="rating==0.5" type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')"/>
-                <input v-else type="radio" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')" />
+                <input type="radio" ref="sh" id="halfstar" name="rating" value="0.5" v-on:click="clickStar('0.5')"/>
                   <label class="half" for="halfstar" title="Worst"></label>
 
               </fieldset>
@@ -243,7 +232,29 @@ export default {
 
         BUS.$on('editReview',function(data) {
             BUS.$emit('startEditReview', 1)
-            console.log("에딧리뷰 요청이 왔어요 : " + data.tagList);
+            console.log("에딧리뷰 요청이 왔어요 : " + data.rating);
+            if(data.rating == 5)
+                vm.$refs.s5.click();
+            else if(data.rating == 4.5)
+                vm.$refs.s4h.click();
+            else if(data.rating == 4)
+                vm.$refs.s4.click();
+            else if(data.rating == 3.5)
+                vm.$refs.s3h.click();
+            else if(data.rating == 3)
+                vm.$refs.s3.click();
+            else if(data.rating == 2.5)
+                vm.$refs.s2h.click();
+            else if(data.rating == 2)
+                vm.$refs.s2.click();
+            else if(data.rating == 1.5)
+                vm.$refs.s1.click();
+            else if(data.rating == 1)
+                vm.$refs.s1.click();
+            else if(data.rating == 0.5)
+                vm.$refs.sh.click();
+
+            //vm.clickStar(data.rating);
             vm.targetId = data.storeId;
             vm.memo = data.review;
             vm.rating = data.rating;
