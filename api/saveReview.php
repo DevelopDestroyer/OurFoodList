@@ -135,7 +135,7 @@
         $sql = "insert into REVIEW_TAG (review_seq, tag_code) values ";
         for($i=0; $i < count($tags_arr); $i++){
             if($tags_arr[$i] != null && $tags_arr[$i] != '') {
-                $sql = $sql . "(" . $reviewSeqForUpdate . "," . $tags_arr[$i] . ")";
+                $sql = $sql . "(" . $autoIncreasedId . "," . $tags_arr[$i] . ")";
                 if ($i < (count($tags_arr) - 1))
                     $sql = $sql . ",";
             }
