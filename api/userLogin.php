@@ -55,9 +55,12 @@
                   session_start();
                   $_SESSION["tmpUserId"] = $userId;
                   echo '{"result": "success", "code": "1", "message": "게스트계정 로그인 완료"}';
+                  mysqli_close($connect);
                   return;
               }
               echo '{"result": "error", "code": "-100", "message": "존재하지 않는 게스트아이디 입니다 : '.$userId.'"}';
+              mysqli_close($connect);
+
               return;
           }
           else{//실유저 로그인 처리
@@ -68,15 +71,20 @@
                   session_start();
                   $_SESSION["userId"] = $userId;
                   echo '{"result": "success", "code": "2", "message": "로그인 완료"}';
+                  mysqli_close($connect);
+
                   return;
               }
               echo '{"result": "error", "code": "-200", "message": "존재하지 않는 아이디거나 패스워드가 일치하지 않습니다."}';
+              mysqli_close($connect);
               return;
           }
       }
       else{//로그아웃 요청 처리
           session_start();
           session_destroy();
+          mysqli_close($connect);
+
           echo '{"result": "success", "code": "3", "message": "로그아웃 완료"}';
       }
 
@@ -84,6 +92,8 @@
   else{
       //비어있는 post데이터가 있음
       echo '{"result": "error", "code": "-1", "message": "empty data"}';
+      mysqli_close($connect);
+
   }
 
 ?>
