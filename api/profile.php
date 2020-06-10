@@ -62,28 +62,45 @@
       //상대와 친구인지 확인
       // 0 : 아무관계아님, 1 : 내가 친구, 2 : 상대가 친추, 3 : 맞팔 상태
       $isFriend = 0;
-      $sql = "SELECT * FROM FRIENDS WHERE user_id = '".$myId."' AND friend_id = '".$userId."';";
+      $sql = "SELECT a.user_id, a.friend_id, b.level FROM FRIENDS a, USER_MST b WHERE a.user_id = '".$myId."' AND a.friend_id = '".$userId."' AND a.user_id = b.user_id;";
       $result = mysqli_query($connect, $sql);
       while ($row = mysqli_fetch_row($result)) {
           $isFriend += 1;
       }
-      $sql = "SELECT * FROM FRIENDS WHERE user_id = '".$userId."' AND friend_id = '".$myId."';";
+      $sql = "SELECT a.user_id, a.friend_id, b.level FROM FRIENDS a, USER_MST b WHERE a.user_id = '".$userId."' AND a.friend_id = '".$myId."' AND a.user_id = b.user_id;";
       $result = mysqli_query($connect, $sql);
       while ($row = mysqli_fetch_row($result)) {
           $isFriend += 2;
       }
-      $resultJsonData .= '"friendship": "'.$isFriend.'" ';
+      $resultJsonData .= '"friendship": "'.$isFriend.'", ';
 
       //이 사람의 친구 리스트
-      /*
-      $resultJsonData .= '"following": [{'; //이사람이 친추한 사람들
-      $sql = "SELECT * FROM FRIENDS WHERE user_id = '".$userId."';";
+      $resultJsonData .= '"following": ['; //이사람이 친추한 사람들
+      $flagMy = false;
+      $sql = "SELECT a.user_id, a.friend_id, b.level FROM FRIENDS a, USER_MST b WHERE a.user_id = '".$userId."' AND a.friend_id = b.user_id;";
       $result = mysqli_query($connect, $sql);
       while ($row = mysqli_fetch_row($result)) {
-          $isFriend += 2;
+          $flagMy = true;
+          $resultJsonData .= '{"id": "'.$row[1].'", "level" : "'.$row[2].'"},';
       }
-      $resultJsonData .= '}]';
-      */
+      if($flagMy)
+          $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
+      $resultJsonData .= ']';
+
+      //이 사람의 팔로워 리스트
+      $resultJsonData .= '"follower": ['; //이사람을 친추한 사람들
+      $sql = "SELECT a.user_id, a.friend_id, b.level FROM FRIENDS a, USER_MST b WHERE a.friend = '".$userId."' AND a.user_id = b.user_id;";
+      $result = mysqli_query($connect, $sql);
+      $flagMy = false;
+      while ($row = mysqli_fetch_row($result)) {
+          $flagMy = true;
+          $resultJsonData .= '{"id": "'.$row[0].'", "level" : "'.$row[2].'"},';
+      }
+      if($flagMy)
+          $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
+      $resultJsonData .= ']';
+
+
       $resultJsonData .= '}';
       echo $resultJsonData;
 
