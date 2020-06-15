@@ -86,6 +86,16 @@
       <li v-if="isUserLogin" class="nav-item">
         <a
                 class="nav-link"
+                @click="closeNavbar"
+                href="/#/profile/_my"
+        >
+          <i class="now-ui-icons users_circle-08"></i>
+          <p>　내정보</p>
+        </a>
+      </li>
+      <li v-if="isUserLogin" class="nav-item">
+        <a
+                class="nav-link"
                 href="#"
                 v-on:click="logout()"
         >

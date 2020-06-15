@@ -10,24 +10,24 @@
         <div class="photo-container">
           <img src="img/avatar/8.png" alt=""/>
         </div>
-        <h3 class="title">이거좀먹어봐</h3>
-        <p class="category">개발자</p>
+        <h3 class="title">{{userId}}</h3>
+        <p class="category">베타버전 입니다.</p>
         <div class="content">
           <div class="social-description">
-            <h2>26</h2>
+            <h2>:)</h2>
             <p>리뷰</p>
           </div>
           <div class="social-description">
-            <h2>126</h2>
+            <h2>:(</h2>
             <p>찜</p>
           </div>
 
           <div class="social-description">
-            <h2>35</h2>
+            <h2>{{following.length}}</h2>
             <p>팔로잉</p>
           </div>
           <div class="social-description">
-            <h2>1023</h2>
+            <h2>{{follower.length}}</h2>
             <p>팔로워</p>
           </div>
         </div>
@@ -81,12 +81,6 @@
           </tabs>
         </div-->
 
-        <h5 class="description">
-          An artist of considerable range, Ryan — the name taken by
-          Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and
-          records all of his own music, giving it a warm, intimate feel with a
-          solid groove structure. An artist of considerable range.
-        </h5>
         <div class="row">
           <div class="col-md-12 ml-auto mr-auto">
             <h4 class="title text-center">프로필</h4>
@@ -358,6 +352,54 @@
               </div>
             </tab-pane>
 
+            <tab-pane title="Friends" style="margin-bottom:20px;">
+              <div slot="label">
+                <i class="now-ui-icons users_single-02"></i>친구들
+              </div>
+
+              <div class="col-md-10 ml-auto mr-auto">
+                <div class="row collections">
+                  <div class="col-md-12">
+                    <div slot="label">
+                      <h5>팔로잉</h5>
+                    </div>
+                    <div class="card" style="width: 100%;"  v-for="item in following" v-bind:key="item.id">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          <p style="font-size: 24px;">
+                            <img :src='"img/avatar/"+item.avatar+".png"' width="50px" style="border-radius: 25px">
+                            {{item.id}}
+                            <badge type="warning">
+                              Lv. {{item.level}}
+                            </badge>
+                            　<n-button type="primary" icon round v-on:click="goUserDetail(item.id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                    <div slot="label">
+                      <h5>팔로워</h5>
+                    </div>
+                    <div class="card" style="width: 100%;"  v-for="item in follower" v-bind:key="item.id">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          <p style="font-size: 24px;">
+                            <img :src='"img/avatar/"+item.avatar+".png"' width="50px" style="border-radius: 25px">
+                            {{item.id}}
+                            <badge type="warning">
+                              Lv. {{item.level}}
+                            </badge>
+                            　<n-button type="primary" icon round v-on:click="goUserDetail(item.id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>-
+                </div>
+              </div>
+            </tab-pane>
+
+
             <tab-pane title="Visit" style="margin-bottom:20px;">
               <div slot="label">
                 <i class="now-ui-icons ui-2_chat-round"></i>방명록
@@ -377,25 +419,9 @@
               </div>
             </tab-pane>
 
-            <tab-pane title="Friends" style="margin-bottom:20px;">
-              <div slot="label">
-                <i class="now-ui-icons users_single-02"></i>친구들
-              </div>
 
-              <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-6">
-                    <img src="img/bg3.jpg" alt="" class="img-raised" />
-                    <img src="img/bg8.jpg" alt="" class="img-raised" />
-                  </div>
-                  <div class="col-md-6">
-                    <img src="img/bg7.jpg" alt="" class="img-raised" />
-                    <img src="img/bg6.jpg" class="img-raised" />
-                  </div>
-                </div>
-              </div>
-            </tab-pane>
 
+            <!--
             <tab-pane title="Settings" style="margin-bottom:20px;">
               <div slot="label">
                 <i class="now-ui-icons ui-1_settings-gear-63"></i>계정관리
@@ -414,6 +440,7 @@
                 </div>
               </div>
             </tab-pane>
+            -->
 
           </tabs>
           </div>
@@ -423,16 +450,87 @@
   </div>
 </template>
 <script>
-import { Tabs, TabPane, Badge } from '@/components';
-
+import { Tabs, TabPane, Badge, Button, FormGroupInput} from '@/components';
+const axios = require('axios');
 export default {
   name: 'profile',
   bodyClass: 'profile-page',
   components: {
     Tabs,
     TabPane,
-    [Badge.name]: Badge
+    [Badge.name]: Badge,
+    [Button.name]: Button,
+    [FormGroupInput.name]: FormGroupInput
+  },
+  data() {
+    return {
+      userId: '',
+      //level: '',
+      //reviewCnt: '',
+      //bookmarkCnt: '',
+
+      friendship: '',
+      following: [],
+      follower: []
+    }
+  },
+  mounted() {
+    let vm = this;
+
+    if(this.$route.params.id == '_my'){
+      this.userId = localStorage.getItem('gmatUserId');
+    }
+    else{
+      this.userId = this.$route.params.id;
+    }
+
+    axios.get('/api/profile.php?userId=' + this.userId)
+            .then(function(response){
+              console.log(response);
+
+              if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
+
+                vm.friendship = response.data.friendship;
+                vm.following = response.data.following;
+                vm.follower = response.data.follower;
+
+              }
+              else{
+                alert("유저 정보를 가져오는데 실패하였습니다..");
+              }
+            });
+
+
+  },
+  methods :{
+    goUserDetail(id){
+      let vm = this;
+
+      location.href="#";
+      location.href="/#/profile/" + id;
+      this.userId = id;
+      axios.get('/api/profile.php?userId=' + id)
+              .then(function(response){
+                console.log(response);
+
+                if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
+
+                  vm.friendship = response.data.friendship;
+                  vm.following = response.data.following;
+                  vm.follower = response.data.follower;
+
+                }
+                else{
+                  alert("유저 정보를 가져오는데 실패하였습니다..");
+                }
+              });
+
+
+
+
+    }
   }
+
 };
 </script>
 <style></style>

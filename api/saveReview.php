@@ -115,8 +115,15 @@
         if($visit_yn == 'N')
             $bookMarkRating = null;
 
-        $sql = "insert into REVIEW_MST (user_id, store_id, visit_yn, del_yn, rating, review, created, updated) values ";
-        $sql = $sql."('".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."', '".mysqli_real_escape_string($connect, $store_id)."', '".mysqli_real_escape_string($connect, $visit_yn)."', 'N', '".mysqli_real_escape_string($connect, $bookMarkRating)."', '".mysqli_real_escape_string($connect, $review)."', '".date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
+        $sql = '';
+        if($bookMarkRating == null){
+            $sql = "insert into REVIEW_MST (user_id, store_id, visit_yn, del_yn, rating, review, created, updated) values ";
+            $sql = $sql."('".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."', '".mysqli_real_escape_string($connect, $store_id)."', '".mysqli_real_escape_string($connect, $visit_yn)."', 'N', null, '".mysqli_real_escape_string($connect, $review)."', '".date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
+        }
+        else{
+            $sql = "insert into REVIEW_MST (user_id, store_id, visit_yn, del_yn, rating, review, created, updated) values ";
+            $sql = $sql."('".mysqli_real_escape_string($connect, $LOGIN_USER_ID)."', '".mysqli_real_escape_string($connect, $store_id)."', '".mysqli_real_escape_string($connect, $visit_yn)."', 'N', '".mysqli_real_escape_string($connect, $bookMarkRating)."', '".mysqli_real_escape_string($connect, $review)."', '".date("Y-m-d H:i:s"). "', '".date("Y-m-d H:i:s")."');";
+        }
 
         //질의 전송
         $result = mysqli_query($connect, $sql);
