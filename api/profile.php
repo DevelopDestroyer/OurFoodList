@@ -2,14 +2,9 @@
 
 /*
 결과코드
-1 : 친추성공
-2 : 언팔성공 성공
--100 : 존재하지 않는 임시 아이디 입니다. 문제가 지속돼면 캐시데이터를 삭제 후 시도해보세요
--200 : 암호 틀리거나 아이디가 틀림
+1 : 내 프로필
+2 : 다른이의 프로필
 -1 : isset 공백 에러
--2 : 세션에 없는 유저가 요청을 시도함
--3 : 세션유저와 요청유저가 동일하지 않음...
--4 : 자신과 친추시도함
  */
 
   $config = parse_ini_file('../config.ini', true);
@@ -20,7 +15,7 @@
   $resultJsonData = '';
 
   //sql인젝션 방지
-  if (isset($_POST['userId'])) {
+  if (isset($_GET['userId'])) {
       //db저장
       $connect = mysqli_connect($db_host, $db_user_name, $db_pw, $db_name);
       //$connect = mysql_connect($db_host,$db_name,$db_pw);
@@ -36,10 +31,10 @@
 
       // ON일 경우 magic_quotes_gpc/magic_quotes_sybase 효과 제거
       if (get_magic_quotes_gpc()) {
-          $userId = stripslashes($_POST['userId']);
+          $userId = stripslashes($_GET['userId']);
 
       } else {
-          $userId = $_POST['userId'];
+          $userId = $_GET['userId'];
       }
 
       session_start();
@@ -77,35 +72,33 @@
       //이 사람의 친구 리스트
       $resultJsonData .= '"following": ['; //이사람이 친추한 사람들
       $flagMy = false;
-      $sql = "SELECT a.user_id, a.friend_id, b.level FROM FRIENDS a, USER_MST b WHERE a.user_id = '".$userId."' AND a.friend_id = b.user_id;";
+      $sql = "SELECT a.user_id, a.friend_id, b.level, b.avatar FROM FRIENDS a, USER_MST b WHERE a.user_id = '".$userId."' AND a.friend_id = b.user_id;";
       $result = mysqli_query($connect, $sql);
       while ($row = mysqli_fetch_row($result)) {
           $flagMy = true;
-          $resultJsonData .= '{"id": "'.$row[1].'", "level" : "'.$row[2].'"},';
+          $resultJsonData .= '{"id": "'.$row[1].'", "level" : "'.$row[2].'", "avatar" : "'.$row[3].'"},';
       }
       if($flagMy)
-          $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
-      $resultJsonData .= ']';
+          $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
+      $resultJsonData .= '],';
 
       //이 사람의 팔로워 리스트
       $resultJsonData .= '"follower": ['; //이사람을 친추한 사람들
-      $sql = "SELECT a.user_id, a.friend_id, b.level FROM FRIENDS a, USER_MST b WHERE a.friend = '".$userId."' AND a.user_id = b.user_id;";
+      $sql = "SELECT a.user_id, a.friend_id, b.level, b.avatar FROM FRIENDS a, USER_MST b WHERE a.friend_id = '".$userId."' AND a.user_id = b.user_id;";
       $result = mysqli_query($connect, $sql);
       $flagMy = false;
       while ($row = mysqli_fetch_row($result)) {
           $flagMy = true;
-          $resultJsonData .= '{"id": "'.$row[0].'", "level" : "'.$row[2].'"},';
+          $resultJsonData .= '{"id": "'.$row[0].'", "level" : "'.$row[2].'", "avatar" : "'.$row[3].'"},';
       }
       if($flagMy)
-          $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
+          $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
       $resultJsonData .= ']';
 
 
       $resultJsonData .= '}';
       echo $resultJsonData;
-
-
-
+      mysqli_close($connect);
 
   }
   else{
