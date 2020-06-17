@@ -17,7 +17,7 @@
         </div>
 		
 		<transition name="slide-fade">
-		  <a v-if="show" id="buttonBottomAllow" href="#gmatList" class="float"><!--  onclick="clickBottomAllow();" -->
+		  <a v-if="show" id="buttonBottomAllow" @click="goBottom" class="float"><!--  onclick="clickBottomAllow();" -->
 		    <i class="fa fa-arrow-down my-float"></i>
           </a>
 		</transition>
@@ -35,7 +35,7 @@
     </div>
 
 	<template>
-    	<div id="gmatList" class="container">
+    	<div id="gmatListTop" class="container">
 		  <br>
 		  <br>
 		  <br>
@@ -565,15 +565,19 @@ export default {
 	  })
   },
   methods : {
-	  goRestaurantDetail(id){
+	goBottom(){
+		  location.href = "/#/#gmatListTop";
+
+	},
+	goRestaurantDetail(id){
 	  	location.href = "/#/restaurant/" + id;
 
-	  },
+	},
     handleScroll (event){
-	  if(this.show && 95 >= document.getElementById("gmatList").getBoundingClientRect().top){
+	  if(this.show && 95 >= document.getElementById("gmatListTop").getBoundingClientRect().top){
 		this.show = false;
 		}
-	  else if (!this.show && 110 < document.getElementById("gmatList").getBoundingClientRect().top){
+	  else if (!this.show && 110 < document.getElementById("gmatListTop").getBoundingClientRect().top){
 		this.show = true;
 	  }
 	},

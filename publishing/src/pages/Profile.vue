@@ -36,7 +36,13 @@
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <a href="#button" class="btn btn-primary btn-round btn-lg">Follow</a>
+          <template v-if="friendship == 0 || friendship == 2">
+            <a @click="followReq()" class="btn btn-primary btn-round btn-lg">팔로우</a>
+          </template>
+          <template v-if="friendship == 1 || friendship >= 3">
+            <a @click="unfollowReq()" class="btn btn-primary btn-round btn-lg">언팔하기</a>
+          </template>
+
           <a
             href="#button"
             class="btn btn-default btn-round btn-lg btn-icon"
@@ -464,12 +470,16 @@ export default {
   },
   data() {
     return {
+      myId: '',
+
       userId: '',
-      //level: '',
+      userLevel: '',
+      userAvatar: '',
+
       //reviewCnt: '',
       //bookmarkCnt: '',
 
-      friendship: '',
+      friendship: '', //0아무관계아님, 1내가 친구, 2상대가 친추, 3맞팔
       following: [],
       follower: []
     }
@@ -490,6 +500,10 @@ export default {
 
               if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
 
+                vm.myId = response.data.myId;
+                vm.userId = response.data.userId;
+                vm.userLevel = response.data.userLevel;
+                vm.userAvatar = response.data.userAvatar;
                 vm.friendship = response.data.friendship;
                 vm.following = response.data.following;
                 vm.follower = response.data.follower;
@@ -503,6 +517,69 @@ export default {
 
   },
   methods :{
+    followReq(){
+
+      if(this.myId == '_tmpId'){
+        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        return;
+      }
+      let vm = this;
+      //전송부분 구현...
+      let form = new FormData();
+      form.append('friendId', this.userId);
+      form.append('isFriendRequest', 'Y');
+
+      axios.post('/api/friendRequest.php', form)
+              .then(function(response){
+                console.log(response);
+
+                if(response.data.code == '1') {//1:나의프로필 2:남의프로필
+                  vm.friendship = 1;
+                  alert("팔로잉 하였습니다.");
+                }
+                else if (response.data.code == '-2'){
+                  alert("로그인 상태가 아니면 이용 할 수 없는 기능 입니다.");
+                }
+                else if (response.data.code == '-4'){
+                  alert("자신과 친구를 할 수 없습니다.");
+                }
+                else{
+                  alert("오류가 발생하였습니다.");
+                }
+              });
+    },
+    unfollowReq(){
+      if(this.myId == '_tmpId'){
+        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        return;
+      }
+
+      let vm = this;
+      //전송부분 구현...
+      let form = new FormData();
+      form.append('friendId', this.userId);
+      form.append('isFriendRequest', 'N');
+
+      axios.post('/api/friendRequest.php', form)
+              .then(function(response){
+                console.log(response);
+
+                if(response.data.code == '2') {//1:나의프로필 2:남의프로필
+                  vm.friendship = 0;
+                  alert("언팔로잉 하였습니다.");
+                }
+                else if (response.data.code == '-2'){
+                  alert("로그인 상태가 아니면 이용 할 수 없는 기능 입니다.");
+                }
+                else if (response.data.code == '-4'){
+                  alert("자신과 언팔을 할 수 없습니다.");
+                }
+                else{
+                  alert("오류가 발생하였습니다.");
+                }
+              });
+
+    },
     goUserDetail(id){
       let vm = this;
 
@@ -524,10 +601,6 @@ export default {
                   alert("유저 정보를 가져오는데 실패하였습니다..");
                 }
               });
-
-
-
-
     }
   }
 

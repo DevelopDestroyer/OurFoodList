@@ -5,6 +5,7 @@
 1 : 내 프로필
 2 : 다른이의 프로필
 -1 : isset 공백 에러
+-2 : 세션이 없는데 마이페이지 형태로 접근
  */
 
   $config = parse_ini_file('../config.ini', true);
@@ -52,6 +53,39 @@
       }
       else{//남의 프로필을 조회
           $resultJsonData .= '{"result": "success", "code": "2", "message": "다른이의 프로필", ';
+      }
+
+      //_my일 경우 ID처리
+      if($userId == '_my' && $myId != null){
+          $sql = "SELECT user_id, level, avatar FROM USER_MST WHERE user_id = '".$myId."';";
+          $result = mysqli_query($connect, $sql);
+          while ($row = mysqli_fetch_row($result)) {
+              $userId = $row[0];
+              $resultJsonData .= '"myId": "'.$row[0].'", ';
+              $resultJsonData .= '"userId": "'.$row[0].'", ';
+              $resultJsonData .= '"userLevel": "'.$row[1].'", ';
+              $resultJsonData .= '"userAvatar": "'.$row[2].'", ';
+              break;
+          }
+      }
+      else if($userId == '_my' && $myId == null){
+          echo '{"result": "error", "code": "-2", "message": "로그인이 필요한 서비스 입니다."}';
+          mysqli_close($connect);
+      }
+      else{
+          $sql = "SELECT user_id, level, avatar FROM USER_MST WHERE user_id = '".$userId."';";
+          $result = mysqli_query($connect, $sql);
+          while ($row = mysqli_fetch_row($result)) {
+              $userId = $row[0];
+              if($myId == null)
+                  $resultJsonData .= '"myId": "_tmpId", ';
+              else
+                  $resultJsonData .= '"myId": "'.$myId.'", ';
+              $resultJsonData .= '"userId": "'.$row[0].'", ';
+              $resultJsonData .= '"userLevel": "'.$row[1].'", ';
+              $resultJsonData .= '"userAvatar": "'.$row[2].'", ';
+              break;
+          }
       }
 
       //상대와 친구인지 확인

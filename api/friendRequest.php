@@ -18,8 +18,10 @@
   $db_name = $config['dbname'];
   $db_pw = $config['dbpw'];
 
+  $myId = '';
+
   //sql인젝션 방지
-  if (isset($_POST['userId']) && isset($_POST['friendId']) && isset($_POST['isFriendRequest'])) {
+  if (isset($_POST['friendId']) && isset($_POST['isFriendRequest'])) {
       //db저장
       $connect = mysqli_connect($db_host, $db_user_name, $db_pw, $db_name);
       //$connect = mysql_connect($db_host,$db_name,$db_pw);
@@ -35,14 +37,12 @@
 
       // ON일 경우 magic_quotes_gpc/magic_quotes_sybase 효과 제거
       if (get_magic_quotes_gpc()) {
-          $userId = stripslashes($_POST['userId']);
           $friendId = stripslashes($_POST['friendId']);
-          $isFriendRequest = stripslashes($_POST['$isFriendRequest']);
+          $isFriendRequest = stripslashes($_POST['isFriendRequest']);
 
       } else {
-          $userId = $_POST['userId'];
           $friendId = $_POST['friendId'];
-          $isFriendRequest = $_POST['$isFriendRequest'];
+          $isFriendRequest = $_POST['isFriendRequest'];
       }
 
       session_start();
@@ -62,15 +62,8 @@
           $myId = $_SESSION['userId'];
       }
 
-      //세션유저와 요청된 유저가 맞는지 확인
-      if($myId != $userId){
-          echo '{"result": "error", "code": "-3", "message": "잘못된 요청입니다."}';
-          mysqli_close($connect);
-          return;
-      }
-
       //요청된 유저와 친구유저가 동일한 사람인지 확인
-      if($friendId == $userId){
+      if($friendId == $myId){
           echo '{"result": "error", "code": "-4", "message": "자신과 친구를 할 수는 없습니다."}';
           mysqli_close($connect);
           return;
@@ -85,7 +78,7 @@
           //실제 상대가 존재하는 유저인지 확인하는 로직이 있으면 더 좋겠음..
 
 
-          $sql = "INSERT INTO FRIENDS (user_id, friend_id) VALUES USER_MST ('" . mysqli_real_escape_string($connect, $myId) . "', '" . mysqli_real_escape_string($connect, $friendId) . "');";
+          $sql = "INSERT INTO FRIENDS (user_id, friend_id) VALUES ('" . mysqli_real_escape_string($connect, $myId) . "', '" . mysqli_real_escape_string($connect, $friendId) . "');";
           $result = mysqli_query($connect, $sql);
 
           echo '{"result": "success", "code": "1", "message": "팔로잉 되었습니다."}';
