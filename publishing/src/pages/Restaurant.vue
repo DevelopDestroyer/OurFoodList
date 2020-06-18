@@ -43,6 +43,7 @@
               <p style="font-size: 24px;">
                 <img :src=item.avatar width="50px" style="border-radius: 25px">
                 {{item.userId}}
+                <n-button type="primary" icon round v-on:click="goUserDetail(item.userId)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
               </p>
               <i class="fa fa-clock"></i> 날짜 : {{item.created}}
               <br/>　
@@ -144,7 +145,7 @@
   </div>
 </template>
 <script>
-import { Tabs, TabPane , Badge} from '@/components';
+import { Tabs, TabPane , Badge, Button, FormGroupInput} from '@/components';
 import {BUS} from "./EventBus";
 const axios = require('axios');
 
@@ -154,7 +155,9 @@ export default {
   components: {
     Tabs,
     TabPane,
-    [Badge.name]: Badge
+    [Badge.name]: Badge,
+    [Button.name]: Button,
+    [FormGroupInput.name]: FormGroupInput
   },
   data(){
     return {
@@ -217,6 +220,28 @@ export default {
             });
   },
   methods:{
+    goUserDetail(id){
+      let vm = this;
+
+      location.href="#";
+      location.href="/#/profile/" + id;
+      this.userId = id;
+      axios.get('/api/profile.php?userId=' + id)
+              .then(function(response){
+                console.log(response);
+
+                if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
+
+                  vm.friendship = response.data.friendship;
+                  vm.following = response.data.following;
+                  vm.follower = response.data.follower;
+
+                }
+                else{
+                  alert("유저 정보를 가져오는데 실패하였습니다..");
+                }
+              });
+    },
     goEditReview(storeId){
       let reviewObj = {
         storeId : storeId,

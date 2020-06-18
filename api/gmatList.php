@@ -113,6 +113,36 @@ while ($row = mysqli_fetch_row($result)) {
 if($flagOthers)
     $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
 
+///
+//친구들
+$resultJson = $resultJson.'],
+                          "friendsdata":[';
+
+$sql = "select distinct store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq
+            from STORE_MST store, REVIEW_MST review,
+                   (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav  FROM REVIEW_MST Group by store_id) calcul
+            where store.store_id = review.store_id and review.visit_yn = 'Y' and store.store_id = calcul.store_id and review.user_id IN (SELECT friend_id from FRIENDS where user_id = '".mysqli_real_escape_string($connect, $myId)."') ORDER BY review.created DESC LIMIT 1000;";
+$result = mysqli_query($connect, $sql);
+$flagFriends = false;
+while ($row = mysqli_fetch_row($result)) {
+    $flagFriends = true;
+    $resultJson = $resultJson.'{';
+    $resultJson = $resultJson.'"store_id":"'.$row[0].'",';
+    $resultJson = $resultJson.'"store_name":"'.$row[1].'",';
+    $resultJson = $resultJson.'"category":"'.$row[2].'",';
+    $resultJson = $resultJson.'"telephone":"'.$row[3].'",';
+    $resultJson = $resultJson.'"address":"'.$row[4].'",';
+    $resultJson = $resultJson.'"roadaddress":"'.$row[5].'",';
+    $resultJson = $resultJson.'"lon":"'.$row[6].'",';
+    $resultJson = $resultJson.'"lat":"'.$row[7].'",';
+    $resultJson = $resultJson.'"cnt":"'.$row[8].'",';
+    $resultJson = $resultJson.'"ratingav":"'.$row[9].'",';
+    $resultJson = $resultJson.'"review_seq":"'.$row[10].'"},';
+}
+if($flagFriends)
+    $resultJson = substr($resultJson , 0, -1); //마지막 콤마 제거
+
+///
 
 //JSON 끝 생성
 $resultJson = $resultJson.']}';

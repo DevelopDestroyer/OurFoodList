@@ -8,10 +8,10 @@
       </parallax>
       <div class="container">
         <div class="photo-container">
-          <img src="img/avatar/8.png" alt=""/>
+          <img :src='"img/avatar/"+ userAvatar +".png"' alt=""/>
         </div>
         <h3 class="title">{{userId}}</h3>
-        <p class="category">베타버전 입니다.</p>
+        <p class="category">Lv. {{userLevel}}</p>
         <div class="content">
           <div class="social-description">
             <h2>:)</h2>
@@ -36,29 +36,16 @@
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <template v-if="friendship == 0 || friendship == 2">
-            <a @click="followReq()" class="btn btn-primary btn-round btn-lg">팔로우</a>
+          <template v-if="(friendship == 0 || friendship == 2) && code == 2">
+            <a @click="followReq()" class="btn btn-primary btn-round btn-lg" style="color:white">팔로우</a>
           </template>
-          <template v-if="friendship == 1 || friendship >= 3">
-            <a @click="unfollowReq()" class="btn btn-primary btn-round btn-lg">언팔하기</a>
+          <template v-if="(friendship == 1 || friendship >= 3) && code == 2">
+            <a @click="unfollowReq()" class="btn btn-primary btn-round btn-lg" style="color:white">언팔하기</a>
+          </template>
+          <template v-if="code == 2">
+            <a @click="goHome()" class="btn btn-default btn-round btn-lg" style="color:white">내 정보</a>
           </template>
 
-          <a
-            href="#button"
-            class="btn btn-default btn-round btn-lg btn-icon"
-            rel="tooltip"
-            title="Follow me on Twitter"
-          >
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a
-            href="#button"
-            class="btn btn-default btn-round btn-lg btn-icon"
-            rel="tooltip"
-            title="Follow me on Instagram"
-          >
-            <i class="fab fa-instagram"></i>
-          </a>
         </div>
         <!--h3 class="title">About me</h3-->
         <!--div class="row">
@@ -107,7 +94,7 @@
               </div>
 
               <div class="row">
-                <h5>이 사람의 리뷰</h5>
+                <h5>준비중입니다</h5>
                 <card v-for="item in reviewData" v-bind:key="item.id" style="width: 100%;">
                   <ul slot="raw-content" class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -274,7 +261,7 @@
                     </li>
                   </ul>
                 </card>
-                <h5>이 사람의 찜</h5>
+                <h5>... :)</h5>
                 <card v-for="item in myBookmarkData" v-bind:key="item.id" style="width: 100%;">
                   <ul slot="raw-content" class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -470,6 +457,7 @@ export default {
   },
   data() {
     return {
+      code: 2, //1 내프로필, 2 남의프로필
       myId: '',
 
       userId: '',
@@ -500,6 +488,7 @@ export default {
 
               if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
 
+                vm.code = response.data.code;
                 vm.myId = response.data.myId;
                 vm.userId = response.data.userId;
                 vm.userLevel = response.data.userLevel;
@@ -519,7 +508,7 @@ export default {
   methods :{
     followReq(){
 
-      if(this.myId == '_tmpId'){
+      if(this.myId == '_tmpId' || this.myId == 'null' || this.myId == null){
         alert("로그인해야 이용할 수 있는 서비스 입니다.");
         return;
       }
@@ -549,7 +538,7 @@ export default {
               });
     },
     unfollowReq(){
-      if(this.myId == '_tmpId'){
+      if(this.myId == '_tmpId' || this.myId == 'null' || this.myId == null){
         alert("로그인해야 이용할 수 있는 서비스 입니다.");
         return;
       }
@@ -580,6 +569,35 @@ export default {
               });
 
     },
+    goHome(){
+      if(this.myId == '_tmpId' || this.myId == 'null' || this.myId == null){
+        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        return;
+      }
+
+      let vm = this;
+
+      location.href="#";
+      location.href="/#/profile/" + id;
+      this.userId = id;
+      axios.get('/api/profile.php?userId=' + vm.myId)
+              .then(function(response){
+                console.log(response);
+
+                if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
+
+                  vm.code = response.data.code;
+                  vm.friendship = response.data.friendship;
+                  vm.following = response.data.following;
+                  vm.follower = response.data.follower;
+
+                }
+                else{
+                  alert("유저 정보를 가져오는데 실패하였습니다..");
+                }
+              });
+
+    },
     goUserDetail(id){
       let vm = this;
 
@@ -591,7 +609,7 @@ export default {
                 console.log(response);
 
                 if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
-
+                  vm.code = response.data.code;
                   vm.friendship = response.data.friendship;
                   vm.following = response.data.following;
                   vm.follower = response.data.follower;

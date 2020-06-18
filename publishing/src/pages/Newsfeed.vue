@@ -21,6 +21,8 @@
               <p style="font-size: 24px;">
                 <img :src=item.avatar width="50px" style="border-radius: 25px">
                 {{item.userId}}
+                <n-button type="primary" icon round v-on:click="goUserDetail(item.userId)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+
               </p>
               <p style="font-size: 24px;">
                 <i class="fa fa-flag"></i>
@@ -194,6 +196,11 @@ export default {
             });
   },
   methods:{
+    goUserDetail(id){
+      let vm = this;
+
+      location.href="/#/profile/" + id;
+    },
     goRestaurantDetail(id){
       location.href = "/#/restaurant/" + id;
 
