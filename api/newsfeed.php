@@ -88,6 +88,42 @@ $resultJson = "";
 
     $resultJson = '{"result": "success", "code": "1", ';
 
+    session_start();
+    //친구식당 리뷰리스트를 반환합니다
+    $resultJson = $resultJson.'"friendsReviewData" : [';
+    if($_SESSION['userId'] != null) {
+        $sql = "SELECT review_info.*, user_mst.avatar FROM
+    (select personallist.user_id, personallist.store_id, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created, personallist.store_name
+            from 
+                  ( 
+                  select store.store_id, review.user_id, review.review_seq, review.rating, review.review, review.visit_yn, review.created, store.store_name
+                  from  STORE_MST store, REVIEW_MST review, FRIENDS friend
+                  where store.store_id = review.store_id and review.del_yn != 'Y'  and review.visit_yn = 'Y' and review.user_id IN (SELECT friend_id from FRIENDS where user_id = '".$_SESSION['userId']."')) personallist 
+            left join 
+                 (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
+            on 
+                personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC) review_info, USER_MST user_mst WHERE review_info.user_id = user_mst.user_id and user_mst.level > 0 ORDER BY review_info.created DESC LIMIT 100;";
+        $result = mysqli_query($connect, $sql);
+        $flag = false;
+        while ($row = mysqli_fetch_row($result)) {
+            $flag = true;
+            $resultJson = $resultJson . '{"userId" : "' . $row[0] . '", ';
+            $resultJson = $resultJson . '"storeId" : "' . $row[1] . '", ';
+            $resultJson = $resultJson . '"rating" : "' . $row[2] . '", ';
+            $resultJson = $resultJson . '"review" : "' . $row[3] . '", ';
+            $resultJson = $resultJson . '"visitYn" : "' . $row[4] . '", ';
+            $resultJson = $resultJson . '"taglist" : "' . $row[5] . '", ';
+            $resultJson = $resultJson . '"created" : "' . $row[6] . '", ';
+            $resultJson = $resultJson . '"storeName" : "' . $row[7] . '", ';
+            $resultJson = $resultJson . '"avatar" : "' . $row[8] . '"},';
+        }
+        if ($flag) {
+            $resultJson = substr($resultJson, 0, -1); //마지막 콤마 제거
+        }
+    }
+    $resultJson = $resultJson.'],';
+
+
 
     //식당 리뷰리스트를 반환합니다
     $resultJson = $resultJson.'"reviewData" : [';

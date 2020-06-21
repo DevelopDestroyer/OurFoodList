@@ -40,7 +40,6 @@
 		  <div class="col-md-10 col-lg-10" style="border:0px solid white;width:100%;height:500px; overflow-y:scroll;overflow-x:hidden">
 
 
-
  <card style="width: 100%; color:black; text-align:left">
 
     <ul v-for="item in list" v-bind:key="item.id"

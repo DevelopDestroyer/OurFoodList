@@ -596,7 +596,7 @@ export default {
       let vm = this;
 
       location.href="#";
-      location.href="/#/profile/" + id;
+      location.href="/#/profile/" + this.myId;
       this.userId = id;
       axios.get('/api/profile.php?userId=' + vm.myId)
               .then(function(response){
@@ -605,6 +605,10 @@ export default {
                 if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
 
                   vm.code = response.data.code;
+                  vm.myId = response.data.myId;
+                  vm.userId = response.data.userId;
+                  vm.userLevel = response.data.userLevel;
+                  vm.userAvatar = response.data.userAvatar;
                   vm.friendship = response.data.friendship;
                   vm.following = response.data.following;
                   vm.follower = response.data.follower;
@@ -628,10 +632,13 @@ export default {
 
                 if(response.data.code == '1' || response.data.code == '2') {//1:나의프로필 2:남의프로필
                   vm.code = response.data.code;
+                  vm.myId = response.data.myId;
+                  vm.userId = response.data.userId;
+                  vm.userLevel = response.data.userLevel;
+                  vm.userAvatar = response.data.userAvatar;
                   vm.friendship = response.data.friendship;
                   vm.following = response.data.following;
                   vm.follower = response.data.follower;
-
                 }
                 else{
                   alert("유저 정보를 가져오는데 실패하였습니다..");

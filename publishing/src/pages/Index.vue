@@ -684,8 +684,8 @@ export default {
   },
   methods : {
 	goBottom(){
-		  location.href = "/#/#gmatListTop";
-
+		location.href = "/#/#gmatListTop";
+		location.href = "/#/";
 	},
 	goRestaurantDetail(id){
 	  	location.href = "/#/restaurant/" + id;
