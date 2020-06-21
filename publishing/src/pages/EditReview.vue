@@ -84,8 +84,6 @@
                       <span class="form-check-sign"></span>
                       배달맛집　
                   </label>
-                     <br/>
-                     <br/>
               </div>
               <div class="form-check">
                   <label for="check4" class="form-check-label">
@@ -105,8 +103,6 @@
                       <span class="form-check-sign"></span>
                       데이트　
                   </label>
-                  <br/>
-                  <br/>
               </div>
               <div class="form-check">
                   <label for="check7" class="form-check-label">

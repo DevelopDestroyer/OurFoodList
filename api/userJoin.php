@@ -58,8 +58,8 @@
       if ($isTmpUser == 'Y') {//임시유저 가입 처리, 임시유저는 로그인까지 자동으로 해준다
           if($_SESSION["tmpUserId"] == null) {
               $newTmpId = "GUEST_".uniqid();
-              $sql = "insert into USER_MST (user_id, level, create_date, status_cd) values ";
-              $sql = $sql . "('" . $newTmpId . "', '0', '" . date("Y-m-d H:i:s") . "', 'T');";
+              $sql = "insert into USER_MST (user_id, level, avatar, create_date, status_cd) values ";
+              $sql = $sql . "('" . $newTmpId . "', '0', '1', '" . date("Y-m-d H:i:s") . "', 'T');";
               $result = mysqli_query($connect, $sql);
               $_SESSION["tmpUserId"] = $newTmpId;
               mysqli_close($connect);
@@ -70,8 +70,8 @@
           }
       } else {//신규유저 가입 처리
           if($_SESSION["userId"] == null) {
-              $sql = "insert into USER_MST (user_id, user_pw, level, create_date, status_cd) values ";
-              $sql = $sql . "('" . mysqli_real_escape_string($connect, $userId) . "', '" . mysqli_real_escape_string($connect, $userPw) . "', '1', '" . date("Y-m-d H:i:s") . "', 'U');";
+              $sql = "insert into USER_MST (user_id, user_pw, level, avatar, create_date, status_cd) values ";
+              $sql = $sql . "('" . mysqli_real_escape_string($connect, $userId) . "', '" . mysqli_real_escape_string($connect, $userPw) . "', '".rand(1, 10)."', '" . date("Y-m-d H:i:s") . "', 'U');";
               $result = mysqli_query($connect, $sql);
               if($tmpIdForUpgradeAccount != null && $tmpIdForUpgradeAccount != ''){//그동안 임시 계정으로 활동했었다면 신규계정으로 모두 이전처리해준다.
                   $sql = "update USER_MST set status_cd = 'D', update_date='".date("Y-m-d H:i:s")."', introduce='".mysqli_real_escape_string($connect, $userId)."' where user_id = '".mysqli_real_escape_string($connect, $tmpIdForUpgradeAccount)."';";
