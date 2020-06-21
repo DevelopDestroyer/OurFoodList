@@ -119,6 +119,24 @@
                 <template v-else-if="tagItem == '9'">
                   # 술
                 </template>
+                <template v-else-if="tagItem == '10'">
+                  # 혼밥
+                </template>
+                <template v-else-if="tagItem == '11'">
+                  # 기념일
+                </template>
+                <template v-else-if="tagItem == '12'">
+                  # 가족외식
+                </template>
+                <template v-else-if="tagItem == '13'">
+                  # 숨은맛집
+                </template>
+                <template v-else-if="tagItem == '14'">
+                  # 무료주차
+                </template>
+                <template v-else-if="tagItem == '15'">
+                  # 24시간영업
+                </template>
               </badge>
             </li>
           </ul>

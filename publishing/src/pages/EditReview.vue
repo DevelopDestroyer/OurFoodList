@@ -126,6 +126,42 @@
                       술　
                   </label>
               </div>
+              <div class="form-check">
+                  <label for="check10" class="form-check-label">
+                      <input id="check10" type="checkbox" class="form-check-input" value="10" v-model="tags" />
+                      <span class="form-check-sign"></span>
+                      혼밥　
+                  </label>
+
+                  <label for="check11" class="form-check-label">
+                      <input id="check11" type="checkbox" class="form-check-input" value="11" v-model="tags" />
+                      <span class="form-check-sign"></span>
+                      기념일　
+                  </label>
+                  <label for="check12" class="form-check-label">
+                      <input id="check12" type="checkbox" class="form-check-input" value="12" v-model="tags" />
+                      <span class="form-check-sign"></span>
+                      가족외식　
+                  </label>
+              </div>
+              <div class="form-check">
+                  <label for="check13" class="form-check-label">
+                      <input id="check13" type="checkbox" class="form-check-input" value="13" v-model="tags" />
+                      <span class="form-check-sign"></span>
+                      숨은맛집　
+                  </label>
+
+                  <label for="check14" class="form-check-label">
+                      <input id="check14" type="checkbox" class="form-check-input" value="14" v-model="tags" />
+                      <span class="form-check-sign"></span>
+                      무료주차　
+                  </label>
+                  <label for="check15" class="form-check-label">
+                      <input id="check15" type="checkbox" class="form-check-input" value="15" v-model="tags" />
+                      <span class="form-check-sign"></span>
+                      24시간영업　
+                  </label>
+              </div>
               <br/>
               <br/>
               <br/>
