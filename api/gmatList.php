@@ -92,7 +92,7 @@ $resultJson = $resultJson.'],
     $sql = "select distinct store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq
             from STORE_MST store, REVIEW_MST review,
                    (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav  FROM REVIEW_MST Group by store_id) calcul
-            where store.store_id = review.store_id and review.visit_yn = 'Y' and store.store_id = calcul.store_id and review.user_id != '".mysqli_real_escape_string($connect, $myId)."' ORDER BY review.created DESC LIMIT 1000;";
+            where store.store_id = review.store_id and review.visit_yn = 'Y' and review.del_yn != 'Y' and store.store_id = calcul.store_id and review.user_id != '".mysqli_real_escape_string($connect, $myId)."' ORDER BY review.created DESC LIMIT 1000;";
 $result = mysqli_query($connect, $sql);
 $flagOthers = false;
 while ($row = mysqli_fetch_row($result)) {
@@ -121,7 +121,7 @@ $resultJson = $resultJson.'],
 $sql = "select distinct store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq
             from STORE_MST store, REVIEW_MST review,
                    (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav  FROM REVIEW_MST Group by store_id) calcul
-            where store.store_id = review.store_id and review.visit_yn = 'Y' and store.store_id = calcul.store_id and review.user_id IN (SELECT friend_id from FRIENDS where user_id = '".mysqli_real_escape_string($connect, $myId)."') ORDER BY review.created DESC LIMIT 1000;";
+            where store.store_id = review.store_id and review.visit_yn = 'Y' and review.del_yn != 'Y' and store.store_id = calcul.store_id and review.user_id IN (SELECT friend_id from FRIENDS where user_id = '".mysqli_real_escape_string($connect, $myId)."') ORDER BY review.created DESC LIMIT 1000;";
 $result = mysqli_query($connect, $sql);
 $flagFriends = false;
 while ($row = mysqli_fetch_row($result)) {

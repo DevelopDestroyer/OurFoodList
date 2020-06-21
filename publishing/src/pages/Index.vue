@@ -685,11 +685,9 @@ export default {
   methods : {
 	goBottom(){
 		location.href = "/#/#gmatListTop";
-		location.href = "/#/";
 	},
 	goRestaurantDetail(id){
 	  	location.href = "/#/restaurant/" + id;
-
 	},
     handleScroll (event){
 	  if(this.show && 95 >= document.getElementById("gmatListTop").getBoundingClientRect().top){

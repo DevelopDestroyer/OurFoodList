@@ -16,7 +16,7 @@
       <div class="container">
         <tabs type="primary">
           <tab-pane label="내 친구의 최근 리뷰">
-          <card v-if="friendsReviewData.length == 0" v-bind:key="item.id" style="width: 100%;">
+          <card v-if="friendsReviewData.length == 0" style="width: 100%;">
             <ul slot="raw-content" class="list-group list-group-flush">
               <li class="list-group-item">
                 <p style="font-size:24px;">
@@ -156,7 +156,7 @@
           </tab-pane>
 
           <tab-pane label="모든이들의 최근 리뷰">
-            <card v-if="reviewData.length == 0" v-bind:key="item.id" style="width: 100%;">
+            <card v-if="reviewData.length == 0" style="width: 100%;">
               <ul slot="raw-content" class="list-group list-group-flush">
                 <li class="list-group-item">
                   <p style="font-size:24px;">
