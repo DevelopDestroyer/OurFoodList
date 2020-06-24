@@ -127,7 +127,94 @@
       }
       if($flagMy)
           $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
-      $resultJsonData .= ']';
+      $resultJsonData .= '],';
+
+
+
+//리뷰데이터
+      $resultJsonData .= '"reviewData": ['; //이사람이 친추한 사람들
+      $sql = "select personallist.store_id, personallist.store_name, personallist.category, personallist.telephone, personallist.address, personallist.roadaddress, personallist.lon, personallist.lat, personallist.cnt, personallist.ratingav, personallist.review_seq, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created
+        from 
+              ( 
+              select store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq, review.rating, review.review, review.visit_yn, review.created
+              from  STORE_MST store, REVIEW_MST review, 
+                      (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav FROM REVIEW_MST Group by store_id) calcul 
+              where store.store_id = review.store_id and store.store_id = calcul.store_id and review.del_yn != 'Y' and review.visit_yn = 'Y' and review.user_id = '".$userId."' ) personallist 
+        left join 
+             (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
+        on 
+            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC";
+      $result = mysqli_query($connect, $sql);
+      $flagMy = false;
+      while ($row = mysqli_fetch_row($result)) {
+          $flagMy = true;
+          $resultJsonData = $resultJsonData.'{';
+          $resultJsonData = $resultJsonData.'"store_id":"'.$row[0].'",';
+          $resultJsonData = $resultJsonData.'"store_name":"'.$row[1].'",';
+          $resultJsonData = $resultJsonData.'"category":"'.$row[2].'",';
+          $resultJsonData = $resultJsonData.'"telephone":"'.$row[3].'",';
+          $resultJsonData = $resultJsonData.'"address":"'.$row[4].'",';
+          $resultJsonData = $resultJsonData.'"roadaddress":"'.$row[5].'",';
+          $resultJsonData = $resultJsonData.'"lon":"'.$row[6].'",';
+          $resultJsonData = $resultJsonData.'"lat":"'.$row[7].'",';
+          $resultJsonData = $resultJsonData.'"cnt":"'.$row[8].'",';
+          $resultJsonData = $resultJsonData.'"ratingav":"'.$row[9].'",';
+          $resultJsonData = $resultJsonData.'"review_seq":"'.$row[10].'",';
+          $resultJsonData = $resultJsonData.'"rating":"'.$row[11].'",';
+          $resultJsonData = $resultJsonData.'"review":"'.$row[12].'",';
+          $resultJsonData = $resultJsonData.'"visit_yn":"'.$row[13].'",';
+          $resultJsonData = $resultJsonData.'"taglist":"'.$row[14].'"},';
+
+      }
+      if($flagMy)
+          $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
+
+//JSON 중간 생성
+      $resultJsonData = $resultJsonData.'],';
+
+
+
+//찜데이터
+      $resultJsonData .= '"bookmarkData": ['; //이사람이 친추한 사람들
+      $sql = "select personallist.store_id, personallist.store_name, personallist.category, personallist.telephone, personallist.address, personallist.roadaddress, personallist.lon, personallist.lat, personallist.cnt, personallist.ratingav, personallist.review_seq, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created
+        from 
+              ( 
+              select store.store_id, store.store_name, store.category, store.telephone, store.address, store.roadaddress, store.lon, store.lat, calcul.cnt, calcul.ratingav, review.review_seq, review.rating, review.review, review.visit_yn, review.created
+              from  STORE_MST store, REVIEW_MST review, 
+                      (SELECT store_id, COUNT(store_id) AS cnt, AVG(rating) AS ratingav FROM REVIEW_MST Group by store_id) calcul 
+              where store.store_id = review.store_id and store.store_id = calcul.store_id and review.del_yn != 'Y' and review.visit_yn = 'N' and review.user_id = '".$userId."' ) personallist 
+        left join 
+             (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
+        on 
+            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC";
+      $result = mysqli_query($connect, $sql);
+      $flagMy = false;
+      while ($row = mysqli_fetch_row($result)) {
+          $flagMy = true;
+          $resultJsonData = $resultJsonData.'{';
+          $resultJsonData = $resultJsonData.'"store_id":"'.$row[0].'",';
+          $resultJsonData = $resultJsonData.'"store_name":"'.$row[1].'",';
+          $resultJsonData = $resultJsonData.'"category":"'.$row[2].'",';
+          $resultJsonData = $resultJsonData.'"telephone":"'.$row[3].'",';
+          $resultJsonData = $resultJsonData.'"address":"'.$row[4].'",';
+          $resultJsonData = $resultJsonData.'"roadaddress":"'.$row[5].'",';
+          $resultJsonData = $resultJsonData.'"lon":"'.$row[6].'",';
+          $resultJsonData = $resultJsonData.'"lat":"'.$row[7].'",';
+          $resultJsonData = $resultJsonData.'"cnt":"'.$row[8].'",';
+          $resultJsonData = $resultJsonData.'"ratingav":"'.$row[9].'",';
+          $resultJsonData = $resultJsonData.'"review_seq":"'.$row[10].'",';
+          $resultJsonData = $resultJsonData.'"rating":"'.$row[11].'",';
+          $resultJsonData = $resultJsonData.'"review":"'.$row[12].'",';
+          $resultJsonData = $resultJsonData.'"visit_yn":"'.$row[13].'",';
+          $resultJsonData = $resultJsonData.'"taglist":"'.$row[14].'"},';
+
+      }
+      if($flagMy)
+          $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
+
+      $resultJsonData = $resultJsonData.']';
+
+
 
 
       $resultJsonData .= '}';

@@ -844,7 +844,7 @@ export default {
 					  var othersRatingImg = this.ratingImgMaker(this.myReviewData[i].ratingav);
 
 
-					  var content = '<div class="wrap" id="over' + i + '" style="display:none;">' +
+					  var content = '<div class="wrap overClass" id="over' + i + '" style="display:none;">' +
 							  '    <div class="info">' +
 							  '        <div class="title" style="background-color: #e4606d">' +
 							  '            나의 맛집' +
@@ -876,8 +876,13 @@ export default {
 					  kakao.maps.event.addListener(mapMarker, 'click', function () {
 						  if ("block" == document.getElementById("over" + i).style.display)
 							  document.getElementById("over" + i).style.display = "none";
-						  else
+						  else {
+							  let overClassList = document.getElementsByClassName("overClass");
+							  for (let i = 0; i < overClassList.length; i++) {
+								  overClassList[i].style.display = "none";
+							  }
 							  document.getElementById("over" + i).style.display = "block";
+						  }
 
 					  });
 				  }
@@ -908,7 +913,7 @@ export default {
 				  var othersRatingImg = this.ratingImgMaker(this.myBookmarkData[i].ratingav);
 
 
-				  var content = '<div class="wrap" id="overB' + i + '" style="display:none;">' +
+				  var content = '<div class="wrap overClass" id="overB' + i + '" style="display:none;">' +
 						  '    <div class="info">' +
 						  '        <div class="title" style="background-color: #ffac27">' +
 						  '            나의 찜' +
@@ -940,8 +945,13 @@ export default {
 				  kakao.maps.event.addListener(mapMarker, 'click', function () {
 					  if ("block" == document.getElementById("overB" + i).style.display)
 						  document.getElementById("overB" + i).style.display = "none";
-					  else
+					  else {
+						  let overClassList = document.getElementsByClassName("overClass");
+						  for (let i = 0; i < overClassList.length; i++) {
+							  overClassList[i].style.display = "none";
+						  }
 						  document.getElementById("overB" + i).style.display = "block";
+					  }
 
 				  });
 			  }
@@ -968,7 +978,7 @@ export default {
 			  var othersRatingImg = this.ratingImgMaker(this.friendsReviewData[i].ratingav);
 
 
-			  var content = '<div class="wrap" id="overF' + i + '" style="display:none;">' +
+			  var content = '<div class="wrap overClass" id="overF' + i + '" style="display:none;">' +
 					  '    <div class="info">' +
 					  '        <div class="title" style="background-color: #1dff77 ">' +
 					  '            친구가 등록한 맛집' +
@@ -1000,8 +1010,14 @@ export default {
 			  kakao.maps.event.addListener(mapMarker, 'click', function () {
 				  if ("block" == document.getElementById("overF" + i).style.display)
 					  document.getElementById("overF" + i).style.display = "none";
-				  else
+				  else {
+					  let overClassList = document.getElementsByClassName("overClass");
+					  for (let i = 0; i < overClassList.length; i++) {
+						  overClassList[i].style.display = "none";
+					  }
+
 					  document.getElementById("overF" + i).style.display = "block";
+				  }
 
 			  });
 		  }
@@ -1027,7 +1043,7 @@ export default {
 				  var othersRatingImg = this.ratingImgMaker(this.othersReviewData[i].ratingav);
 
 
-				  var content = '<div class="wrap" id="overO' + i + '" style="display:none;">' +
+				  var content = '<div class="wrap overClass" id="overO' + i + '" style="display:none;">' +
 						  '    <div class="info">' +
 						  '        <div class="title" style="background-color: #1da2ff ">' +
 						  '            다른사람이 등록한 맛집' +
@@ -1059,8 +1075,14 @@ export default {
 				  kakao.maps.event.addListener(mapMarker, 'click', function () {
 					  if ("block" == document.getElementById("overO" + i).style.display)
 						  document.getElementById("overO" + i).style.display = "none";
-					  else
+					  else {
+						  let overClassList = document.getElementsByClassName("overClass");
+						  for (let i = 0; i < overClassList.length; i++) {
+							  overClassList[i].style.display = "none";
+						  }
+
 						  document.getElementById("overO" + i).style.display = "block";
+					  }
 
 				  });
 		  }

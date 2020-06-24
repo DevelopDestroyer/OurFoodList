@@ -14,11 +14,11 @@
         <p class="category">Lv. {{userLevel}}</p>
         <div class="content">
           <div class="social-description">
-            <h2>:)</h2>
+            <h2>{{reviewData.length}}</h2>
             <p>리뷰</p>
           </div>
           <div class="social-description">
-            <h2>:(</h2>
+            <h2>{{bookmarkData.length}}</h2>
             <p>찜</p>
           </div>
 
@@ -43,7 +43,7 @@
             <a @click="unfollowReq()" class="btn btn-primary btn-round btn-lg" style="color:white">언팔하기</a>
           </template>
           <template v-if="code == 2">
-            <a @click="goHome()" class="btn btn-default btn-round btn-lg" style="color:white">내 정보</a>
+            <a @click="goUserDetail('_my')" class="btn btn-default btn-round btn-lg" style="color:white">내 정보</a>
           </template>
 
         </div>
@@ -92,16 +92,16 @@
               <div slot="label">
                 <i class="now-ui-icons location_bookmark"></i>리뷰/찜
               </div>
-
               <div class="row">
-                <h5>준비중입니다</h5>
-                <card v-for="item in reviewData" v-bind:key="item.id" style="width: 100%;">
+                <div class="col-md-12 ml-auto mr-auto">
+                  <h4 class="title text-center">리뷰</h4>
+                  <!-- <div class="card" style="width: 100%;"  v-for="item in friendsReviewData" v-bind:key="item.id">  -->
+                  <div class="card" style="width: 100%;"  v-for="item in reviewData" v-bind:key="item.id">
+                <!--card v-for="item in reviewData" v-bind:key="item.id" style="width: 100%;"-->
                   <ul slot="raw-content" class="list-group list-group-flush">
                     <li class="list-group-item">
                       <p style="font-size:24px;"><a v-on:click="goRestaurantDetail(item.store_id)">{{item.store_name}}</a>
-                        <n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
                         <n-button type="primary" icon round v-on:click="goRestaurantDetail(item.store_id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
-                        <n-button type="primary" icon round v-on:click="deleteReview(item.review_seq)"><i class="now-ui-icons ui-1_simple-remove"></i></n-button>
                       </p>
                       <i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> {{item.telephone}}<br>
@@ -278,15 +278,18 @@
                       </badge>
                     </li>
                   </ul>
-                </card>
-                <h5>... :)</h5>
-                <card v-for="item in myBookmarkData" v-bind:key="item.id" style="width: 100%;">
+                <!--/card-->
+                  </div>
+
+
+                  <h4 class="title text-center">찜</h4>
+
+                  <div class="card" style="width: 100%;"  v-for="item in bookmarkData" v-bind:key="item.id">
+                <!--card v-for="item in bookmarkData" v-bind:key="item.id" style="width: 100%;"-->
                   <ul slot="raw-content" class="list-group list-group-flush">
                     <li class="list-group-item">
                       <p style="font-size:24px;"><a v-on:click="goRestaurantDetail(item.store_id)">{{item.store_name}}</a>
-                        <n-button type="primary" icon round v-on:click="goEditReview(item.store_id, item.rating, item.taglist, item.review, 'Y')"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg></n-button>
                         <n-button type="primary" icon round v-on:click="goRestaurantDetail(item.store_id)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
-                        <n-button type="primary" icon round v-on:click="deleteReview(item.review_seq)"><i class="now-ui-icons ui-1_simple-remove"></i></n-button>
                       </p>
                       <i class="now-ui-icons location_pin"></i>{{item.roadaddress}}<br/>
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="none" stroke="#444444" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M12,10l-2,2L4,6l2-2 L3,1L1,3c0,6.627,5.373,12,12,12l2-2L12,10z" data-cap="butt"></path> </g></svg> {{item.telephone}}<br>
@@ -359,7 +362,9 @@
                       </badge>　　
                     </li>
                   </ul>
-                </card>
+                <!--/card-->
+                  </div>
+                </div>
               </div>
             </tab-pane>
 
@@ -487,17 +492,20 @@ export default {
 
       friendship: '', //0아무관계아님, 1내가 친구, 2상대가 친추, 3맞팔
       following: [],
-      follower: []
+      follower: [],
+
+      reviewData: [],
+      bookmarkData: []
     }
   },
   mounted() {
     let vm = this;
+    this.userId = this.$route.params.id;
 
-    if(this.$route.params.id == '_my'){
-      this.userId = localStorage.getItem('gmatUserId');
+    if(this.$route.params.id != '_my'){
+      //this.userId = localStorage.getItem('gmatUserId');
     }
     else{
-      this.userId = this.$route.params.id;
     }
 
     axios.get('/api/profile.php?userId=' + this.userId)
@@ -515,6 +523,8 @@ export default {
                 vm.following = response.data.following;
                 vm.follower = response.data.follower;
 
+                vm.reviewData = response.data.reviewData;
+                vm.bookmarkData = response.data.bookmarkData;
               }
               else{
                 alert("유저 정보를 가져오는데 실패하였습니다..");
@@ -612,7 +622,8 @@ export default {
                   vm.friendship = response.data.friendship;
                   vm.following = response.data.following;
                   vm.follower = response.data.follower;
-
+                  vm.reviewData = response.data.reviewData;
+                  vm.bookmarkData = response.data.bookmarkData;
                 }
                 else{
                   alert("유저 정보를 가져오는데 실패하였습니다..");
@@ -621,6 +632,10 @@ export default {
 
     },
     goUserDetail(id){
+      if(id == '_my' && (this.myId == '_tmpId' || this.myId == 'null' || this.myId == null)){
+        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        return;
+      }
       let vm = this;
 
       location.href="#";
@@ -639,11 +654,18 @@ export default {
                   vm.friendship = response.data.friendship;
                   vm.following = response.data.following;
                   vm.follower = response.data.follower;
+
+                  vm.reviewData = response.data.reviewData;
+                  vm.bookmarkData = response.data.bookmarkData;
                 }
                 else{
                   alert("유저 정보를 가져오는데 실패하였습니다..");
                 }
               });
+    },
+    goRestaurantDetail(id){
+      location.href = "/#/restaurant/" + id;
+
     }
   }
 
