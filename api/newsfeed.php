@@ -93,16 +93,16 @@ $resultJson = "";
     $resultJson = $resultJson.'"friendsReviewData" : [';
     if($_SESSION['userId'] != null) {
         $sql = "SELECT review_info.*, user_mst.avatar FROM
-    (select personallist.user_id, personallist.store_id, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created, personallist.store_name
-            from 
-                  ( 
-                  select store.store_id, review.user_id, review.review_seq, review.rating, review.review, review.visit_yn, review.created, store.store_name
-                  from  STORE_MST store, REVIEW_MST review, FRIENDS friend
-                  where store.store_id = review.store_id and review.del_yn != 'Y'  and review.visit_yn = 'Y' and review.user_id IN (SELECT friend_id from FRIENDS where user_id = '".$_SESSION['userId']."')) personallist 
-            left join 
-                 (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq) personaltag 
-            on 
-                personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC) review_info, USER_MST user_mst WHERE review_info.user_id = user_mst.user_id and user_mst.level > 0 ORDER BY review_info.created DESC LIMIT 100;";
+(select personallist.user_id, personallist.store_id, personallist.rating, personallist.review, personallist.visit_yn, IFNULL(personaltag.taglist,'') as taglist, personallist.created, personallist.store_name
+        from 
+              ( 
+              select store.store_id, review.user_id, review.review_seq, review.rating, review.review, review.visit_yn, review.created, store.store_name
+              from  STORE_MST store, REVIEW_MST review
+              where store.store_id = review.store_id and review.user_id IN (SELECT friend_id from FRIENDS where user_id = '".$_SESSION['userId']."') and review.del_yn != 'Y'  and review.visit_yn = 'Y') personallist 
+        left join 
+             (SELECT review_seq, GROUP_CONCAT(tag_code SEPARATOR ',') AS taglist FROM REVIEW_TAG GROUP BY review_seq ) personaltag 
+        on 
+            personallist.review_seq = personaltag.review_seq ORDER BY personallist.created DESC) review_info, USER_MST user_mst WHERE review_info.user_id = user_mst.user_id and user_mst.level > 0 ORDER BY review_info.created DESC LIMIT 100;";
         $result = mysqli_query($connect, $sql);
         $flag = false;
         while ($row = mysqli_fetch_row($result)) {
