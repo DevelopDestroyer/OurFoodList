@@ -55,7 +55,25 @@ CREATE Table REVIEW_TAG
   tag_code int
 )
 
+CREATE Table FRIENDS
+(
+  user_id  varchar(500),
+  friend_id varchar(500)
+)
 
+CREATE Table GUESTBOOK
+(
+  geustbook_seq int NOT NULL AUTO_INCREMENT,
+  ref_guestbook_seq int,
+  to_user_id varchar(500),
+  from_user_id varchar(500),
+  del_yn  varchar(3),
+  contents varchar(500),
+  secret_yn varchar(3),
+  created varchar(30),
+  updated varchar(30),
+  primary key(contents_seq)
+)
 
 
 /////////////////////////////////////////////////////////////
