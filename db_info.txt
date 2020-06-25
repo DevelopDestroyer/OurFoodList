@@ -61,9 +61,10 @@ CREATE Table FRIENDS
   friend_id varchar(500)
 )
 
+
 CREATE Table GUESTBOOK
 (
-  geustbook_seq int NOT NULL AUTO_INCREMENT,
+  guestbook_seq int NOT NULL AUTO_INCREMENT,
   ref_guestbook_seq int,
   to_user_id varchar(500),
   from_user_id varchar(500),
@@ -72,7 +73,7 @@ CREATE Table GUESTBOOK
   secret_yn varchar(3),
   created varchar(30),
   updated varchar(30),
-  primary key(contents_seq)
+  primary key(guestbook_seq)
 )
 
 
