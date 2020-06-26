@@ -106,3 +106,13 @@ Table USER_FOLLOWING_RELATION as relation{
                       localStorage.setItem('gmatUserId', vm.inputID);
                       localStorage.setItem('gmatUserPw', );
                       localStorage.setItem('gmatTmpUserId', null);
+		      
+		      
+		      
+		      
+if($_SESSION['userId'] != null)
+"INSERT INTO GUESTBOOK (ref_guestbook_seq, to_user_id, from_user_id, del_yn, contents, secret_yn, created, updated)
+VALUES (null, '".$toUserId."', '".$fromUserId."', '".$delYn."', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
+
+if($_SESSION['userId'] == $fromId)
+"UPDATE GUESTBOOK SET del_yn='".$delYn."', contents='".$contents."', secret_yn='".$secretYn."', updated='".$updated."' WHERE guestbook_seq = '".$guestbookSeq."';";
