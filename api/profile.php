@@ -218,28 +218,34 @@
 ////방명록 정보
       $resultJsonData .= '"guestbook": [';
       $sql = "SELECT
-                    , guestbook_seq
-                    , ref_guestbook_seq
-                    , to_user_id
-                    , from_user_id
-                    , contents
-                    , secret_yn
-                    , created
-             FROM GUESTBOOK
-             WHERE to_user_id = '".$userId."'
-             AND   del_yn = 'N' ORDER BY created DESC;";
+                    gb.guestbook_seq
+                    , ifnull(gb.ref_guestbook_seq, '')
+                    , gb.to_user_id
+                    , gb.from_user_id
+                    , gb.contents
+                    , gb.secret_yn
+                    , gb.created
+                    , um.level
+                    , um.avatar
+             FROM GUESTBOOK gb
+                , USER_MST um
+             WHERE gb.to_user_id = '".$userId."'
+             AND   gb.from_user_id = um.user_id
+             AND   gb.del_yn = 'N' ORDER BY gb.created DESC;";
       $result = mysqli_query($connect, $sql);
       $flagMy = false;
       while ($row = mysqli_fetch_row($result)) {
           $flagMy = true;
           $resultJsonData = $resultJsonData.'{';
-          $resultJsonData = $resultJsonData.'"guestbook_seq":"'.$row[0].'",';
-          $resultJsonData = $resultJsonData.'"ref_guestbook_seq":"'.$row[1].'",';
-          $resultJsonData = $resultJsonData.'"to_user_id":"'.$row[2].'",';
-          $resultJsonData = $resultJsonData.'"from_user_id":"'.$row[3].'",';
+          $resultJsonData = $resultJsonData.'"guestbookSeq":"'.$row[0].'",';
+          $resultJsonData = $resultJsonData.'"refGuestbookSeq":"'.$row[1].'",';
+          $resultJsonData = $resultJsonData.'"toUserId":"'.$row[2].'",';
+          $resultJsonData = $resultJsonData.'"fromUserId":"'.$row[3].'",';
           $resultJsonData = $resultJsonData.'"contents":"'.$row[4].'",';
-          $resultJsonData = $resultJsonData.'"secret_yn":"'.$row[5].'",';
-          $resultJsonData = $resultJsonData.'"created":"'.$row[6].'"},';
+          $resultJsonData = $resultJsonData.'"secretYn":"'.$row[5].'",';
+          $resultJsonData = $resultJsonData.'"created":"'.$row[6].'",';
+          $resultJsonData = $resultJsonData.'"level":"'.$row[7].'",';
+          $resultJsonData = $resultJsonData.'"avatar":"'.$row[8].'"},';
       }
       if($flagMy)
           $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거

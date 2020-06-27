@@ -60,8 +60,14 @@
           $fromUserId = $_POST['fromUserId'];
           $contents = $_POST['contents'];
 
-          $secret_yn = $_POST['secretYn'];
+          $secretYn = $_POST['secretYn'];
       }
+
+      if($secretYn == false)
+          $secretYn = 'N';
+      if($secretYn == true)
+          $secretYn = 'Y';
+
 
       session_start();
 
@@ -76,10 +82,10 @@
 
 
       //// 방명록 글 등록
-      if($order == 'W'){
+      if($order == '1'){
           if($refGuestbookSeq = ''){
-              $sql = "INSERT INTO GUESTBOOK (ref_guestbook_seq, to_user_id, from_user_id, del_yn, contents, secret_yn, created, updated)
-                      VALUES (null, '".$toUserId."', '".$fromUserId."', 'N', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
+              $sql = "INSERT INTO GUESTBOOK (to_user_id, from_user_id, del_yn, contents, secret_yn, created, updated)
+                      VALUES ('".$toUserId."', '".$fromUserId."', 'N', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
               $result = mysqli_query($connect, $sql);
 
           }
@@ -95,7 +101,7 @@
       }
 
       //// 방명록 글 수정
-      else if($order == 'U'){
+      else if($order == '2'){
           //실제 게시물 수정 권한 있는지 확인
           $havePermission = false;
           $sql = "SELECT to_user_id FROM GUESTBOOK 
@@ -121,7 +127,7 @@
           echo '{"result": "success", "code": "2", "message": "글이 수정 되었습니다."}';
       }
       //// 방명록 글 삭제
-      else if($order == 'D'){
+      else if($order == '3'){
           //실제 게시물 삭제 권한 있는지 확인
           $havePermission = false;
           $sql = "SELECT to_user_id FROM GUESTBOOK 
@@ -161,7 +167,20 @@
   else{
       //비어있는 post데이터가 있음
 
-      echo '{"result": "error", "code": "-1", "message": "empty data"}';
+      echo '{"result": "error", "code": "-1", "message": "empty data"
+'.
+          '1'.$_POST['order']
+
+      .'2'.$_POST['guestbookSeq']
+          .'3'.$_POST['refGuestbookSeq']
+          .'4'. $_POST['toUserId']
+
+          .'5'.$_POST['fromUserId']
+          .'6'.$_POST['contents']
+
+          .'7'.$_POST['secretYn']
+          .'      
+      }';
       mysqli_close($connect);
 
   }
