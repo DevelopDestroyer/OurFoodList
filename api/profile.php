@@ -212,8 +212,39 @@
       if($flagMy)
           $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
 
-      $resultJsonData = $resultJsonData.']';
+      $resultJsonData = $resultJsonData.'],';
 
+
+////방명록 정보
+      $resultJsonData .= '"guestbook": [';
+      $sql = "SELECT
+                    , guestbook_seq
+                    , ref_guestbook_seq
+                    , to_user_id
+                    , from_user_id
+                    , contents
+                    , secret_yn
+                    , created
+             FROM GUESTBOOK
+             WHERE to_user_id = '".$userId."'
+             AND   del_yn = 'N' ORDER BY created DESC;";
+      $result = mysqli_query($connect, $sql);
+      $flagMy = false;
+      while ($row = mysqli_fetch_row($result)) {
+          $flagMy = true;
+          $resultJsonData = $resultJsonData.'{';
+          $resultJsonData = $resultJsonData.'"guestbook_seq":"'.$row[0].'",';
+          $resultJsonData = $resultJsonData.'"ref_guestbook_seq":"'.$row[1].'",';
+          $resultJsonData = $resultJsonData.'"to_user_id":"'.$row[2].'",';
+          $resultJsonData = $resultJsonData.'"from_user_id":"'.$row[3].'",';
+          $resultJsonData = $resultJsonData.'"contents":"'.$row[4].'",';
+          $resultJsonData = $resultJsonData.'"secret_yn":"'.$row[5].'",';
+          $resultJsonData = $resultJsonData.'"created":"'.$row[6].'"},';
+      }
+      if($flagMy)
+          $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거
+
+      $resultJsonData = $resultJsonData.']';
 
 
 
