@@ -436,7 +436,7 @@
                     </div>
                     <div class="card" style="width: 100%;"
                          v-for="item in guestbook" v-bind:key="item.index"
-                         v-if="item.refGuestbookSeq == ''" >
+                         v-if="item.refGuestbookSeq == 0" >
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                           <p style="font-size: 24px;">
@@ -789,9 +789,9 @@ export default {
       this.gbRefId = refgbid;
       this.gbId = gbid;
 
-      if(this.gbRefId == null)
+      if(this.gbRefId == null || this.gbRefId == 0)
         this.gbRefId = '';
-      if(this.gbId = gbid == null)
+      if(this.gbId == null)
         this.gbId = '';
 
       if(mode == 1) {

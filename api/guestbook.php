@@ -63,9 +63,9 @@
           $secretYn = $_POST['secretYn'];
       }
 
-      if($secretYn == false)
+      if($secretYn == false || $secretYn == 'false')
           $secretYn = 'N';
-      if($secretYn == true)
+      if($secretYn == true || $secretYn == 'true')
           $secretYn = 'Y';
 
 
@@ -84,8 +84,8 @@
       //// 방명록 글 등록
       if($order == '1'){
           if($refGuestbookSeq = ''){
-              $sql = "INSERT INTO GUESTBOOK (to_user_id, from_user_id, del_yn, contents, secret_yn, created, updated)
-                      VALUES ('".$toUserId."', '".$fromUserId."', 'N', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
+              $sql = "INSERT INTO GUESTBOOK (ref_guestbook_seq, to_user_id, from_user_id, del_yn, contents, secret_yn, created, updated)
+                      VALUES (0, '".$toUserId."', '".$fromUserId."', 'N', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
               $result = mysqli_query($connect, $sql);
 
           }
@@ -95,7 +95,7 @@
               $result = mysqli_query($connect, $sql);
           }
 
-          echo '{"result": "success", "code": "1", "message": "글이 등록 되었습니다."}';
+          echo '{"result": "success", "code": "1", "message": "글이 등록 되었습니다"}';
           mysqli_close($connect);
           return;
       }
@@ -167,20 +167,7 @@
   else{
       //비어있는 post데이터가 있음
 
-      echo '{"result": "error", "code": "-1", "message": "empty data"
-'.
-          '1'.$_POST['order']
-
-      .'2'.$_POST['guestbookSeq']
-          .'3'.$_POST['refGuestbookSeq']
-          .'4'. $_POST['toUserId']
-
-          .'5'.$_POST['fromUserId']
-          .'6'.$_POST['contents']
-
-          .'7'.$_POST['secretYn']
-          .'      
-      }';
+      echo '{"result": "error", "code": "-1", "message": "empty data"}';
       mysqli_close($connect);
 
   }
