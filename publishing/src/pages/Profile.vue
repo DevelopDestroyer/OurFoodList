@@ -88,6 +88,95 @@
             tab-nav-classes="nav-pills-just-icons"
             type="primary"
           >
+            <tab-pane title="Visit" style="margin-bottom:20px;">
+              <div slot="label">
+                <i class="now-ui-icons ui-2_chat-round"></i>방명록
+              </div>
+              <div class="col-md-10 ml-auto mr-auto">
+                <div class="row collections">
+                  <div class="col-md-12">
+                    <div slot="label">
+                      <h5>
+                        방명록
+                        <br/>
+                        <n-button v-on:click="setGuestbookModal(1, null,null, 'guestbook')" type="info" @click.native="modals.notice=true">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
+                          방명록 쓰기
+                        </n-button>
+
+                      </h5>
+                    </div>
+                    <div class="card" style="width: 100%;"
+                         v-for="item in guestbook" v-bind:key="item.index"
+                         v-if="item.refGuestbookSeq == 0" >
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          <p style="font-size: 24px;">
+                            <img :src='"img/avatar/"+item.avatar+".png"' width="50px" style="border-radius: 25px">
+                            {{item.fromUserId}}
+                            <badge type="warning">
+                              Lv. {{item.level}}
+                            </badge>
+                            　<n-button type="primary" icon round v-on:click="goUserDetail(item.fromUserId)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+                          </p>
+                          <i class="fa fa-clock-o">{{item.created}}</i>
+                          <br/>
+                          <template v-if="item.contents != null && item.contents != ''">
+                            <template v-if="item.secretYn == 'N'">
+                              <span style="padding:5px; background-color: #e4606d; color:#fff;">{{item.contents}}</span>
+                            </template>
+                            <template v-else >
+                              <template v-if="item.fromUserId == myId || code == 1">
+                                <i>[비밀글]</i> {{item.contents}}
+                              </template>
+                              <template else>
+                                비밀글 입니다.
+                              </template>
+                            </template>
+
+                            <br/>
+                          </template>
+                          <hr>
+
+
+                          <span
+                                  v-for="itemSub in guestbook.slice().reverse()" v-bind:key="itemSub.index"
+                                  v-if="itemSub.refGuestbookSeq == item.guestbookSeq">
+                            <a v-on:click="goUserDetail(itemSub.fromUserId)">{{itemSub.fromUserId}}</a> :
+                            <template v-if="itemSub.secretYn == 'N'">
+                             {{itemSub.contents}}
+                            </template>
+                            <template v-else >
+                              <template v-if="itemSub.fromUserId == myId || code == 1">
+                                <i>[비밀글]</i> {{itemSub.contents}}
+                              </template>
+                              <template else>
+                                 비밀글 입니다.
+                              </template>
+                            </template>
+                            <a style="color:gray">({{itemSub.created}})</a>
+                            <n-button size="sm" type="info" v-if="myId == itemSub.fromUserId" v-on:click="setGuestbookModal(2, itemSub.guestbookSeq, itemSub.refGuestbookSeq, itemSub)"  @click.native="modals.notice=true">수정</n-button>
+                             <n-button size="sm" type="info" v-if="myId == itemSub.fromUserId" v-on:click="setGuestbookModal(3, itemSub.guestbookSeq, itemSub.refGuestbookSeq, itemSub)">삭제</n-button>
+                            <hr>
+                          </span>
+                          <n-button v-on:click="setGuestbookModal(1, null, item.guestbookSeq, 'reply')" type="info" @click.native="modals.notice=true">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
+                            댓글쓰기
+                          </n-button>
+                          <n-button v-if="myId == item.fromUserId" v-on:click="setGuestbookModal(2, item.guestbookSeq, null, item)" type="info" @click.native="modals.notice=true">
+                            수정
+                          </n-button>
+                          <n-button v-if="myId == item.fromUserId || code == 1" v-on:click="setGuestbookModal(3, item.guestbookSeq, null, item)" type="info">
+                            삭제
+                          </n-button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab-pane>
+
             <tab-pane title="Review" style="margin-bottom:20px;">
               <div slot="label">
                 <i class="now-ui-icons location_bookmark"></i>리뷰/찜
@@ -416,97 +505,6 @@
             </tab-pane>
 
 
-            <tab-pane title="Visit" style="margin-bottom:20px;">
-              <div slot="label">
-                <i class="now-ui-icons ui-2_chat-round"></i>방명록
-              </div>
-              <div class="col-md-10 ml-auto mr-auto">
-                <div class="row collections">
-                  <div class="col-md-12">
-                    <div slot="label">
-                      <h5>
-                        방명록
-                        <br/>
-                        <n-button v-on:click="setGuestbookModal(1, null,null, 'guestbook')" type="info" @click.native="modals.notice=true">
-                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
-                          방명록 쓰기
-                        </n-button>
-
-                      </h5>
-                    </div>
-                    <div class="card" style="width: 100%;"
-                         v-for="item in guestbook" v-bind:key="item.index"
-                         v-if="item.refGuestbookSeq == 0" >
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                          <p style="font-size: 24px;">
-                            <img :src='"img/avatar/"+item.avatar+".png"' width="50px" style="border-radius: 25px">
-                            {{item.fromUserId}}
-                            <badge type="warning">
-                              Lv. {{item.level}}
-                            </badge>
-                            　<n-button type="primary" icon round v-on:click="goUserDetail(item.fromUserId)"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
-                          </p>
-                          <i class="fa fa-clock-o">{{item.created}}</i>
-                          <template v-if="item.contents != null && item.contents != ''">
-                            <template v-if="item.secretYn == 'N'">
-                              <span style="padding:5px; background-color: #e4606d; color:#fff;">{{item.contents}}</span>
-                            </template>
-                            <template v-else >
-                              <template v-if="item.fromUserId == myId || code == 1">
-                                <i>[비밀글]</i> {{item.contents}}
-                              </template>
-                              <template else>
-                                비밀글 입니다.
-                              </template>
-                            </template>
-
-                            <br/>
-                          </template>
-                          <hr>
-
-
-                          <span
-                                  v-for="itemSub in guestbook.slice().reverse()" v-bind:key="itemSub.index"
-                                  v-if="itemSub.refGuestbookSeq == item.guestbookSeq">
-                            <a v-on:click="goUserDetail(itemSub.fromUserId)">{{itemSub.fromUserId}}</a> :
-                            <template v-if="itemSub.secretYn == 'N'">
-                             {{itemSub.contents}}
-                            </template>
-                            <template v-else >
-                              <template v-if="itemSub.fromUserId == myId || code == 1">
-                                <i>[비밀글]</i> {{itemSub.contents}}
-                              </template>
-                              <template else>
-                                 비밀글 입니다.
-                              </template>
-                            </template>
-                            <a style="color:gray">({{itemSub.created}})</a>
-                            <a v-if="myId == itemSub.fromUserId" v-on:click="setGuestbookModal(2, itemSub.guestbookSeq, item.guestbookSeq, itemSub)"  @click.native="modals.notice=true">[댓글수정]</a>
-                            <a v-if="myId == itemSub.fromUserId" v-on:click="setGuestbookModal(3, itemSub.guestbookSeq, item.guestbookSeq, itemSub)">[댓글삭제]</a>
-                            <hr>
-                          </span>
-                          <n-button v-on:click="setGuestbookModal(1, null, item.refGuestbookSeq, 'reply')" type="info" @click.native="modals.notice=true">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
-                            댓글 쓰기
-                          </n-button>
-                          <n-button v-if="myId == item.fromUserId" v-on:click="setGuestbookModal(2, item.guestbookSeq, null, item)" type="info" @click.native="modals.notice=true">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
-                            방명록 수정
-                          </n-button>
-                          <n-button v-if="myId == item.fromUserId || code == 1" v-on:click="setGuestbookModal(3, item.guestbookSeq, null, item)" type="info">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
-                            방명록 삭제
-                          </n-button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </tab-pane>
-
-
 
             <!--
             <tab-pane title="Settings" style="margin-bottom:20px;">
@@ -601,7 +599,8 @@ export default {
       gbMode : 1,
       gbSecret : 'N',
       gbRefId : null,
-      gbId : null
+      gbId : null,
+      gbEditTargetItem: null
     }
   },
   mounted() {
@@ -782,12 +781,26 @@ export default {
 
     },
     setGuestbookModal(mode, gbid, refgbid, item){
+      if(mode == 3){
+        //초기화 및 세팅
+        this.gbContents = '';
+        this.gbMode = mode;
+        this.gbSecret = false;
+        this.gbRefId = '';
+        this.gbId = gbid;
+        this.gbEditTargetItem = item;
+
+        this.reqGuestbook();
+        return;
+      }
+
       //초기화 및 세팅
       this.gbContents = '';
       this.gbMode = mode;
       this.gbSecret = false;
       this.gbRefId = refgbid;
       this.gbId = gbid;
+      this.gbEditTargetItem = item;
 
       if(this.gbRefId == null || this.gbRefId == 0)
         this.gbRefId = '';
@@ -800,15 +813,18 @@ export default {
       else if(mode == 2) {
         this.modals.title = '글수정';
       }
-
-      reqGuestbook(item);
-
     },
-    reqGuestbook(item){
+    reqGuestbook(){
       let vm = this;
-      let updateItem = item;
+      let updateItem = this.gbEditTargetItem;
       //전송부분 구현...
-      let form = new FormData();
+      let form = new FormData()
+
+      if(this.gbSecret == 'true' || this.gbSecret == 'Y' || this.gbSecret == true)
+        this.gbSecret = 'Y';
+      if(this.gbSecret == 'false' || this.gbSecret == 'N' || this.gbSecret == false)
+        this.gbSecret = 'N';
+
       form.append('guestbookSeq', this.gbId);
       form.append('refGuestbookSeq', this.gbRefId);
       form.append('toUserId', this.userId);
@@ -831,12 +847,12 @@ export default {
                   }
                 }
                 else if(response.data.code == '2') {//1:나의프로필 2:남의프로필
-                  item.contents = vm.gbContents;
+                  updateItem.contents = vm.gbContents;
 
                   alert("수정이 완료되었습니다.");
                 }
                 else if(response.data.code == '3') {//1:나의프로필 2:남의프로필
-                  item.contents = "삭제 되었습니다.";
+                  updateItem.contents = "삭제 되었습니다.";
                   alert("삭제가 완료되었습니다.");
                 }
 

@@ -63,9 +63,9 @@
           $secretYn = $_POST['secretYn'];
       }
 
-      if($secretYn == false || $secretYn == 'false')
+      if($secretYn === false || $secretYn == 'false')
           $secretYn = 'N';
-      if($secretYn == true || $secretYn == 'true')
+      if($secretYn === true || $secretYn == 'true')
           $secretYn = 'Y';
 
 
@@ -91,7 +91,7 @@
           }
           else{
               $sql = "INSERT INTO GUESTBOOK (ref_guestbook_seq, to_user_id, from_user_id, del_yn, contents, secret_yn, created, updated)
-                      VALUES ('".$refGuestbookSeq."', '".$toUserId."', '".$fromUserId."', 'N', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
+                      VALUES ('".$_POST['refGuestbookSeq']."', '".$toUserId."', '".$fromUserId."', 'N', '".$contents."', '".$secretYn."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."');";
               $result = mysqli_query($connect, $sql);
           }
 
