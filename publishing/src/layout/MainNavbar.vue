@@ -275,7 +275,7 @@ export default {
       let vm = this;
       this.markerDrawReq =  setInterval(function() {
         BUS.$emit('sessionState', msg);
-        console.log("마커를 그려달라 요청을 보냅니다" + vm.markerDrawReqCnt + ", " + vm.markerDrawReq);
+        console.log("마커를 그려달라 요청을 보냅니다" + vm.markerDrawReqCnt + ", " + vm.markerDrawReq + ", " + window.location.href);
         vm.markerDrawReqCnt++;
         if(vm.markerDrawReqCnt > 30){
           console.log("30회나 요청했으니 그냥 멈춥니다");
@@ -298,6 +298,8 @@ export default {
 function toggleClick(){
 		document.getElementById("navbarToggleButton").click();
 }
+
+
 </script>
 
 <style scoped></style>

@@ -227,6 +227,7 @@
                     , gb.created
                     , um.level
                     , um.avatar
+                    , gb.del_yn
              FROM GUESTBOOK gb
                 , USER_MST um
              WHERE gb.to_user_id = '".$userId."'
@@ -245,7 +246,8 @@
           $resultJsonData = $resultJsonData.'"secretYn":"'.$row[5].'",';
           $resultJsonData = $resultJsonData.'"created":"'.$row[6].'",';
           $resultJsonData = $resultJsonData.'"level":"'.$row[7].'",';
-          $resultJsonData = $resultJsonData.'"avatar":"'.$row[8].'"},';
+          $resultJsonData = $resultJsonData.'"avatar":"'.$row[8].'",';
+          $resultJsonData = $resultJsonData.'"delYn":"'.$row[9].'"},';
       }
       if($flagMy)
           $resultJsonData = substr($resultJsonData , 0, -1); //마지막 콤마 제거

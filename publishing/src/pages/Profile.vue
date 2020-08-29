@@ -155,18 +155,18 @@
                               </template>
                             </template>
                             <a style="color:gray">({{itemSub.created}})</a>
-                            <n-button size="sm" type="info" v-if="myId == itemSub.fromUserId" v-on:click="setGuestbookModal(2, itemSub.guestbookSeq, itemSub.refGuestbookSeq, itemSub)"  @click.native="modals.notice=true">수정</n-button>
-                             <n-button size="sm" type="info" v-if="myId == itemSub.fromUserId" v-on:click="setGuestbookModal(3, itemSub.guestbookSeq, itemSub.refGuestbookSeq, itemSub)">삭제</n-button>
+                            <n-button size="sm" type="info" v-if="myId == itemSub.fromUserId && itemSub.delYn == 'N'" v-on:click="setGuestbookModal(2, itemSub.guestbookSeq, itemSub.refGuestbookSeq, itemSub)"  @click.native="modals.notice=true">수정</n-button>
+                             <n-button size="sm" type="info" v-if="myId == itemSub.fromUserId && itemSub.delYn == 'N'" v-on:click="setGuestbookModal(3, itemSub.guestbookSeq, itemSub.refGuestbookSeq, itemSub)">삭제</n-button>
                             <hr>
                           </span>
-                          <n-button v-on:click="setGuestbookModal(1, null, item.guestbookSeq, 'reply')" type="info" @click.native="modals.notice=true">
+                          <n-button v-if="item.delYn == 'N'" v-on:click="setGuestbookModal(1, null, item.guestbookSeq, 'reply')" type="info" @click.native="modals.notice=true">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="10" y1="3" x2="13" y2="6" data-cap="butt" data-color="color-2"></line> <line fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="2" y1="11" x2="5" y2="14" data-cap="butt" data-color="color-2"></line> <polygon fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="12,1 15,4 5,14 1,15 2,11 " data-cap="butt"></polygon> </g></svg>
                             댓글쓰기
                           </n-button>
-                          <n-button v-if="myId == item.fromUserId" v-on:click="setGuestbookModal(2, item.guestbookSeq, null, item)" type="info" @click.native="modals.notice=true">
+                          <n-button v-if="myId == item.fromUserId && item.delYn == 'N'" v-on:click="setGuestbookModal(2, item.guestbookSeq, null, item)" type="info" @click.native="modals.notice=true">
                             수정
                           </n-button>
-                          <n-button v-if="myId == item.fromUserId || code == 1" v-on:click="setGuestbookModal(3, item.guestbookSeq, null, item)" type="info">
+                          <n-button v-if="(myId == item.fromUserId || code == 1)  && item.delYn == 'N'" v-on:click="setGuestbookModal(3, item.guestbookSeq, null, item)" type="info">
                             삭제
                           </n-button>
                         </li>
@@ -539,13 +539,13 @@
               <div class="row" style="padding-left: 20px">
                   <fg-input placeholder="입력해주세요" style="width:280px;" v-model="gbContents"></fg-input>
               </div>
-              <label for="check4" class="form-check-label">
+              　　　　<label for="check4" class="form-check-label">
                 　　<input id="check4" type="checkbox" class="form-check-input" true-value="Y" false-value="N" v-model="gbSecret" />
                 <span class="form-check-sign"></span>
                 비밀 남기기　
               </label>
               <div slot="footer" class="justify-content-center">
-                <n-button type="info" round @click.native="modals.notice = false" v-on:click="reqGuestbook()">댓글등록</n-button>
+                <n-button type="info" round @click.native="modals.notice = false" v-on:click="reqGuestbook()">등록</n-button>
               </div>
 
             </modal>
@@ -782,6 +782,11 @@ export default {
     },
     setGuestbookModal(mode, gbid, refgbid, item){
       if(mode == 3){
+        let confirm = window.confirm("정말 삭제하시겠습니까?");
+        if(!confirm){
+          return;
+        }
+
         //초기화 및 세팅
         this.gbContents = '';
         this.gbMode = mode;
@@ -811,6 +816,8 @@ export default {
         this.modals.title = '글작성';
       }
       else if(mode == 2) {
+        this.gbContents = item.contents;
+        this.gbSecret = item.secretYn == 'Y' ? 'Y' : 'N';
         this.modals.title = '글수정';
       }
     },
@@ -839,6 +846,7 @@ export default {
 
                 if(response.data.code == '1') {//1:나의프로필 2:남의프로필
                   alert("등록이 완료되었습니다.");
+                  vm.guestbook.unshift(response.data.guestbook[0]);
                   if(updateItem == 'guestbook'){
 
                   }
@@ -848,11 +856,12 @@ export default {
                 }
                 else if(response.data.code == '2') {//1:나의프로필 2:남의프로필
                   updateItem.contents = vm.gbContents;
-
+                  updateItem.gbSecret = vm.gbSecret;
                   alert("수정이 완료되었습니다.");
                 }
                 else if(response.data.code == '3') {//1:나의프로필 2:남의프로필
                   updateItem.contents = "삭제 되었습니다.";
+                  updateItem.delYn = "Y";
                   alert("삭제가 완료되었습니다.");
                 }
 

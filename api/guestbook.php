@@ -95,7 +95,57 @@
               $result = mysqli_query($connect, $sql);
           }
 
-          echo '{"result": "success", "code": "1", "message": "글이 등록 되었습니다"}';
+          //ID값 가져오자
+          $sql = "SELECT LAST_INSERT_ID();";
+          $result = mysqli_query($connect, $sql);
+          $autoIncreasedId = '';
+          while($row = mysqli_fetch_row($result)){
+              $autoIncreasedId = $row[0];
+              break;
+          }
+
+
+
+
+
+
+          //방금 등록한 방명록 정보를 가져온다
+          $resultJsonData1 = '';
+          $resultJsonData1 .= '"guestbook": [';
+          $sql = "SELECT
+                    gb.guestbook_seq
+                    , ifnull(gb.ref_guestbook_seq, '')
+                    , gb.to_user_id
+                    , gb.from_user_id
+                    , gb.contents
+                    , gb.secret_yn
+                    , gb.created
+                    , um.level
+                    , um.avatar
+                    , gb.del_yn
+             FROM GUESTBOOK gb
+                , USER_MST um
+             WHERE gb.guestbook_seq = '".$autoIncreasedId."'
+             AND   gb.from_user_id = um.user_id;";
+          $result = mysqli_query($connect, $sql);
+          while ($row = mysqli_fetch_row($result)) {
+              $flagMy = true;
+              $resultJsonData1 = $resultJsonData1.'{';
+              $resultJsonData1 = $resultJsonData1.'"guestbookSeq":"'.$row[0].'",';
+              $resultJsonData1 = $resultJsonData1.'"refGuestbookSeq":"'.$row[1].'",';
+              $resultJsonData1 = $resultJsonData1.'"toUserId":"'.$row[2].'",';
+              $resultJsonData1 = $resultJsonData1.'"fromUserId":"'.$row[3].'",';
+              $resultJsonData1 = $resultJsonData1.'"contents":"'.$row[4].'",';
+              $resultJsonData1 = $resultJsonData1.'"secretYn":"'.$row[5].'",';
+              $resultJsonData1 = $resultJsonData1.'"created":"'.$row[6].'",';
+              $resultJsonData1 = $resultJsonData1.'"level":"'.$row[7].'",';
+              $resultJsonData1 = $resultJsonData1.'"avatar":"'.$row[8].'",';
+              $resultJsonData1 = $resultJsonData1.'"delYn":"'.$row[9].'"}';
+              break;
+          }
+          $resultJsonData1 = $resultJsonData1.']';
+
+          echo '{"result": "success", "code": "1", "message": "글이 등록 되었습니다", '.$resultJsonData1.'}';
           mysqli_close($connect);
           return;
       }
@@ -171,5 +221,6 @@
       mysqli_close($connect);
 
   }
+
 
 ?>
