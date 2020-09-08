@@ -120,7 +120,7 @@ export default {
                       console.log("자동로그인 on");
                       localStorage.setItem('gmatAutoLoginMode', 'on');
                       localStorage.setItem('gmatUserId', vm.inputID);
-                      localStorage.setItem('gmatUserPw', SHA256(vm.inputPassword));
+                      //localStorage.setItem('gmatUserPw', SHA256(vm.inputPassword));
                       location.href = "/";
                     }
                     else{

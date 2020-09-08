@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">그맛</string>
+    <string name="title_home">메인</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_map">맛집지도</string>
+    <string name="title_regist">맛집등록</string>
+    <string name="title_friends">친구들맛집</string>
+    <string name="title_myinfo">내정보</string>
+    <string name="title_premium">프리미엄</string>
+
+</resources>
