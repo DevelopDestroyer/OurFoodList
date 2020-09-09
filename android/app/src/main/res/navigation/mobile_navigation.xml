@@ -28,4 +28,10 @@
         android:name="com.th.geumat.ui.notificationsq.NotificationsqFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notificationsq" />
+
+    <fragment
+        android:id="@+id/navigation_notificationsw"
+        android:name="com.th.geumat.ui.premium.PremiumFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notificationsq" />
 </navigation>

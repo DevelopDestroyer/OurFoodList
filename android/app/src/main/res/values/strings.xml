@@ -10,4 +10,8 @@
     <string name="title_myinfo">내정보</string>
     <string name="title_premium">프리미엄</string>
 
+    <string name="admob_app_id">ca-app-pub-1902482017542301~8976691991</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1902482017542301/2411283648</string>
+    <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>
