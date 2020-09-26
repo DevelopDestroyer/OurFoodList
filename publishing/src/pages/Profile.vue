@@ -743,7 +743,7 @@ export default {
     },
     goUserDetail(id){
       if(id == '_my' && (this.myId == '_tmpId' || this.myId == 'null' || this.myId == null)){
-        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        location.href="/#/login";
         return;
       }
       let vm = this;

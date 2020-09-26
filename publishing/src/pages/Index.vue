@@ -684,7 +684,8 @@ export default {
   },
   methods : {
 	goBottom(){
-		location.href = "/#/#gmatListTop";
+		//location.href = "/#/#gmatListTop";
+    document.getElementById('gmatListTop').scrollIntoView();
 	},
 	goRestaurantDetail(id){
 	  	location.href = "/#/restaurant/" + id;

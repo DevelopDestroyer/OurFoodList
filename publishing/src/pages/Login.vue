@@ -126,7 +126,7 @@ export default {
                     else{
                       console.log("자동로그인 off");
                       localStorage.setItem('gmatAutoLoginMode', 'off');
-                      localStorage.setItem('gmatUserId', '');
+                      localStorage.setItem('gmatUserId', vm.inputID);
                       localStorage.setItem('gmatUserPw', '');
                       location.href = "/";
                     }
