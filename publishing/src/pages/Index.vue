@@ -565,7 +565,7 @@ export default {
 
 	  let vm = this;
 	  BUS.$on('sessionState',function(data){
-		  console.log("메인네브바에서 보낸 메시지 : " + data); //abc
+		  console.log("지도마커요청에 대해 보내온 메시지 : " + data); //abc
 		  BUS.$emit('startDrawMaker', 1);
 		  if(vm.shoeMeTheMap) {
 		  	console.log("이미 그리기 시작했으니 더이상 마커그리기 요청은 무시합니다");
@@ -595,8 +595,6 @@ export default {
 									  address: response.data.mydata[i].address,
 									  roadaddress: response.data.mydata[i].roadaddress,
 									  lon: response.data.mydata[i].lon,
-									  //mapx: out_pt.x,
-									  //mapy: out_pt.y,
 									  lat: response.data.mydata[i].lat,
 									  cnt: response.data.mydata[i].cnt,
 									  ratingav: Number.parseFloat(response.data.mydata[i].ratingav).toFixed(2),
@@ -617,8 +615,6 @@ export default {
 									  address: response.data.mydata[i].address,
 									  roadaddress: response.data.mydata[i].roadaddress,
 									  lon: response.data.mydata[i].lon,
-									  //mapx: out_pt.x,
-									  //mapy: out_pt.y,
 									  lat: response.data.mydata[i].lat,
 									  cnt: response.data.mydata[i].cnt,
 									  ratingav: Number.parseFloat(response.data.mydata[i].ratingav).toFixed(2),
@@ -1113,7 +1109,15 @@ export default {
   },
   created () {
     window.addEventListener('scroll', this.handleScroll);
-
+    console.log('메인뷰 생성됨');
+    //vm.othersReviewData
+    let vm = this;
+    setTimeout(function() {
+      if(!(vm.othersReviewData.length > 0)){
+        console.log('지도데이터로드가 안되고 있으니 요청을 보냅니다 .');
+        BUS.$emit('sessionState', 1111);
+      }
+    },1000);
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);
