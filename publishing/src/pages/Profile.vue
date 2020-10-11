@@ -550,6 +550,18 @@
 
             </modal>
 
+            <modal :show.sync="alertModal">
+              <template slot="header">
+                <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+              </template>
+              <div style="color:gray;">
+                {{alertMsg}}
+              </div>
+              <template slot="footer">
+                <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+              </template>
+            </modal>
+
 
           </div>
         </div>
@@ -573,6 +585,9 @@ export default {
   },
   data() {
     return {
+      alertModal : false,
+      alertMsg : '',
+
       code: 2, //1 내프로필, 2 남의프로필
       myId: '',
 
@@ -634,7 +649,8 @@ export default {
                 vm.guestbook = response.data.guestbook;
               }
               else{
-                alert("유저 정보를 가져오는데 실패하였습니다..");
+                vm.alertMsg = '유저정보를 가져오는데 실패하였습니다..';
+                vm.alertModal = true;
               }
             });
 
@@ -644,7 +660,8 @@ export default {
     followReq(){
 
       if(this.myId == '_tmpId' || this.myId == 'null' || this.myId == null){
-        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        this.alertMsg = '로그인해야 이용할 수 있는 서비스 입니다.';
+        this.alertModal = true;
         return;
       }
       let vm = this;
@@ -659,22 +676,27 @@ export default {
 
                 if(response.data.code == '1') {//1:나의프로필 2:남의프로필
                   vm.friendship = 1;
-                  alert("팔로잉 하였습니다.");
+                  vm.alertMsg = '팔로잉 하였습니다.';
+                  vm.alertModal = true;
                 }
                 else if (response.data.code == '-2'){
-                  alert("로그인 상태가 아니면 이용 할 수 없는 기능 입니다.");
+                  vm.alertMsg = '로그인 상태가 아니면 이용 할 수 없는 기능 입니다.';
+                  vm.alertModal = true;
                 }
                 else if (response.data.code == '-4'){
-                  alert("자신과 친구를 할 수 없습니다.");
+                  vm.alertMsg = '자신과 친구를 할 수 없습니다.';
+                  vm.alertModal = true;
                 }
                 else{
-                  alert("오류가 발생하였습니다.");
+                  vm.alertMsg = '오류가 발생하였습니다.';
+                  vm.alertModal = true;
                 }
               });
     },
     unfollowReq(){
       if(this.myId == '_tmpId' || this.myId == 'null' || this.myId == null){
-        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        this.alertMsg = '로그인해야 이용할 수 있는 서비스 입니다.';
+        this.alertModal = true;
         return;
       }
 
@@ -690,23 +712,28 @@ export default {
 
                 if(response.data.code == '2') {//1:나의프로필 2:남의프로필
                   vm.friendship = 0;
-                  alert("언팔로잉 하였습니다.");
+                  vm.alertMsg = '언팔로잉 하였습니다.';
+                  vm.alertModal = true;
                 }
                 else if (response.data.code == '-2'){
-                  alert("로그인 상태가 아니면 이용 할 수 없는 기능 입니다.");
+                  vm.alertMsg = '로그인 상태가 아니면 이용 할 수 없는 기능 입니다.';
+                  vm.alertModal = true;
                 }
                 else if (response.data.code == '-4'){
-                  alert("자신과 언팔을 할 수 없습니다.");
+                  vm.alertMsg = '자신과 언팔로우 할 수 없습니다.';
+                  vm.alertModal = true;
                 }
                 else{
-                  alert("오류가 발생하였습니다.");
+                  vm.alertMsg = '오류가 발생하였습니다.';
+                  vm.alertModal = true;
                 }
               });
 
     },
     goHome(){
       if(this.myId == '_tmpId' || this.myId == 'null' || this.myId == null){
-        alert("로그인해야 이용할 수 있는 서비스 입니다.");
+        this.alertMsg = '로그인해야 이용할 수 있는 서비스 입니다.';
+        this.alertModal = true;
         return;
       }
 
@@ -736,7 +763,8 @@ export default {
 
                 }
                 else{
-                  alert("유저 정보를 가져오는데 실패하였습니다..");
+                  vm.alertMsg = '유저 정보를 가져오는데 실패하였습니다..';
+                  vm.alertModal = true;
                 }
               });
 
@@ -772,7 +800,8 @@ export default {
 
                 }
                 else{
-                  alert("유저 정보를 가져오는데 실패하였습니다..");
+                  vm.alertMsg = '유저 정보를 가져오는데 실패하였습니다..';
+                  vm.alertModal = true;
                 }
               });
     },
@@ -845,7 +874,9 @@ export default {
                 console.log(response);
 
                 if(response.data.code == '1') {//1:나의프로필 2:남의프로필
-                  alert("등록이 완료되었습니다.");
+                  vm.alertMsg = '등록이 완료되었습니다.';
+                  vm.alertModal = true;
+
                   vm.guestbook.unshift(response.data.guestbook[0]);
                   if(updateItem == 'guestbook'){
 
@@ -857,22 +888,27 @@ export default {
                 else if(response.data.code == '2') {//1:나의프로필 2:남의프로필
                   updateItem.contents = vm.gbContents;
                   updateItem.gbSecret = vm.gbSecret;
-                  alert("수정이 완료되었습니다.");
+                  vm.alertMsg = '수정이 완료되었습니다.';
+                  vm.alertModal = true;
                 }
                 else if(response.data.code == '3') {//1:나의프로필 2:남의프로필
                   updateItem.contents = "삭제 되었습니다.";
                   updateItem.delYn = "Y";
-                  alert("삭제가 완료되었습니다.");
+                  vm.alertMsg = '삭제가 완료되었습니다.';
+                  vm.alertModal = true;
                 }
 
                 else if (response.data.code == '-2'){
-                  alert("로그인 상태가 아니면 이용 할 수 없는 기능 입니다.");
+                  vm.alertMsg = '로그인 상태가 아니면 이용 할 수 없는 기능 입니다.';
+                  vm.alertModal = true;
                 }
                 else if (response.data.code == '-3'){
-                  alert("권한이 없습니다.");
+                  vm.alertMsg = '권한이 없습니다.';
+                  vm.alertModal = true;
                 }
                 else{
-                  alert("오류가 발생하였습니다.");
+                  vm.alertMsg = '오류가 발생하였습니다.';
+                  vm.alertModal = true;
                 }
               });
     }

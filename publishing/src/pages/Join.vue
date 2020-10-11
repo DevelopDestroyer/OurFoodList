@@ -53,10 +53,24 @@
       </div>
     </div>
     <main-footer></main-footer>
+
+    <modal :show.sync="alertModal">
+      <template slot="header">
+        <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+      </template>
+      <div style="color:gray;">
+        {{alertMsg}}
+      </div>
+      <template slot="footer">
+        <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+      </template>
+    </modal>
+
+
   </div>
 </template>
 <script>
-import { Card, Button, FormGroupInput } from '@/components';
+import { Card, Button, FormGroupInput, Modal } from '@/components';
 import MainFooter from '@/layout/MainFooter';
 const axios = require('axios');
 export default {
@@ -66,10 +80,14 @@ export default {
     Card,
     MainFooter,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
+    [FormGroupInput.name]: FormGroupInput,
+    Modal
   },
   data() {
     return {
+      alertModal : false,
+      alertMsg : '',
+
 	  inputPassword : '',
 	  inputID : '',
 	  inputPasswordConfirm: '',
@@ -81,15 +99,20 @@ export default {
           //유효성 검사
           let reg_hanengnum = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/;
           if (!reg_hanengnum.test(this.inputID)) {
-              alert("아이디는 한글/영문/숫자만 입력 가능합니다.");
+              this.alertMsg = "아이디는 한글/영문/숫자만 입력 가능합니다.";
+              this.alertModal = true;
               return;
           }
           if (-1 != this.inputID.indexOf("*")) {
-              alert("특수 문자는 입력할 수 없습니다.");
+              this.alertMsg = "특수 문자는 입력할 수 없습니다.";
+              this.alertModal = true;
+
               return;
           }
           if(this.inputPassword != this.inputPasswordConfirm){
-              alert("패스워드와 패스워드 확인 입력이 서로 일치하지 않습니다.");
+              this.alertMsg = "패스워드와 패스워드 확인 입력이 서로 일치하지 않습니다.";
+              this.alertModal = true;
+
               return;
           }
 
@@ -108,28 +131,22 @@ export default {
                   console.log(response);
                   if(response.data.result == 'success'){
                       if(response.data.code == '2'){
-                          alert("가입이 완료되었습니다!");
-                          /*
-                          let autoreq = confirm("가입이 완료되었습니다! 매번 자동로그인기능을 활성화 할까요?\n현재 개인 PC/모바일 장치일 경우 권장드립니다 :)");
-                          if(autoreq){
-                              localStorage.setItem('gmatAutoLoginMode', 'on');
-                              localStorage.setItem('gmatUserId', vm.inputID);
-                              localStorage.setItem('gmatUserPw', SHA256(vm.inputPassword));
-                              //localStorage.setItem('gmatTmpUserId', null);
-                          }
-                          */
+                          vm.alertMsg = "가입이 완료되었습니다!";
+                          vm.alertModal = true;
                           location.href = "/";
                       }
                       else{
-                          alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요\n에러코드 : " + response.data.code);
+                          vm.alertMsg = "서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요. 에러코드 : " + response.data.code;
+                          vm.alertModal = true;
                       }
                   }
                   else if(response.data.result == 'error' && response.data.code == '-100'){
-                      alert("이미 존재하는 아이디 입니다 ㅠㅠ");
-
+                      vm.alertMsg = "이미 존재하는 아이디 입니다 ㅠㅠ";
+                      vm.alertModal = true;
                   }
                   else {
-                      alert("에러가 발생하였습니다. 관리자에게 문의하세요\n에러코드 : " + response.data.code);
+                      vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요. 에러코드 : " + response.data.code;
+                      vm.alertModal = true;
                   }
 
               });

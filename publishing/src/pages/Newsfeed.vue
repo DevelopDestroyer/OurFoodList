@@ -297,10 +297,24 @@
 
       </div>
     </div>
+
+
+    <modal :show.sync="alertModal">
+      <template slot="header">
+        <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+      </template>
+      <div style="color:gray;">
+        {{alertMsg}}
+      </div>
+      <template slot="footer">
+        <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+      </template>
+    </modal>
+
   </div>
 </template>
 <script>
-import { Tabs, TabPane , Badge, Button, FormGroupInput} from '@/components';
+import { Tabs, TabPane , Badge, Button, FormGroupInput, Modal} from '@/components';
 import {BUS} from "./EventBus";
 const axios = require('axios');
 
@@ -312,10 +326,13 @@ export default {
     TabPane,
     [Badge.name]: Badge,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
+    [FormGroupInput.name]: FormGroupInput,
+    Modal
   },
   data(){
     return {
+      alertMsg : '',
+      alertModal : false,
       restaurantId : '',
       storeName : '',
       category : '',
@@ -386,7 +403,8 @@ export default {
 
               }
               else{
-                alert("식당 정보를 가져오는데 실패하였습니다..");
+                vm.alertMsg = '식당정보를 가져오는데 실패하였습니다..';
+                vm.alertModal = true;
               }
             });
   },

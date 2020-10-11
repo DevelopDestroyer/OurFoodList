@@ -489,8 +489,43 @@
 	</template>
 	<br>
 	<br>
+
+
+    <!--template>
+      <modal :show.sync="alertModal"
+             footer-classes="justify-content-center"
+             type="notice" style="color:gray;margin-top:80px;">
+        <br><br>
+
+        <h5 slot="header" class="modal-title">알림</h5>
+        <div class="row">
+          {{alertMsg}}
+        </div>
+
+        <div slot="footer" class="justify-content-center">
+          <n-button type="info" round @click.native="alertModal = false">확인</n-button>
+        </div>
+      </modal>
+    </template-->
+
+    <modal :show.sync="alertModal">
+      <template slot="header">
+        <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+      </template>
+      <div style="color:gray;">
+        {{alertMsg}}
+      </div>
+      <template slot="footer">
+        <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+      </template>
+    </modal>
+
   </div>
+
 </template>
+
+
+
 <script>
 import { Parallax } from '@/components';
 import BasicElements from './components/BasicElementsSection';
@@ -505,7 +540,7 @@ import NucleoIconsSection from './components/NucleoIconsSection';
 import SignupForm from './components/SignupForm';
 import ExamplesSection from './components/ExamplesSection';
 import DownloadSection from './components/DownloadSection';
-import { Card, Tabs , TabPane, Badge, Button, Alert} from '@/components';
+import { Card, Tabs , TabPane, Badge, Button, Alert, Modal} from '@/components';
 import { BUS } from './EventBus';
 const axios = require('axios');
 
@@ -522,6 +557,7 @@ export default {
 	[Badge.name]: Badge,
 	[Button.name]: Button,
 	Alert,
+  Modal,
 	/*
     //BasicElements,
     //Navigation,
@@ -542,17 +578,20 @@ export default {
   data() {
     return {
       show: true,
-		mapData: null,
-		mapMarker: null,
-		mapOverlay: null,
-		shoeMeTheMap: false,
+      mapData: null,
+      mapMarker: null,
+      mapOverlay: null,
+      shoeMeTheMap: false,
 
-		myReviewData: [],
-		myBookmarkData: [],
-		othersReviewData: [],
-		friendsReviewData: [],
-		editReviewReq: null,
-		editReviewReqCnt : 0
+      myReviewData: [],
+      myBookmarkData: [],
+      othersReviewData: [],
+      friendsReviewData: [],
+      editReviewReq: null,
+      editReviewReqCnt : 0,
+
+      alertModal: false,
+      alertMsg: ''
 	}
   },
   mounted() {
@@ -667,7 +706,8 @@ export default {
 
 					  }
 					  else{
-						  alert("맛집 리스트를 가져오는데 실패했습니다.. 서버 문제 같습니다..");
+						  vm.alertMsg = "맛집 리스트를 가져오는데 실패했습니다.. 서버 문제 같습니다..";
+						  vm.alertModal = true;
 					  }
 				  });
 	  });
@@ -708,7 +748,8 @@ export default {
 							console.log(response);
 							if(response.data.result == 'success'){
 								if(response.data.code == '1'){
-									alert("삭제처리 되었습니다.");
+                  vm.alertMsg = "삭제처리 되었습니다.";
+                  vm.alertModal = true;
 
 									//뷰단에서도 제거
 									const idx = vm.myBookmarkData.findIndex(function(item) {return item.review_seq == reviewSeqBuf}) // findIndex = find + indexOf
@@ -718,20 +759,25 @@ export default {
 									if (idx2 > -1) vm.myReviewData.splice(idx2, 1)
 								}
 								else if(response.data.code == '-1'){
-									alert("잘못된 시도입니다. 문제 지속 시 관리자에게 문의하세요");
+                  vm.alertMsg = "잘못된 시도입니다. 문제 지속 시 관리자에게 문의하세요";
+                  vm.alertModal = true;
 								}
 								else if(response.data.code == '-5000'){
-									alert("로그인이 필요한 서비스 입니다. 로그인 상태인지 확인해주세요");
-								}
+                  vm.alertMsg = "로그인이 필요한 서비스 입니다. 로그인 상태인지 확인해주세요";
+                  vm.alertModal = true;
+                }
 								else if(response.data.code == '-3'){
-									alert("유효하지 않은 리뷰id입니다..");
+                  vm.alertMsg = "유효하지 않은 리뷰ID 입니다.";
+                  vm.alertModal = true;
 								}
 								else{
-									alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
-								}
+                  vm.alertMsg = "서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요.";
+                  vm.alertModal = true;
+                }
 							}
 							else {
-								alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+                vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요.";
+                vm.alertModal = true;
 							}
 
 						});
@@ -776,7 +822,9 @@ export default {
 						  console.log(response);
 						  if(response.data.result == 'success'){
 							  if(response.data.code == '1'){
-								  alert("찜했어요!");
+								  vm.alertMsg = "찜했어요!";
+								  vm.alertModal = true;
+
 								  vm.myBookmarkData.push({
 									  store_id: item2.store_id,
 									  store_name: item2.store_name,
@@ -796,24 +844,30 @@ export default {
 								  });
 							  }
 							  else if(response.data.code == '100'){
-								  alert("이미 찜한 맛집 입니다.");
+                  vm.alertMsg = "이미 찜한 맛집 입니다.";
+                  vm.alertModal = true;
 							  }
 							  else if(response.data.code == '101'){
-								  alert("이미 리뷰한 맛집 입니다.");
+                  vm.alertMsg = "이미 리뷰한 맛집 입니다.";
+                  vm.alertModal = true;
 							  }
 							  else if(response.data.code == '102'){
-								  alert("나의 맛집이 등록되었습니다!!");
+                  vm.alertMsg = "나의 맛집이 등록되었습니다!";
+                  vm.alertModal = true;
 							  }
 							  else if(response.data.code == '103'){
-								  alert("이미 리뷰했던 맛집이지만.. 내용을 최신본으로 업데이트 했어요!");
+                  vm.alertMsg = "리뷰를 수정하였습니다.";
+                  vm.alertModal = true;
 							  }
 							  else{
-								  alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+                  vm.alertMsg = "서버에 문제가 있는 것 같습니다.. 관리자에게 문의하세요";
+                  vm.alertModal = true;
 							  }
 						  }
 						  else {
-							  alert("에러가 발생하였습니다. 관리자에게 문의하세요");
-						  }
+                vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요";
+                vm.alertModal = true;
+              }
 
 					  });
 		  }
@@ -890,7 +944,6 @@ export default {
 		  for (let i = 0; i < this.myBookmarkData.length; i++) {
 
 			  if (this.myBookmarkData[i].visit_yn == 'N') {  //사용자 리뷰만..
-			  	//alert(this.myReviewData[i].store_name);
 				  var imageSrc = 'img/marker/my_bookmark.png', // 마커이미지의 주소입니다
 						  imageSize = new kakao.maps.Size(20, 25), // 마커이미지의 크기입니다
 						  imageOption = {offset: new kakao.maps.Point(45, 40)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.

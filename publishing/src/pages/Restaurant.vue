@@ -160,10 +160,23 @@
 
       </div>
     </div>
+
+    <modal :show.sync="alertModal">
+      <template slot="header">
+        <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+      </template>
+      <div style="color:gray;">
+        {{alertMsg}}
+      </div>
+      <template slot="footer">
+        <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+      </template>
+    </modal>
+
   </div>
 </template>
 <script>
-import { Tabs, TabPane , Badge, Button, FormGroupInput} from '@/components';
+import { Tabs, TabPane , Badge, Button, FormGroupInput, Modal } from '@/components';
 import {BUS} from "./EventBus";
 const axios = require('axios');
 
@@ -175,10 +188,14 @@ export default {
     TabPane,
     [Badge.name]: Badge,
     [Button.name]: Button,
-    [FormGroupInput.name]: FormGroupInput
+    [FormGroupInput.name]: FormGroupInput,
+    Modal
   },
   data(){
     return {
+      alertModal : false,
+      alertMsg : '',
+
       restaurantId : '',
       storeName : '',
       category : '',
@@ -233,7 +250,8 @@ export default {
 
               }
               else{
-                alert("식당 정보를 가져오는데 실패하였습니다..");
+                vm.alertMsg = '식당정보를 가져오는데 실패였습니다..';
+                vm.alertModal = true;
               }
             });
   },
@@ -256,7 +274,8 @@ export default {
 
                 }
                 else{
-                  alert("유저 정보를 가져오는데 실패하였습니다..");
+                  vm.alertMsg = '유저정보를 가져오는데 실패였습니다..';
+                  vm.alertModal = true;
                 }
               });
     },
@@ -284,6 +303,7 @@ export default {
     setBookmark(store_id){
       var res = confirm("여기를 찜하기로 기록 할까요?");
       if(res){
+        let vm = this;
 
         //전송부분 구현...
         let form = new FormData();
@@ -300,26 +320,33 @@ export default {
                   console.log(response);
                   if(response.data.result == 'success'){
                     if(response.data.code == '1'){
-                      alert("찜했어요!");
+                      vm.alertMsg = '찜했어요!';
+                      vm.alertModal = true;
                     }
                     else if(response.data.code == '100'){
-                      alert("이미 찜한 맛집 입니다.");
+                      vm.alertMsg = '이미 찜한 맛집 입니다.';
+                      vm.alertModal = true;
                     }
                     else if(response.data.code == '101'){
-                      alert("이미 리뷰한 맛집 입니다.");
+                      vm.alertMsg = '이미 리뷰한 맛집 입니다.';
+                      vm.alertModal = true;
                     }
                     else if(response.data.code == '102'){
-                      alert("나의 맛집이 등록되었습니다!!");
+                      vm.alertMsg = '나의 맛집이 등록되었습니다!';
+                      vm.alertModal = true;
                     }
                     else if(response.data.code == '103'){
-                      alert("이미 리뷰했던 맛집이지만.. 내용을 최신본으로 업데이트 했어요!");
+                      vm.alertMsg = '리뷰를 업데이트 했습니다';
+                      vm.alertModal = true;
                     }
                     else{
-                      alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+                      vm.alertMsg = '서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요';
+                      vm.alertModal = true;
                     }
                   }
                   else {
-                    alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+                    vm.alertMsg = '에러가 발생하였습니다. 관리자에게 문의하세요';
+                    vm.alertModal = true;
                   }
 
                 });

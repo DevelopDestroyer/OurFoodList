@@ -77,10 +77,24 @@
       </div>
     </div>
     <main-footer></main-footer>
+
+    <modal :show.sync="alertModal">
+      <template slot="header">
+        <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+      </template>
+      <div style="color:gray;">
+        {{alertMsg}}
+      </div>
+      <template slot="footer">
+        <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+      </template>
+    </modal>
+
+
   </div>
 </template>
 <script>
-import { Card, Button, FormGroupInput, NavLink, Checkbox} from '@/components';
+import { Card, Button, FormGroupInput, NavLink, Checkbox, Modal} from '@/components';
 import MainFooter from '@/layout/MainFooter';
 const axios = require('axios');
 export default {
@@ -92,10 +106,13 @@ export default {
     MainFooter,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
-    Checkbox
+    Checkbox,
+    Modal
   },
   data() {
     return {
+      alertModal : false,
+      alertMsg : '',
 	  inputPassword : '',
 	  inputID : '',
       checkAutoLogin : true
@@ -132,14 +149,17 @@ export default {
                     }
                   }
                   else{
-                    alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요\n에러코드 : " + response.data.code);
+                    vm.alertMsg = '서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요. 에러코드 : " + response.data.code';
+                    vm.alertModal = true;
                   }
                 }
                 else if(response.data.result == 'error' && response.data.code == '-200'){
-                  alert("아이디 또는 비밀번호가 맞지 않습니다.");
+                  vm.alertMsg = '아이디 또는 비밀번호가 맞지 않습니다.';
+                  vm.alertModal = true;
                 }
                 else {
-                  alert("에러가 발생하였습니다. 관리자에게 문의하세요\n에러코드 : " + response.data.code);
+                  vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요. 에러코드 : " + response.data.code;
+                  vm.alertModal = true;
                 }
 
               });

@@ -242,6 +242,21 @@
         </div>
 
 </modal>
+
+
+  <modal :show.sync="alertModal">
+    <template slot="header">
+      <h5 class="modal-title" id="alertModalLabel" style="color:gray;">알림</h5>
+    </template>
+    <div style="color:gray;">
+      {{alertMsg}}
+    </div>
+    <template slot="footer">
+      <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+    </template>
+  </modal>
+
+
 </template>
 
 		
@@ -278,6 +293,9 @@ export default {
   },
   data() {
     return {
+      alertModal : false,
+      alertMsg : "",
+
       isRealUserLogin: true,
 	  inputKeyword : '',
       modals: {
@@ -301,17 +319,6 @@ export default {
 		}
 		*/
 	  ],
-	  getData: function(){
-
-		/*
-        axios.get('https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json')
-//        axios.get('/api/searchRestaurant.php?keyword=')
-          .then(function(response){
-            alert("받아온 값 : " + response.data.fe3);
-            console.log(response); // 객체 형태로 반환. 파싱작업 불필요
-           });
-		  */ 
-      },
         rating: 0,
         tags: [],
         memo: "",
@@ -343,15 +350,6 @@ export default {
 	},
     searchReq(){
 	    var vm = this;
-		/*
-        axios.get('https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json')
-//        axios.get('/api/searchRestaurant.php?keyword=')
-          .then(function(response){
-            alert("받아온 값 : " + response.data.fe3);
-			vm.list = [];
-            console.log(response); // 객체 형태로 반환. 파싱작업 불필요
-           });		
-		*/
         axios.get('/api/searchRestaurantK.php?keyword=' + this.inputKeyword)
           .then(function(response){
             console.log(response);
@@ -403,22 +401,28 @@ export default {
                     console.log(response);
                     if(response.data.result == 'success'){
                         if(response.data.code == '1'){
-                            alert("찜했어요!");
+                            vm.alertMsg = "찜했어요";
+                            vm.alertModal = true;
                         }
                         else if(response.data.code == '100'){
-                            alert("이미 찜한 맛집 입니다.");
+                            vm.alertMsg = "이미 찜한 맛집 입니다.";
+                            vm.alertModal = true;
                         }
                         else if(response.data.code == '101'){
-                            alert("이미 리뷰한 맛집 입니다.");
+                            vm.alertMsg = "이미 리뷰한 맛집 입니다.";
+                            vm.alertModal = true;
                         }
                         else if(response.data.code == '102'){
-                            alert("나의 맛집이 등록되었습니다!!");
+                            vm.alertMsg = "나의 맛집이 등록되었습니다.";
+                            vm.alertModal = true;
                         }
                         else if(response.data.code == '103'){
-                            alert("이미 리뷰했던 맛집이지만.. 내용을 최신본으로 업데이트 했어요!");
+                            vm.alertMsg = "리뷰를 업데이트했습니다.";
+                            vm.alertModal = true;
                         }
                         else{
-                            alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+                          vm.alertMsg = "서버에 문제가 있는 것 같습니다. 관리자에게 문의하세요.";
+                          vm.alertModal = true;
                         }
                         for(var i = 0; i < vm.list.length; i++){
                             if(vm.list[i].storeId == idBiff){
@@ -428,7 +432,8 @@ export default {
                         }
                     }
                     else {
-                        alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+                      vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요.";
+                      vm.alertModal = true;
                     }
 
                 });
@@ -451,22 +456,28 @@ export default {
                 console.log(response);
                 if(response.data.result == 'success'){
                     if(response.data.code == '1'){
-                        alert("나의 맛집이 등록되었습니다!");
+                        vm.alertMsg = "나의 맛집이 등록되었습니다.";
+                        vm.alertModal = true;
                     }
                     else if(response.data.code == '100'){
-                        alert("이미 찜한 맛집 입니다.");
+                        vm.alertMsg = "이미 찜한 맛집입니다.";
+                        vm.alertModal = true;
                     }
                     else if(response.data.code == '101'){
-                        alert("이미 리뷰한 맛집 입니다.");
+                        vm.alertMsg = "이미 리뷰한 맛집 입니다.";
+                        vm.alertModal = true;
                     }
                     else if(response.data.code == '102'){
-                        alert("나의 맛집이 등록되었습니다!!");
+                        vm.alertMsg = "나의 맛집이 등록되었습니다!";
+                        vm.alertModal = true;
                     }
                     else if(response.data.code == '103'){
-                        alert("이미 리뷰했던 맛집이지만 내용을 최신본으로 업데이트 했어요!");
+                        vm.alertMsg = "리뷰를 업데이트하였습니다 !";
+                        vm.alertModal = true;
                     }
                     else{
-                        alert("서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요");
+                        vm.alertMsg = "서버에 문제가 있는 것 같습니다. 관리자에게 문의하세요";
+                        vm.alertModal = true;
                     }
                     for(var i = 0; i < vm.list.length; i++){
                         if(vm.list[i].storeId == idBiff){
@@ -476,7 +487,8 @@ export default {
                     }
                 }
                 else {
-                        alert("에러가 발생하였습니다. 관리자에게 문의하세요");
+                    vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요.";
+                    vm.alertModal = true;
                 }
 
             });
@@ -498,9 +510,10 @@ export default {
 	    location.href="/#/join";
       },
       help(){
-          alert('현재 비로그인 상태로 맛집기록을 하고 있습니다.\n' +
-              '캐시 데이터가 삭제돼면 데이터를 잃을 수도 있으니 가입해서 맛집을 기록해주세요!\n' +
-              '가입하면 자동으로 비회원 상태에서 쌓은 데이터도 이전됩니다.\n')
+          vm.alertMsg = "현재 비로그인 상태로 맛집기록을 하고 있습니다. " +
+              "캐시 데이터가 삭제돼면 데이터를 잃을 수도 있으니 가입해서 맛집을 기록해주세요!" +
+              "가입하면 자동으로 비회원 상태에서 쌓은 데이터도 이전됩니다.";
+          vm.alertModal = true;
       }
   }
 };
