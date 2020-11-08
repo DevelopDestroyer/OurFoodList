@@ -649,8 +649,7 @@ export default {
                 vm.guestbook = response.data.guestbook;
               }
               else{
-                vm.alertMsg = '유저정보를 가져오는데 실패하였습니다..';
-                vm.alertModal = true;
+                location.href="/#/login";
               }
             });
 
