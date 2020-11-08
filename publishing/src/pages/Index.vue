@@ -595,6 +595,13 @@ export default {
 	}
   },
   mounted() {
+    let agent = navigator.userAgent.toLowerCase();
+    if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
+      this.alertMsg = '그맛 서비스는 웹표준을 지원하며 익스플로러 브라우저를 지원하지 않습니다. 다른 브라우저를 이용해주세요 죄송합니다.';
+      this.alertModal = true;
+      return;
+    }
+
       var container = document.getElementById('map');
         var mapOptions = {
             center: new kakao.maps.LatLng(36.5333321,127.8912452),
@@ -706,7 +713,7 @@ export default {
 
 					  }
 					  else{
-						  vm.alertMsg = "맛집 리스트를 가져오는데 실패했습니다.. 서버 문제 같습니다..";
+						  vm.alertMsg = "맛집 리스트를 가져오는데 실패했습니다. 문제가 지속된다면 로그인을 해보세요";
 						  vm.alertModal = true;
 					  }
 				  });
