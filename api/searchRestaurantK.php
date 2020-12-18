@@ -65,7 +65,7 @@
     }
     $sql = substr($sql , 0, -2);
     $sql = $sql.";";
-    if(count($response['documents']) > 0){
+    if(count($response['documents']) >= 0){
       //$result = mysql_query($sql,$connect);
       $result = mysqli_query($connect, $sql);
       //$fields = mysql_num_fields($result);
@@ -110,17 +110,14 @@
       }
       $sql = substr($sql , 0, -2);
       $sql = $sql.";";
-      if(count($response['documents']) > 0){
-        //$result = mysql_query($sql,$connect);
+
+      if(count($response['documents']) >= 0){
         $result = mysqli_query($connect, $sql);
-        //$fields = mysql_num_fields($result);
         mysqli_close($connect);
       }
     }
 
     $response['documents'] = array_merge($response['documents'], $response2['documents']);
-
-
 
     echo json_encode($response);
   } else {
