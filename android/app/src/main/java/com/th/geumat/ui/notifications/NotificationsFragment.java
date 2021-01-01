@@ -18,7 +18,6 @@ public class NotificationsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("ㅇㅇ");
 
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);

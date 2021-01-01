@@ -1,10 +1,14 @@
 package com.th.geumat.ui.premium;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,8 +32,24 @@ public class PremiumFragment extends Fragment {
 
 
         ((MainActivity)getActivity()).movePremiumActivity();
+        //((MainActivity)getActivity()).savePremium();
         ((MainActivity)getActivity()).loadAd();
+
+
+        
 
         return root;
     }
+/*
+    public void btnClick(View view){
+        if(view.getId() == R.id.preButton){
+            Toast.makeText((MainActivity)getActivity(), "프리미엄 결제가 완료 되었습니다.", Toast.LENGTH_LONG).show();
+
+        }
+        else if(view.getId() == R.id.couponButton){
+            Toast.makeText((MainActivity)getActivity(), "쿠폰이 정상적으로 사용 되었습니다.", Toast.LENGTH_LONG).show();
+
+        }
+    }
+*/
 }

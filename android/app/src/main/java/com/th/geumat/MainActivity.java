@@ -6,10 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.os.Handler;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -29,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private AdView mAdView; //배너광고
     private InterstitialAd mInterstitialAd; //전면광고
     public int countForExposeAds = 0;
+    private final Handler handler = new Handler();
 
     public boolean isPremiumDevice = false;
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_notificationsq, R.id.navigation_notificationsw)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
         /////////////////////////////////////
@@ -59,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
         mWebView.setWebViewClient(new WebViewClientClass());//새창열기 없이 웹뷰 내에서 다시 열기//페이지 이동 원활히 하기위해 사용
         mWebView.getSettings().setDomStorageEnabled(true); //로컬스토리지 사용
 
+        // Bridge 인스턴스 등록
+        mWebView.addJavascriptInterface(new AndroidBridge(), "geumatApp");
+
+
+        mContext = this;
 
         ////////////////////////////////////
         //애드몹 세팅
@@ -199,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sf = getSharedPreferences("geumat", MODE_PRIVATE);
         //text라는 key에 저장된 값이 있는지 확인
         String geumatPremiumDataString = sf.getString("premium","ek4k3nb4u234hjdfcn23jshqknkf34");
+
         if(geumatPremiumDataString.contains("zmxncbvalskdjfh")) {
             isPremiumDevice = true;
         }
@@ -209,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void savePremium(){
         //SharedPreferences를 sFile이름, 기본모드로 설정
-        SharedPreferences sharedPreferences = getSharedPreferences("sFile",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("geumat",MODE_PRIVATE);
 
         //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -217,6 +227,28 @@ public class MainActivity extends AppCompatActivity {
 
         //최종 커밋
         editor.commit();
+    }
+
+    public void saveUserId(){
+
+    }
+
+    private class AndroidBridge {
+        @JavascriptInterface
+        public void couponSuccess(final String arg) { // 웹뷰내의 페이지에서 호출하는 함수
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "쿠폰 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    savePremium();
+                    premiumCheck();
+                }
+            });
+        }
+    }
+
+    public void changeCouponPage(){
+        Toast.makeText(MainActivity.this, "쿠폰 페이지로 가고 싶어요", Toast.LENGTH_SHORT).show();
     }
 
 
