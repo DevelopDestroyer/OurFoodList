@@ -95,6 +95,16 @@
       </li>
       <li v-if="isUserLogin" class="nav-item">
         <a
+            class="nav-link"
+            href="/#/coupon"
+            @click="closeNavbar"
+        >
+          <i class="now-ui-icons business_money-coins"></i>
+          <p>　쿠폰등록</p>
+        </a>
+      </li>
+      <li v-if="isUserLogin" class="nav-item">
+        <a
                 class="nav-link"
                 href="#"
                 v-on:click="logout()"

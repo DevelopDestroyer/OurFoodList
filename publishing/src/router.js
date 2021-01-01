@@ -4,6 +4,7 @@ import Index from './pages/Index.vue';
 import Landing from './pages/Landing.vue';
 import Login from './pages/Login.vue';
 import Join from './pages/Join.vue';
+import Coupon from './pages/Coupon.vue';
 import Profile from './pages/Profile.vue';
 import Restaurant from './pages/Restaurant.vue';
 import registRestaurant from './pages/registRestaurant.vue';
@@ -46,6 +47,14 @@ export default new Router({
       path: '/join',
       name: 'join',
       components: { default: Join, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    },
+    {
+      path: '/coupon',
+      name: 'coupon',
+      components: { default: Coupon, header: MainNavbar },
       props: {
         header: { colorOnScroll: 400 }
       }

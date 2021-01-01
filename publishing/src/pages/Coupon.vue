@@ -7,42 +7,19 @@
       <div class="container">
         <div class="col-md-5 ml-auto mr-auto">
           <card type="login" plain>
-			<h1>가입하기</h1>
+			<h1>쿠폰 등록하기</h1>
             <fg-input
      		  v-model="inputID"
-     	      label="아이디 (아이디는 닉네임으로도 사용됩니다)"
+     	      label="쿠폰코드를 입력해주세요"
               class="no-border input-lg"
               addon-left-icon="now-ui-icons users_circle-08"
-              placeholder="아이디를 입력해주세요 (한글가능)"
+              placeholder="쿠폰코드를 입력해주세요 (대소문자 구분)"
               maxlength="20"
             >
             </fg-input>		
-			
-            <fg-input
-     		  v-model="inputPassword"
-			  label="패스워드"
-              class="no-border input-lg"
-              addon-left-icon="now-ui-icons text_caps-small"
-			  type="password"
-              placeholder="패스워드를 입력해주세요"
-              maxlength="30"
-            >
-            </fg-input>
-
-			<fg-input
-     		  v-model="inputPasswordConfirm"
-              class="no-border input-lg"
-              addon-left-icon="now-ui-icons text_caps-small"
-			  type="password"
-              placeholder="패스워드를 다시 입력해주세요"
-              maxlength="30"
-            >
-            </fg-input>
-              <p style="color:#f3e97a" v-if="inputPasswordConfirm != '' && inputPasswordConfirm != inputPassword">* 입력한 비밀번호 두개가 일치하지 않습니다.</p>
-              <p v-if="inputPasswordConfirm != '' && inputPasswordConfirm == inputPassword">* 입력한 비밀번호 두개가 일치해요!</p>
 
               <a
-                      v-on:click="reqJoin()"
+                      v-on:click="reqCoupon()"
                       href="#"
                       class="btn btn-primary btn-round btn-lg btn-block"
               >확인</a
@@ -95,11 +72,18 @@ export default {
     }
   },
     methods :{
-      reqJoin(){
+      reqCoupon(){
+        //로그인 검사
+        if(localStorage.getItem('gmatUserId') == null || localStorage.getItem('gmatTmpUserId') == ''){
+          this.alertMsg = "로그인 유저만 사용 할 수 있는 기능입니다.";
+          this.alertModal = true;
+          return;
+        }
+
           //유효성 검사
           let reg_hanengnum = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/;
           if (!reg_hanengnum.test(this.inputID)) {
-              this.alertMsg = "아이디는 한글/영문/숫자만 입력 가능합니다.";
+              this.alertMsg = "쿠폰은 영문/숫자만 입력 가능합니다.";
               this.alertModal = true;
               return;
           }
@@ -109,46 +93,32 @@ export default {
 
               return;
           }
-          if(this.inputPassword != this.inputPasswordConfirm){
-              this.alertMsg = "패스워드와 패스워드 확인 입력이 서로 일치하지 않습니다.";
-              this.alertModal = true;
-
-              return;
-          }
 
           let vm = this;
-          let form = new FormData();
-          let tmpIdForUpgradeAccount = '';
-          if(localStorage.getItem('gmatTmpUserId') != null)
-              tmpIdForUpgradeAccount = localStorage.getItem('gmatTmpUserId');
-          form.append('isTmpUser', 'N');
-          form.append('tmpIdForUpgradeAccount', tmpIdForUpgradeAccount);
-          form.append('userId', this.inputID);
-          form.append('userPw', SHA256(this.inputPassword));
+          let toAndroidStr = '';
 
-          axios.post('/api/userJoin.php', form)
+          axios.post('/api/coupon.php?couponId=' + this.inputID)
               .then(function(response){
                   console.log(response);
                   if(response.data.result == 'success'){
-                      if(response.data.code == '2'){
-                          vm.alertMsg = "가입이 완료되었습니다!";
-                          vm.alertModal = true;
-                          location.href = "/";
-                      }
-                      else{
-                          vm.alertMsg = "서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요. 에러코드 : " + response.data.code;
-                          vm.alertModal = true;
-                      }
-                  }
-                  else if(response.data.result == 'error' && response.data.code == '-100'){
-                      vm.alertMsg = "이미 존재하는 아이디 입니다 ㅠㅠ";
-                      vm.alertModal = true;
-                  }
-                  else {
-                      vm.alertMsg = "에러가 발생하였습니다. 관리자에게 문의하세요. 에러코드 : " + response.data.code;
-                      vm.alertModal = true;
-                  }
+                    vm.alertMsg = "쿠폰 등록이 완료되었습니다 !";
+                    vm.alertModal = true;
+                    let d = new Date();
+                    let now = d.getTime();
+                    let now_tmp = now;
+                    let sum = 0; while(now_tmp > 0) { sum += now_tmp%10; now_tmp = parseInt(now_tmp/10); }
+                    toAndroidStr = now + ';;' + localStorage.getItem('gmatUserId') + ';;' + sum;
 
+                    let broswerInfo = navigator.userAgent;
+                    if(broswerInfo.indexOf("Android")>-1) {
+                      window.geumatApp.couponSuccess(toAndroidStr);
+                      console.log("앱에 데이터 전송 완료");
+                    }
+
+                  } else {
+                      vm.alertMsg = "쿠폰 등록에 실패하였습니다.";
+                      vm.alertModal = true;
+                  }
               });
 
       }
