@@ -60,6 +60,14 @@ export default new Router({
       }
     },
     {
+      path: '/premium/:code',
+      name: 'premium',
+      components: { default: Coupon, header: MainNavbar },
+      props: {
+        header: { colorOnScroll: 400 }
+      }
+    },
+    {
       path: '/profile/:id',
       name: 'profile',
       components: { default: Profile, header: MainNavbar, footer: MainFooter },
