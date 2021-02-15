@@ -100,18 +100,23 @@ export default {
           axios.post('/api/coupon.php?couponId=' + this.inputID)
               .then(function(response){
                   console.log(response);
-                  if(response.data.result == 'success'){
-                    vm.alertMsg = "쿠폰 등록이 완료되었습니다 !";
+                  if(response.data.code == '1' ||
+                      response.data.code == '2' ||
+                      response.data.code == '3'){
+                    vm.alertMsg = response.data.message;
                     vm.alertModal = true;
+
+                    /*
                     let d = new Date();
                     let now = d.getTime();
                     let now_tmp = now;
                     let sum = 0; while(now_tmp > 0) { sum += now_tmp%10; now_tmp = parseInt(now_tmp/10); }
                     toAndroidStr = now + ';;' + localStorage.getItem('gmatUserId') + ';;' + sum;
+                    */
 
                     let broswerInfo = navigator.userAgent;
-                    if(broswerInfo.indexOf("Android")>-1) {
-                      window.geumatApp.couponSuccess(toAndroidStr);
+                    if(broswerInfo.indexOf("Android") > -1 && (response.data.code == '1' || response.data.code == '2')) {
+                      window.geumatApp.couponSuccess(response.data.key);
                       console.log("앱에 데이터 전송 완료");
                     }
 
