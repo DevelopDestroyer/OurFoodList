@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isPremiumDevice = false;
     public static Context mContext;
+    public static String[] Animals = {"crab", "dog", "elephant", "flamingo", "bat", "bee", "goat", "horse", "Mammoth", "Mink",
+                                           "mosquito", "Penguin", "Toad", "Whale", "Wallaby", "Toucan", "Baboon", "cat", "Chinchilla", "Deer"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,18 +231,82 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    public void saveUserId(){
+    public void cancelPremium(){
+        //SharedPreferences를 sFile이름, 기본모드로 설정
+        SharedPreferences sharedPreferences = getSharedPreferences("geumat",MODE_PRIVATE);
 
+        //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("premium",""); // key, value를 이용하여 저장하는 형태
+
+        //최종 커밋
+        editor.commit();
+        isPremiumDevice = false;
     }
 
     private class AndroidBridge {
         @JavascriptInterface
-        public void couponSuccess(final String arg) { // 웹뷰내의 페이지에서 호출하는 함수
+        public void couponSuccess(final String code, final String key) { // 웹뷰내의 페이지에서 호출하는 함수
+            //enc법 : key + 681248369 * 2 - 14325 (우선순위 무시)
+            long keyDescription = Long.parseLong(key.split(";")[0]);
+            String animalCode = key.split(";")[1];
+            boolean animalCodeFlag = false;
+
+            keyDescription = keyDescription + 14325;
+            keyDescription = keyDescription / 2;
+            keyDescription = keyDescription - 681248369;
+            long L = System.currentTimeMillis() / 1000;
+            for(int i = 0; i < Animals.length; i++){
+                if(animalCode.equals(Animals[i]) &&
+                        (Integer.parseInt(Long.toString(keyDescription).substring(Long.toString(keyDescription).length()-2, Long.toString(keyDescription).length()-1))
+                      + Integer.parseInt(Long.toString(keyDescription).substring(Long.toString(keyDescription).length()-1)) ) == i ){
+                    animalCodeFlag = true;
+                    break;
+                }
+            }
+            if(L < keyDescription + 120 &&
+                    L > keyDescription - 120 &&
+                    animalCodeFlag == true) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "쿠폰 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                        savePremium();
+                        premiumCheck();
+                    }
+                });
+            }
+            else{
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "유효하지 않습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show();
+                        savePremium();
+                        premiumCheck();
+                    }
+                });
+            }
+        }
+
+        @JavascriptInterface
+        public void premiumSuccess(final String key) { // 웹뷰내의 페이지에서 호출하는 함수
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this, "쿠폰 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "프리미엄 회원이 되신 것을 환영합니다!", Toast.LENGTH_SHORT).show();
                     savePremium();
+                    premiumCheck();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void adOn(final String key) { // 웹뷰내의 페이지에서 호출하는 함수
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "[테스트 기능] 프리미엄 캔슬" + key, Toast.LENGTH_SHORT).show();
+                    cancelPremium();
                     premiumCheck();
                 }
             });

@@ -58,78 +58,30 @@ export default {
   },
   mounted() {
     let vm = this;
-    let code = this.$route.params.code;
+    let code = this.$route.params.param;
 
     axios.get('/api/premium.php?code=' + code)
         .then(function(response){
           console.log(response);
           if(response.data.result == 'success'){
-            vm.alertMsg = "레벨이 100 증가했습니다 !";
+            vm.alertMsg = "프리미엄 회원이 되신 것을 진심으로 환영합니다.";
             vm.alertModal = true;
+
 
             let broswerInfo = navigator.userAgent;
             if(broswerInfo.indexOf("Android")>-1) {
-              window.geumatApp.couponSuccess("test");
+              window.geumatApp.premiumSuccess("test");
               console.log("앱에 데이터 전송 완료");
             }
 
+
           } else {
-            vm.alertMsg = "프리미엄 등록에 실패하였습니다. 관리자에게 문의하여 주세요";
+            vm.alertMsg = "프리미엄 등록에 실패하였습니다.";
             vm.alertModal = true;
           }
         });
   },
   methods :{
-      reqCoupon(){
-        //로그인 검사
-        if(localStorage.getItem('gmatUserId') == null || localStorage.getItem('gmatTmpUserId') == ''){
-          this.alertMsg = "로그인 유저만 사용 할 수 있는 기능입니다.";
-          this.alertModal = true;
-          return;
-        }
-
-          //유효성 검사
-          let reg_hanengnum = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/;
-          if (!reg_hanengnum.test(this.inputID)) {
-              this.alertMsg = "쿠폰은 영문/숫자만 입력 가능합니다.";
-              this.alertModal = true;
-              return;
-          }
-          if (-1 != this.inputID.indexOf("*")) {
-              this.alertMsg = "특수 문자는 입력할 수 없습니다.";
-              this.alertModal = true;
-
-              return;
-          }
-
-          let vm = this;
-          let toAndroidStr = '';
-
-          axios.post('/api/coupon.php?couponId=' + this.inputID)
-              .then(function(response){
-                  console.log(response);
-                  if(response.data.result == 'success'){
-                    vm.alertMsg = "쿠폰 등록이 완료되었습니다 !";
-                    vm.alertModal = true;
-                    let d = new Date();
-                    let now = d.getTime();
-                    let now_tmp = now;
-                    let sum = 0; while(now_tmp > 0) { sum += now_tmp%10; now_tmp = parseInt(now_tmp/10); }
-                    toAndroidStr = now + ';;' + localStorage.getItem('gmatUserId') + ';;' + sum;
-
-                    let broswerInfo = navigator.userAgent;
-                    if(broswerInfo.indexOf("Android")>-1) {
-                      window.geumatApp.couponSuccess(toAndroidStr);
-                      console.log("앱에 데이터 전송 완료");
-                    }
-
-                  } else {
-                      vm.alertMsg = "쿠폰 등록에 실패하였습니다.";
-                      vm.alertModal = true;
-                  }
-              });
-
-      }
     }
   
 };

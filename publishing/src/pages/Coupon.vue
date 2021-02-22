@@ -25,6 +25,13 @@
               >확인</a
               >
 
+            <a
+                v-on:click="adOn()"
+                href="#"
+                class="btn btn-primary btn-round btn-lg btn-block"
+            >광고제거 취소(테스트용)</a
+            >
+
           </card>
         </div>
       </div>
@@ -103,7 +110,7 @@ export default {
                   if(response.data.code == '1' ||
                       response.data.code == '2' ||
                       response.data.code == '3'){
-                    vm.alertMsg = response.data.message;
+                    vm.alertMsg = response.data.message + " .. " + response.data.key;
                     vm.alertModal = true;
 
                     /*
@@ -116,7 +123,7 @@ export default {
 
                     let broswerInfo = navigator.userAgent;
                     if(broswerInfo.indexOf("Android") > -1 && (response.data.code == '1' || response.data.code == '2')) {
-                      window.geumatApp.couponSuccess(response.data.key);
+                      window.geumatApp.couponSuccess(response.data.code, response.data.key);
                       console.log("앱에 데이터 전송 완료");
                     }
 
@@ -126,6 +133,11 @@ export default {
                   }
               });
 
+      },
+      adOn(){
+        window.geumatApp.adOn("on");
+        this.alertMsg = "광고ON";
+        this.alertModal = true;
       }
     }
   

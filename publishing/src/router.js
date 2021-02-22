@@ -60,7 +60,7 @@ export default new Router({
       }
     },
     {
-      path: '/premium/:code',
+      path: '/premium/:param',
       name: 'premium',
       components: { default: Coupon, header: MainNavbar },
       props: {
