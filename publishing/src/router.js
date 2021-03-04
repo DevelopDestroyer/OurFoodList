@@ -5,6 +5,7 @@ import Landing from './pages/Landing.vue';
 import Login from './pages/Login.vue';
 import Join from './pages/Join.vue';
 import Coupon from './pages/Coupon.vue';
+import Premium from './pages/Premium.vue';
 import Profile from './pages/Profile.vue';
 import Restaurant from './pages/Restaurant.vue';
 import registRestaurant from './pages/registRestaurant.vue';
@@ -62,7 +63,7 @@ export default new Router({
     {
       path: '/premium/:param',
       name: 'premium',
-      components: { default: Coupon, header: MainNavbar },
+      components: { default: Premium, header: MainNavbar },
       props: {
         header: { colorOnScroll: 400 }
       }
