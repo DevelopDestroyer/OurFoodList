@@ -137,7 +137,7 @@ export default {
                       console.log("자동로그인 on");
                       localStorage.setItem('gmatAutoLoginMode', 'on');
                       localStorage.setItem('gmatUserId', vm.inputID);
-                      //localStorage.setItem('gmatUserPw', SHA256(vm.inputPassword));
+                      localStorage.setItem('gmatUserPw', SHA256(vm.inputPassword));
                       location.href = "/";
                     }
                     else{
@@ -149,7 +149,7 @@ export default {
                     }
                   }
                   else{
-                    vm.alertMsg = '서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요. 에러코드 : " + response.data.code';
+                    vm.alertMsg = '서버에 뭔가 문제가 있는 것 같습니다.. 관리자에게 문의하세요.';
                     vm.alertModal = true;
                   }
                 }
