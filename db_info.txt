@@ -76,6 +76,27 @@ CREATE Table GUESTBOOK
   primary key(guestbook_seq)
 )
 
+CREATE Table COUPON_MST
+(
+  coupon_seq int NOT NULL AUTO_INCREMENT,
+  coupon_key varchar(256),
+  product_id int,
+  total_amount int,
+  remaining_amount int,
+  created varchar(30),
+  primary key(coupon_seq)
+)
+
+CREATE Table PREMIUM_HISTORY
+(
+  history_seq int NOT NULL AUTO_INCREMENT,
+  user_id varchar(250),
+  memo varchar(1000),
+  created varchar(30),
+  primary key(history_seq)
+)
+
+
 
 /////////////////////////////////////////////////////////////
 
