@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this, "[테스트 기능] 프리미엄 캔슬" + key, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "[테스트 기능] 프리미엄 캔슬2" + key, Toast.LENGTH_SHORT).show();
                     cancelPremium();
                     premiumCheck();
                 }

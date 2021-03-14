@@ -7,9 +7,9 @@
       <div class="container">
         <div class="col-md-5 ml-auto mr-auto">
           <card type="login" plain>
-			<h1>그맛 프리미엄이 되신 것을 환영합니다</h1>
-            <h3>그맛을 이용해주셔서 감사합니다.</h3>
-            <h3>광고제거 외에도 프리미엄 혜택은 점진적으로 늘려갈 예정입니다.</h3>
+			<h1></h1>
+            <h3>그맛 프리미엄이 되신 것을 환영합니다.</h3>
+            <h5>항상 그맛을 이용해주셔서 감사드립니다. 프리미엄 혜택은 점진적으로 늘려갈 예정입니다.</h5>
           </card>
         </div>
       </div>
@@ -25,6 +25,26 @@
       </div>
       <template slot="footer">
         <n-button type="primary" v-on:click="alertModal = false">확인</n-button>
+      </template>
+    </modal>
+
+    <modal :show.sync="userIdModal">
+      <template slot="header">
+        <h5 class="modal-title" id="alertModalLabel2" style="color:gray;">아이디 입력</h5>
+      </template>
+      <div style="color:gray;">
+        로그인 상태가 아닙니다. 레벨 + 100을 적용시키고자 하는 아이디를 입력해주세요.<br/>
+        <fg-input
+            v-model="inputID"
+            label="아이디"
+            class="no-border input-lg"
+            addon-left-icon="now-ui-icons users_circle-08"
+            placeholder="아이디를 입력해주세요"
+        >
+        </fg-input>
+      </div>
+      <template slot="footer">
+        <n-button type="primary" v-on:click="retry()">확인</n-button>
       </template>
     </modal>
 
@@ -48,7 +68,9 @@ export default {
   data() {
     return {
       alertModal : false,
+      userIdModal : false,
       alertMsg : '',
+      code : '',
 
 	  inputPassword : '',
 	  inputID : '',
@@ -58,15 +80,15 @@ export default {
   },
   mounted() {
     let vm = this;
-    let code = this.$route.params.param;
+    this.code = this.$route.params.param;
 
-    axios.get('/api/premium.php?code=' + code)
+    axios.get('/api/premium.php?code=' + this.code)
         .then(function(response){
           console.log(response);
           if(response.data.result == 'success'){
+            vm.userIdModal = false;
             vm.alertMsg = "프리미엄 회원이 되신 것을 진심으로 환영합니다.";
             vm.alertModal = true;
-
 
             let broswerInfo = navigator.userAgent;
             if(broswerInfo.indexOf("Android")>-1) {
@@ -74,15 +96,43 @@ export default {
               console.log("앱에 데이터 전송 완료");
             }
 
-
           } else {
-            vm.alertMsg = "프리미엄 등록에 실패하였습니다.";
-            vm.alertModal = true;
+            if(response.data.code == -3){
+              vm.userIdModal = true;
+            }
+            else{
+              vm.alertMsg = "프리미엄 등록에 실패하였습니다.";
+              vm.alertModal = true;
+            }
+
           }
         });
   },
   methods :{
+    retry (){
+      let vm = this;
+      axios.get('/api/premium.php?code=' + this.code + '&targetUserId=' + this.inputID)
+          .then(function(response){
+            console.log(response);
+            if(response.data.result == 'success'){
+              vm.alertMsg = "프리미엄 회원이 되신 것을 진심으로 환영합니다.";
+              vm.alertModal = true;
+
+
+              let broswerInfo = navigator.userAgent;
+              if(broswerInfo.indexOf("Android")>-1) {
+                window.geumatApp.premiumSuccess("test");
+                console.log("앱에 데이터 전송 완료");
+              }
+
+
+            } else {
+              vm.alertMsg = "프리미엄 등록에 실패하였습니다.";
+              vm.alertModal = true;
+            }
+          });
     }
+  }
   
 };
 
