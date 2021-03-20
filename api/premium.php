@@ -78,7 +78,8 @@ if($timestamp < $decTime + 120 &&
         $sql = "update USER_MST set status_cd = 'P', update_date = '".date("Y-m-d H:i:s")."', level = '".$user_level."' where user_id = '".$targetId."'";
         $result = mysqli_query($connect, $sql);
 
-        $sql = "insert into PREMIUM_HISTORY (user_id, memo, created) values ('".$targetId."', '프리미엄 결제 완료(광고제거, 레벨+100)', '".date("Y-m-d H:i:s")."')";
+        //상품코드;;설명;;코드원본;;디코드코드
+        $sql = "insert into PREMIUM_HISTORY (user_id, memo, created) values ('".$targetId."', '0;;프리미엄(광고제거, 레벨+100) 결제 완료;;".$_GET['code'].";;".$decTime."', '".date("Y-m-d H:i:s")."')";
         $result = mysqli_query($connect, $sql);
 
         echo '{"result": "success", "code" : "1", "message" : "프리미엄 회원이 되신 것을 환영합니다."}';

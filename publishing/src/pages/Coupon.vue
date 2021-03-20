@@ -25,12 +25,12 @@
               >확인</a
               >
 
-            <a
+            <!--a
                 v-on:click="adOn()"
                 href="#"
                 class="btn btn-primary btn-round btn-lg btn-block"
             >광고제거 취소(테스트용)</a
-            >
+            -->
 
           </card>
         </div>
@@ -100,6 +100,13 @@ export default {
 
               return;
           }
+        if (this.inputID == '광고생성') {
+          this.alertMsg = "광고가 다시 생성됩니다.";
+          this.alertModal = true;
+          this.adOn();
+
+          return;
+        }
 
           let vm = this;
           let toAndroidStr = '';
@@ -110,7 +117,7 @@ export default {
                   if(response.data.code == '1' ||
                       response.data.code == '2' ||
                       response.data.code == '3'){
-                    vm.alertMsg = response.data.message + " .. " + response.data.key;
+                    vm.alertMsg = response.data.message;
                     vm.alertModal = true;
 
                     /*
@@ -128,7 +135,7 @@ export default {
                     }
 
                   } else {
-                      vm.alertMsg = "쿠폰 등록에 실패하였습니다.";
+                      vm.alertMsg = response.data.message;
                       vm.alertModal = true;
                   }
               });
