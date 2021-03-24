@@ -150,6 +150,25 @@
         $result = mysqli_query($connect, $sql);
 
         //$fields = mysql_num_fields($result);
+
+        //리뷰를 남기는 경우 레벨을 1 올려준다
+        if($bookMarkRating != null){
+            //
+            //레벨업처리
+            $sql = "select level from USER_MST where user_id = '".$LOGIN_USER_ID."' and status_cd != 'D' and status_cd != 'T'";
+            $result = mysqli_query($connect, $sql);
+            $user_level = 0;
+            while ($row = mysqli_fetch_row($result)) {
+                $user_level = $row[0];
+            }
+            $user_level = $user_level + 1;
+            $sql = "update USER_MST set update_date = '".date("Y-m-d H:i:s")."', level = '".$user_level."' where user_id = '".$LOGIN_USER_ID."' and status_cd != 'D' and status_cd != 'T'";
+            $result = mysqli_query($connect, $sql);
+        }
+
+
+
+
         mysqli_close($connect);
         $returnMsg = "{\"result\": \"success\", \"code\": \"1\", \"message\": \"등록하였습니다.\"}";
         echo $returnMsg;
@@ -180,6 +199,19 @@
             }
         }
         $result = mysqli_query($connect, $sql);
+
+        //리뷰를 남기는 경우 레벨을 1 올려준다
+            //레벨업처리
+            $sql = "select level from USER_MST where user_id = '".$LOGIN_USER_ID."' and status_cd != 'D' and status_cd != 'T'";
+            $result = mysqli_query($connect, $sql);
+            $user_level = 0;
+            while ($row = mysqli_fetch_row($result)) {
+                $user_level = $row[0];
+            }
+            $user_level = $user_level + 1;
+            $sql = "update USER_MST set update_date = '".date("Y-m-d H:i:s")."', level = '".$user_level."' where user_id = '".$LOGIN_USER_ID."' and status_cd != 'D' and status_cd != 'T'";
+            $result = mysqli_query($connect, $sql);
+
 
         mysqli_close($connect);
         //$returnMsg = "{\"result\": \"success\", \"code\": \"102\", \"message\": \"이미 찜하였습니다. 업데이트 처리합니다..2345".$reviewSeqForUpdate."\"}";

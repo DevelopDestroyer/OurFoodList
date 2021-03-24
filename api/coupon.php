@@ -4,6 +4,8 @@
 1 : [premium] 광고제거 + 레벨100 쿠폰등록 성공
 2 : [removeAd] 광고제거 쿠폰등록 성공
 3 : [level100] 레벨 100 쿠폰등록 성공
+100 : [APPREVIEW] 앱리뷰 남길 시 지급
+101 : [HUMOR] 웃대 프로모션 이벤트, 광고제거 + 레벨30
 -1 : isset 공백 에러
 -2 : 유효하지 않은 쿠폰번호
 -3 : 세션에 없는 유저가 요청을 시도함
@@ -114,6 +116,60 @@ if($thisProductId == 1){
 
     echo '{"result": "success", "code" : "1", "message" : "프리미엄 쿠폰을 사용하였습니다.", "key" : "'.$timestamp.';'.$animals[$animalKey].'"}';
 }
+
+else if($thisProductId == 100){
+    //레벨업처리
+    $sql = "select level from USER_MST where user_id = '".$_SESSION["userId"]."'";
+    $result = mysqli_query($connect, $sql);
+    $user_level = 0;
+    while ($row = mysqli_fetch_row($result)) {
+        $user_level = $row[0];
+    }
+    $user_level = $user_level + 20;
+    $sql = "update USER_MST set update_date = '".date("Y-m-d H:i:s")."', level = '".$user_level."' where user_id = '".$_SESSION["userId"]."'";
+    $result = mysqli_query($connect, $sql);
+
+    //사용처리
+    $sql = "update COUPON_MST set remaining_amount = ".($remainingAmount-1)." where coupon_key = '".$_GET['couponId']."'";
+    $result = mysqli_query($connect, $sql);
+
+    //이력남기기
+    $sql = "insert into PREMIUM_HISTORY (user_id, memo, created) values ('".$_SESSION["userId"]."', '100;;앱리뷰;;".$thisCouponKey.";;.','".date("Y-m-d H:i:s")."')";
+    $result = mysqli_query($connect, $sql);
+
+    echo '{"result": "success", "code" : "100", "message" : "앱리뷰 쿠폰 적용이 완료 되었습니다.", "key" : ""}';
+}
+
+//웃대 프로모션 쿠폰
+else if($thisProductId == 101){
+    $timestamp = time();
+    $animalKey = floor(substr($timestamp, -2) / 10) + substr($timestamp, -1);
+    $timestamp = $timestamp + 681248369;
+    $timestamp = $timestamp * 2;
+    $timestamp = $timestamp - 14325;
+
+    //레벨업처리
+    $sql = "select level from USER_MST where user_id = '".$_SESSION["userId"]."'";
+    $result = mysqli_query($connect, $sql);
+    $user_level = 0;
+    while ($row = mysqli_fetch_row($result)) {
+        $user_level = $row[0];
+    }
+    $user_level = $user_level + 30;
+    $sql = "update USER_MST set update_date = '".date("Y-m-d H:i:s")."', level = '".$user_level."' where user_id = '".$_SESSION["userId"]."'";
+    $result = mysqli_query($connect, $sql);
+
+    //사용처리
+    $sql = "update COUPON_MST set remaining_amount = ".($remainingAmount-1)." where coupon_key = '".$_GET['couponId']."'";
+    $result = mysqli_query($connect, $sql);
+
+    //이력남기기
+    $sql = "insert into PREMIUM_HISTORY (user_id, memo, created) values ('".$_SESSION["userId"]."', '1;;프리미엄 쿠폰(레벨30 + 광고제거);;".$thisCouponKey.";;".$timestamp.';'.$animals[$animalKey]."','".date("Y-m-d H:i:s")."')";
+    $result = mysqli_query($connect, $sql);
+
+    echo '{"result": "success", "code" : "1", "message" : "프리미엄 쿠폰을 사용하였습니다.", "key" : "'.$timestamp.';'.$animals[$animalKey].'"}';
+}
+
 /*
   if($_GET['couponId'] == 'taeho'){
       $timestamp = time();

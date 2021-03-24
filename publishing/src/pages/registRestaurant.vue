@@ -257,6 +257,24 @@
   </modal>
 
 
+  <modal :show.sync="plzAppReviewModal">
+    <template slot="header">
+      <h5 class="modal-title" id="plzAppReviewModalLabel" style="color:gray;">알림</h5>
+    </template>
+    <div style="color:gray;">
+      등록이 완료되었습니다! <br/>
+      그맛이 유용하다면 앱리뷰를 남겨주세요<br/>
+      많은 도움이 됩니다 :) <br/>
+      (레벨+20)
+    </div>
+    <template slot="footer">
+      <n-button type="primary" v-on:click="reqCoupon()">확인</n-button>
+      <n-button type="default" v-on:click="plzAppReviewModal = false">취소</n-button>
+    </template>
+  </modal>
+
+
+
 </template>
 
 		
@@ -295,6 +313,7 @@ export default {
     return {
       alertModal : false,
       alertMsg : "",
+      plzAppReviewModal : false,
 
       isRealUserLogin: true,
 	  inputKeyword : '',
@@ -458,6 +477,20 @@ export default {
                     if(response.data.code == '1'){
                         vm.alertMsg = "나의 맛집이 등록되었습니다.";
                         vm.alertModal = true;
+
+                      let reviewCnt;
+                      if(localStorage.getItem('gmatReviewSaveCnt') == null){
+                        localStorage.setItem('gmatReviewSaveCnt', '1');
+                      }
+                      else {
+                        reviewCnt = localStorage.getItem('gmatReviewSaveCnt') * 1 + 1;
+                        localStorage.setItem('gmatReviewSaveCnt', reviewCnt);
+
+                        if(reviewCnt == 5 || reviewCnt == 20 || reviewCnt == 40 || reviewCnt == 60 ||
+                            reviewCnt == 90 || reviewCnt == 120){
+                            vm.plzAppReviewModal = true;
+                        }
+                      }
                     }
                     else if(response.data.code == '100'){
                         vm.alertMsg = "이미 찜한 맛집입니다.";
@@ -514,7 +547,24 @@ export default {
               "캐시 데이터가 삭제돼면 데이터를 잃을 수도 있으니 가입해서 맛집을 기록해주세요!" +
               "가입하면 자동으로 비회원 상태에서 쌓은 데이터도 이전됩니다.";
           vm.alertModal = true;
-      }
+      },
+    reqCoupon(){
+      let vm = this;
+
+      axios.post('/api/coupon.php?couponId=APPREVIEW')
+          .then(function(response){
+            console.log(response);
+            if(response.data.code == '100'){
+              //vm.alertMsg = response.data.message;
+              //vm.alertModal = true;
+            } else {
+            }
+            vm.plzAppReviewModal = false;
+            window.open('https://play.google.com/store/apps/details?id=com.th.geumat', '_blank');
+          });
+
+    }
+
   }
 };
 

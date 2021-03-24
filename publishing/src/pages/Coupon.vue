@@ -107,6 +107,12 @@ export default {
 
           return;
         }
+        if (this.inputID == 'APPREVIEW') {
+          this.alertMsg = "올바르지 않은 쿠폰번호 입니다.";
+          this.alertModal = true;
+
+          return;
+        }
 
           let vm = this;
           let toAndroidStr = '';

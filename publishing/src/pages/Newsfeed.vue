@@ -16,7 +16,31 @@
       <div class="container">
         <tabs type="primary">
           <tab-pane label="내 친구의 최근 리뷰">
-          <card v-if="friendsReviewData.length == 0" style="width: 100%;">
+
+            <table style="margin-left:15px;">
+              <tr>
+                <td style="width:200px;">
+                  <fg-input
+                      v-model="friendID"
+                      class="no-border input-lg"
+                      addon-left-icon="now-ui-icons users_circle-08"
+                      placeholder="친구검색하기"
+                      maxlength="20"
+                      length="20"
+                  >
+                  </fg-input>
+                </td>
+                <td>
+                  <n-button v-on:click="searchFriend()" style="margin-top:-8px;" type="primary" icon round>
+                    <i class="fa fa-search"></i>
+                  </n-button>
+                </td>
+              </tr>
+            </table>
+
+
+
+            <card v-if="friendsReviewData.length == 0" style="width: 100%;">
             <ul slot="raw-content" class="list-group list-group-flush">
               <li class="list-group-item">
                 <p style="font-size:24px;">
@@ -156,6 +180,27 @@
           </tab-pane>
 
           <tab-pane label="모든이들의 최근 리뷰">
+            <table style="margin-left:15px;">
+              <tr>
+                <td style="width:200px;">
+                  <fg-input
+                      v-model="friendID"
+                      class="no-border input-lg"
+                      addon-left-icon="now-ui-icons users_circle-08"
+                      placeholder="친구검색하기"
+                      maxlength="20"
+                      length="20"
+                  >
+                  </fg-input>
+                </td>
+                <td>
+                  <n-button v-on:click="searchFriend()" style="margin-top:-8px;" type="primary" icon round>
+                    <i class="fa fa-search"></i>
+                  </n-button>
+                </td>
+              </tr>
+            </table>
+
             <card v-if="reviewData.length == 0" style="width: 100%;">
               <ul slot="raw-content" class="list-group list-group-flush">
                 <li class="list-group-item">
@@ -344,7 +389,8 @@ export default {
       score : '',
       reviewData : [],
       friendsReviewData : [],
-      editReviewReqCnt : 0
+      editReviewReqCnt : 0,
+      friendID: ''
     }
   },
   mounted() {
@@ -417,6 +463,26 @@ export default {
     goRestaurantDetail(id){
       location.href = "/#/restaurant/" + id;
 
+    },
+    searchFriend(){
+      let vm = this;
+      if(this.friendID == ''){
+        vm.alertMsg = '친구의 아이디를 입력해주세요';
+        vm.alertModal = true;
+
+        return;
+      }
+      axios.get('/api/friendCheck.php?friendId=' + this.friendID)
+          .then(function(response){
+            console.log(response);
+            if(response.data.code == '1') {
+              vm.goUserDetail(vm.friendID);
+            }
+            else{
+              vm.alertMsg = '읭? 존재하지 않는 사용자입니다.';
+              vm.alertModal = true;
+            }
+          });
     }
   }
 
