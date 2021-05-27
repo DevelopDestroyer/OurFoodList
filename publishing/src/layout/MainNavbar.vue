@@ -80,7 +80,7 @@
                 href="/#/newsfeed"
         >
           <i class="fa fa-users"></i>
-          <p>　친구들리뷰</p>
+          <p>　친구들리뷰/소식</p>
         </a>
       </li>
       <li v-if="isUserLogin" class="nav-item">

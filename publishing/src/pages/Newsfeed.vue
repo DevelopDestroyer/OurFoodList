@@ -8,8 +8,8 @@
       </parallax>
       <div class="container">
 
-        <h1 class="title">친구들리뷰</h1>
-        <p class="category">친구 및 다른사람의 리뷰를 확인할 수 있습니다.</p>
+        <h1 class="title">친구들리뷰/소식</h1>
+        <p class="category">친구/다른사람의 리뷰와 그맛 새소식을 확인할 수 있습니다.</p>
       </div>
     </div>
     <div class="section">
@@ -338,6 +338,88 @@
               </ul>
             </div>
           </tab-pane>
+
+          <tab-pane label="공지/이벤트">
+
+            <div class="card" style="width: 100%;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <p style="font-size: 24px;">
+                    <img src="/img/avatar/10001.png" width="50px" style="border-radius: 25px">
+                    짬뽕in
+                    <n-button type="primary" icon round v-on:click="goUserDetail('짬뽕in')"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+
+                  </p>
+                  <p style="font-size: 24px;">
+                    <i class="fa fa-flag"></i>
+                    짬뽕in 이벤트 계정 출시 안내
+                  </p>
+                  <i class="fa fa-clock"></i> 날짜 : 2021-05-27
+                  <br/>
+                  <br/>
+                  <!--div style="padding: 5px; background-color: #CC99FF; color: rgb(255, 255, 255);"-->
+                    안녕하세요 그맛 입니다.<br/>
+                    '배방읍보안관' 회원님의 건의로 짬뽕in 이벤트 계정을 생성하였습니다.<br/>
+                    짬뽕in 계정에는 짬뽕을 사랑하는 모든 이들을 위해 짬뽕스토리 카페의 짬뽕여지도를 기반으로<br/>
+                    전국의 내노라하는 모든 짬뽕맛집을 기록해두었습니다.<br/>
+                    짬뽕맛집에 관심이 있으신 분들이라면 팔로우해두고 요긴하게 사용해보세요 ! <br/>
+                    <br/>
+                    또한 '배방읍보안관' 회원님께서 짬뽕길드원을 모집함에 따라 모집공고를 하단에 첨부해드리며,<br/>
+                    자세한 문의는 '배방읍보안관' 회원님께 부탁드립니다.<br/>
+                    감사합니다 ! <br/>
+                    <br/>
+                    <br/>
+                    ----------------------------------<br/>
+                    <b>제1기 짬뽕in 멤버를 찾습니다.</b><br/>
+                    <br/>
+                    [모집 조건]<br/>
+                    - 밀가루(면) 음식을 좋아하는 사람<br/>
+                    - 법적으로 문제가 없는 사람<br/>
+                    - 긍정적인 사고와 적극적인 태도로 상업적 목적이 아닌 본인 입맛에 솔직한 사람<br/>
+                    <br/>
+                    [모임 활동]<br/>
+                    - 해당 지도를 토대로 맛집 체험 및 재평가<br/>
+                    - 연 1회 짬뽕 투어 예정<br/>
+                    <br/>
+                    <br/>
+                    문의처 : 배방읍보안관 그맛 회원님<br/>
+                    ----------------------------------<br/>
+                  <!--/div-->
+                  <br/>
+                  <br/>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card" style="width: 100%;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <p style="font-size: 24px;">
+                    <img src="/img/avatar/3.png" width="50px" style="border-radius: 25px">
+                    그맛
+                    <n-button type="primary" icon round v-on:click="goUserDetail('그맛')"><i class="now-ui-icons ui-1_zoom-bold"></i></n-button>
+
+                  </p>
+                  <p style="font-size: 24px;">
+                    <i class="fa fa-flag"></i>
+                    그맛 안드로이드 앱 출시
+                  </p>
+                  <i class="fa fa-clock"></i> 날짜 : 2021-03-15
+                  <br/>
+                  <br/>
+                  안녕하세요 그맛 입니다.<br/>
+                  그맛이 사용성 증대를 위해 안드로이드앱으로 출시하였습니다. <br/>
+                  안드로이드 플레이스토어에서 그맛을 검색해보세요 !<br/>
+                  <br/>
+                  <a href="https://play.google.com/store/apps/details?id=com.th.geumat">[바로가기 클릭]</a><br/>
+                  <br/>
+                  감사합니다 ! <br/>
+                </li>
+              </ul>
+            </div>
+
+          </tab-pane>
+
         </tabs>
 
       </div>
